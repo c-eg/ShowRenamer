@@ -52,7 +52,7 @@ code/.idea/**/mongoSettings.xml
 *.iws
 
 # IntelliJ
-out/
+code/out/
 
 # mpeltonen/sbt-idea plugin
 code/.idea_modules/
@@ -79,7 +79,7 @@ code/.idea/caches/build_file_checksums.ser
 # Comment Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-215987721
 
 # *.iml
-# modules.xml
+# code/modules.xml
 # code/.idea/misc.xml
 # *.ipr
 
