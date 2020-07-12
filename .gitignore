@@ -1,1 +1,18 @@
-project/.idea/
+# User-specific stuff
+code/.idea/**/workspace.xml
+code/.idea/**/tasks.xml
+code/.idea/**/usage.statistics.xml
+code/.idea/**/dictionaries
+code/.idea/**/shelf
+
+# Generated files
+code/.idea/**/contentModel.xml
+
+# Sensitive or high-churn files
+code/.idea/**/dataSources/
+code/.idea/**/dataSources.ids
+code/.idea/**/dataSources.local.xml
+code/.idea/**/sqlDataSources.xml
+code/.idea/**/dynamic.xml
+code/.idea/**/uiDesigner.xml
+code/.idea/**/dbnavigator.xml
