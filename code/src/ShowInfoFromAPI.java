@@ -15,7 +15,7 @@ public class ShowInfoFromAPI
      *  How should I make the functions work?
      *      Should the api just be used in the main class when the files are read in?
      *      Should the api be used in ShowInfoFromAPI and called in Movie and TVShow classes?
-     * 
+     *
      */
 
 
