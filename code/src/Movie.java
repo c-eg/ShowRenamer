@@ -1,3 +1,5 @@
+import com.omertron.themoviedbapi.MovieDbException;
+
 import java.io.File;
 
 public class Movie
@@ -16,6 +18,14 @@ public class Movie
     @Override
     public String toString()
     {
+        try
+        {
+            ShowInfoFromAPI api = new ShowInfoFromAPI();
+        }
+        catch (MovieDbException e)
+        {
+            e.printStackTrace();
+        }
         return (title + " " + "(" + year + ")");
     }
 }
