@@ -1,6 +1,7 @@
 import com.omertron.themoviedbapi.MovieDbException;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class Movie
 {
@@ -21,6 +22,8 @@ public class Movie
         try
         {
             ShowInfoFromAPI api = new ShowInfoFromAPI();
+            ArrayList<String> info = api.getMovieInformation(title);
+            return info.get(0) + " (" + info.get(1).substring(0, 4) + ")";
         }
         catch (MovieDbException e)
         {
