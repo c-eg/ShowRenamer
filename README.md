@@ -14,6 +14,4 @@ Renames movies and tv shows to the format the user has specified
 - [ ] Suggests name to rename to on right of list
   - [ ] Rename format can be cusomized by user
   - [ ] Suggestion can be overwritten
-
-## Additional Todo
 - [ ] Add command line support
