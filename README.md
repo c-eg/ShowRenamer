@@ -14,4 +14,5 @@ Renames movies and tv shows to the format the user has specified
 - [ ] Suggests name to rename to on right of list
   - [ ] Rename format can be cusomized by user
   - [ ] Suggestion can be overwritten
-- [ ] Add command line support
+- [ ] Add support to allow being used from command line 
+- [ ] Add support to automatically download subtitles for the Shows
