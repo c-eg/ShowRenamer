@@ -7,21 +7,29 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
 
 public class ShowInfoFromAPI
 {
     public static void main(String[] args) throws IOException
     {
         JSONObject showInformation = getShowInformation("the inbetweeners");
+        //JSONObject showInformation = getShowInformation("misfits");
         JSONObject tvShowInformation = null;
 
         if (showInformation.get("media_type").equals("tv"))
         {
-            tvShowInformation = getTVShowInformation((int) showInformation.get("id"), 1, 1);
+            tvShowInformation = getTVShowInformation((int) showInformation.get("id"), 5, 1);
         }
 
         System.out.println(showInformation);
         System.out.println(tvShowInformation);
+
+        //System.out.println("\n\n\n" + generateFilmFileName(showInformation));
+        //System.out.println("\n\n\n" + generateTVFilename(tvShowInformation));
     }
 
     public static JSONObject getShowInformation(String show) throws IOException
@@ -110,5 +118,38 @@ public class ShowInfoFromAPI
         }
 
         return output;
+    }
+
+    public static String generateTVFilename(JSONObject tvShowInformation) {
+        String result = "";
+
+        String showName = tvShowInformation.get("name").toString();
+
+        String season = tvShowInformation.get("season_number").toString();
+        int seasonNumber = Integer.parseInt(season);
+
+        String episode = tvShowInformation.get("episode_number").toString();
+        int episodeNumber = Integer.parseInt(episode);
+
+        String episodeName = tvShowInformation.get("name").toString();
+
+        result = String.format("%s - S%02dE%02d - %s%n", showName, seasonNumber, episodeNumber, episodeName);
+
+        return result;
+    }
+
+    public static String generateFilmFileName(JSONObject filmInformation) {
+        String result = "";
+
+        String filmName = filmInformation.get("title").toString();
+
+        String dateString = filmInformation.get("release_date").toString();
+
+        LocalDate dateReleased = LocalDate.parse(dateString);
+        int yearReleased = dateReleased.getYear();
+
+        result = String.format("%s (%d)", filmName, yearReleased);
+
+        return result;
     }
 }
