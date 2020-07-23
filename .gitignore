@@ -42,8 +42,8 @@ code/.idea/**/libraries
 # code/.idea/modules.xml
 # code/.idea/*.iml
 # code/.idea/modules
-# *.iml
-# *.ipr
+# code/*.iml
+# code/*.ipr
 
 # CMake
 cmake-build-*/
