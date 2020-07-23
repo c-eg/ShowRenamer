@@ -19,16 +19,16 @@ public class Movie
     @Override
     public String toString()
     {
-        try
-        {
-            ShowInfoFromAPI api = new ShowInfoFromAPI();
-            ArrayList<String> info = api.getMovieInformation(title);
-            return info.get(0) + " (" + info.get(1).substring(0, 4) + ")";
-        }
-        catch (MovieDbException e)
-        {
-            e.printStackTrace();
-        }
+//        try
+//        {
+//            ShowInfoFromAPI api = new ShowInfoFromAPI();
+//            ArrayList<String> info = api.getMovieInformation(title);
+//            return info.get(0) + " (" + info.get(1).substring(0, 4) + ")";
+//        }
+//        catch (MovieDbException e)
+//        {
+//            e.printStackTrace();
+//        }
         return (title + " " + "(" + year + ")");
     }
 }
