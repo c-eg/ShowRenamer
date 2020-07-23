@@ -1,0 +1,264 @@
+#datePicker, #comboBoxSQ1, #comboBoxSQ2, #comboBoxLifestyle, #datePickerTargetWeightDate {
+    -fx-width: max;
+}
+
+@font-face {
+    font-family: 'Moon 2.0';
+    src: url('Moon2.0-Regular.otf');
+}
+
+.text {
+    /*-fx-font-family: "Moon 2.0";
+    -fx-font-size: 105%;
+    */
+    -fx-font-smoothing-type: gray;
+}
+
+.root {
+    /*-fx-font-family: "Moon 2.0";*/
+    -fx-font-size: 16.0;
+    -fx-background-color: #ffffff;
+}
+
+.text-field {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e8e8e8;
+}
+
+.text-field:focused {
+    -fx-border-color: #387eff;
+}
+
+.button {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #387eff;
+    -fx-text-fill: #387eff;
+    -fx-font-weight: bold;
+}
+
+.button:hover {
+    -fx-background-color: #387eff;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.button:pressed {
+    -fx-background-color: #0d62ff;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+}
+
+.buttonMenu {
+    -fx-background-color: #387eff;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: normal;
+}
+
+.buttonMenu > .text {
+    -fx-font-size: 24.0;
+}
+
+.buttonMenu:hover {
+    -fx-background-color: #0d62ff;
+    -fx-font-weight: normal;
+}
+
+.buttonMenu:pressed {
+    -fx-background-color: #0044ff;
+}
+
+.buttonMenuSelected {
+    -fx-background-color: #0d62ff;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: normal;
+}
+
+.buttonMenuSelected > .text {
+    -fx-font-size: 24.0;
+}
+
+.buttonMenuSelected:hover {
+    -fx-background-color: #0d62ff;
+    -fx-font-weight: normal;
+}
+
+.hyperlink {
+    -fx-text-fill: #0d62ff;
+}
+
+.hyperlink:pressed {
+    -fx-text-fill: #387eff;
+}
+
+.date-picker {
+    -fx-background-color: #ffffff;
+}
+
+.date-picker:focused > .text-field {
+    -fx-border-color: #387eff;
+}
+
+.combo-box-base {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e8e8e8;
+}
+
+.combo-box-base:focused {
+    -fx-border-color: #387eff;
+}
+
+.tab {
+    -fx-background-insets: 0 1 0 1, 0, 0;
+}
+
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: #b9b9b9;
+}
+
+.tab-pane .tab {
+    -fx-background-color: #387eff;
+}
+
+.tab-pane .tab:selected {
+    -fx-background-color: #0d62ff;
+}
+
+.tab-pane {
+    -fx-tab-min-width: 90px;
+}
+
+.tab .tab-label {
+    -fx-text-fill: #ffffff;
+    -fx-alignment: CENTER;
+    -fx-font-size: 18px;
+}
+
+.tab:selected .tab-label {
+    -fx-font-weight: bold;
+}
+
+.table-view .column-header {
+    -fx-background-color: #0d62ff;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #ffffff;
+    -fx-alignment: CENTER;
+    -fx-font-size: 16px;
+}
+
+.table-column {
+    -fx-alignment: CENTER;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #387eff;
+}
+
+.table-view .filler {
+    -fx-background-color: #0d62ff;
+}
+
+.chart-title {
+    -fx-text-fill: #000000;
+    -fx-alignment: CENTER;
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+}
+
+.axis-label {
+    -fx-text-fill: #000000;
+    -fx-alignment: CENTER;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+}
+
+.chart-series-line {
+	-fx-stroke: #387eff;
+	-fx-stroke-width: 2px;
+	-fx-effect: null;
+}
+
+.chart-line-symbol {
+	-fx-background-color: #387eff,white;
+	-fx-effect: null;
+}
+
+.radio-button .radio {
+    -fx-background-insets: 0;
+    -fx-border-width: 1px;
+    -fx-border-color: #000;
+    -fx-background-color: white;
+    -fx-background-image: null;
+    -fx-border-radius: 15px;
+    -fx-padding: 4px;
+}
+
+.radio-button .dot {
+    -fx-background-radius: 15px;
+    -fx-padding: 8px;
+}
+
+.combo-box-popup .list-cell {
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}
+
+.combo-box-popup .list-cell:selected, .combo-box-popup .list-cell:hover {
+    -fx-background-color: #387eff;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.date-picker .arrow-button .arrow {
+    -fx-background-color: #387eff;
+}
+
+.date-picker .button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.date-picker .button:hover, .date-picker .button .arrow:pressed {
+    -fx-background-color: white;
+}
+
+.date-picker .button .arrow {
+    -fx-background-color: white;
+}
+
+.date-picker .cell:hover, .date-picker .cell:focused {
+    -fx-background-color: #387eff;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-pref-width: 20px;
+    -fx-pref-height: 25px;
+}
+
+.date-picker-popup .month-year-pane {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.text-input, .text-input:focused {
+	-fx-prompt-text-fill: derive(-fx-control-inner-background, -50%);
+}
+
+.progress-bar .bar {
+	-fx-background-color: -fx-accent;
+	-fx-background-radius: 2;
+	-fx-background-insets: 0, 1, 2;
+	-fx-padding: 0.416667em;
+}
+
+.progress-bar .track {
+	-fx-background-color: #ffffff;
+	-fx-border-color: #e8e8e8;
+}
+
+.groupIcon {
+	-fx-border-color: gray;
+    -fx-border-style: solid;
+    -fx-border-width: 2;
+}

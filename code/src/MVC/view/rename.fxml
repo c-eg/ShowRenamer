@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="anchor" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #e8e8e8;" stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MVC.controller.RenameController">
+   <children>
+      <HBox prefHeight="720.0" prefWidth="1280.0">
+         <children>
+            <VBox alignment="TOP_CENTER" prefHeight="720.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="buttonRename" alignment="BASELINE_LEFT" graphicTextGap="20.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefWidth="200.0" styleClass="buttonMenuSelected" text="Rename">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="15.0" left="20.0" top="15.0" />
+                     </padding>
+                  </Button>
+                  <Button fx:id="buttonSearch" alignment="BASELINE_LEFT" graphicTextGap="20.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefWidth="200.0" styleClass="buttonMenu" text="Search">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="15.0" left="20.0" top="15.0" />
+                     </padding>
+                  </Button>
+                  <Button fx:id="buttonSettings1" alignment="BASELINE_LEFT" graphicTextGap="20.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefWidth="200.0" styleClass="buttonMenu" text="Settings">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="15.0" left="20.0" top="15.0" />
+                     </padding>
+                  </Button>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </VBox>
+            <VBox prefHeight="720.0" prefWidth="1080.0" spacing="20.0">
+               <children>
+                  <HBox prefWidth="1040.0" spacing="10.0">
+                     <children>
+                        <Label text="Directory:">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <TextField prefHeight="30.0" prefWidth="250.0" />
+                        <Button fx:id="buttonOpenFileDialog" mnemonicParsing="false" prefHeight="30.0" text="Open File Dialog" />
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="450.0" prefWidth="1040.0" spacing="20.0">
+                     <children>
+                        <VBox prefHeight="200.0" prefWidth="450.0" spacing="10.0">
+                           <children>
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Label text="Rename From">
+                                       <font>
+                                          <Font size="20.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <ListView prefHeight="680.0" prefWidth="400.0" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="450.0" spacing="10.0">
+                           <children>
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Label text="Rename To">
+                                       <font>
+                                          <Font size="20.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <ListView prefHeight="680.0" prefWidth="400.0" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <Button fx:id="buttonRenameSelected" mnemonicParsing="false" text="Rename Selected" />
+                  <Button fx:id="buttonRenameAll" mnemonicParsing="false" text="Rename ALL" />
+               </children>
+               <HBox.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </HBox.margin>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
