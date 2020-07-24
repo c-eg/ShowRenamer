@@ -16,7 +16,7 @@
          <children>
             <VBox alignment="TOP_CENTER" prefHeight="720.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="buttonRename" alignment="BASELINE_LEFT" graphicTextGap="20.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefWidth="200.0" styleClass="buttonMenuSelected" text="Rename">
+                  <Button fx:id="buttonMenuRename" alignment="BASELINE_LEFT" graphicTextGap="20.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefWidth="200.0" styleClass="buttonMenuSelected" text="Rename">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -24,7 +24,7 @@
                         <Insets bottom="15.0" left="20.0" top="15.0" />
                      </padding>
                   </Button>
-                  <Button fx:id="buttonSearch" alignment="BASELINE_LEFT" graphicTextGap="20.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefWidth="200.0" styleClass="buttonMenu" text="Search">
+                  <Button fx:id="buttonMenuSearch" alignment="BASELINE_LEFT" graphicTextGap="20.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefWidth="200.0" styleClass="buttonMenu" text="Search">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -32,7 +32,7 @@
                         <Insets bottom="15.0" left="20.0" top="15.0" />
                      </padding>
                   </Button>
-                  <Button fx:id="buttonSettings1" alignment="BASELINE_LEFT" graphicTextGap="20.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefWidth="200.0" styleClass="buttonMenu" text="Settings">
+                  <Button fx:id="buttonMenuSettings" alignment="BASELINE_LEFT" graphicTextGap="20.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefWidth="200.0" styleClass="buttonMenu" text="Settings">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -47,15 +47,15 @@
             </VBox>
             <VBox prefHeight="720.0" prefWidth="1080.0" spacing="20.0">
                <children>
-                  <HBox prefWidth="1040.0" spacing="10.0">
+                  <HBox alignment="CENTER_LEFT" prefWidth="1040.0" spacing="10.0">
                      <children>
                         <Label text="Directory:">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <TextField prefHeight="30.0" prefWidth="250.0" />
-                        <Button fx:id="buttonOpenFileDialog" mnemonicParsing="false" prefHeight="30.0" text="Open File Dialog" />
+                        <TextField fx:id="textFieldDirectory" prefHeight="30.0" prefWidth="400.0" />
+                        <Button fx:id="buttonOpenFileDialog" mnemonicParsing="false" onAction="#openFileDialog" prefHeight="30.0" text="Open File Dialog" />
                      </children>
                   </HBox>
                   <HBox prefHeight="450.0" prefWidth="1040.0" spacing="20.0">
@@ -71,7 +71,7 @@
                                     </Label>
                                  </children>
                               </HBox>
-                              <ListView prefHeight="680.0" prefWidth="400.0" />
+                              <ListView fx:id="listViewRenameFrom" prefHeight="680.0" prefWidth="400.0" />
                            </children>
                         </VBox>
                         <VBox prefHeight="200.0" prefWidth="450.0" spacing="10.0">
@@ -85,7 +85,7 @@
                                     </Label>
                                  </children>
                               </HBox>
-                              <ListView prefHeight="680.0" prefWidth="400.0" />
+                              <ListView fx:id="listViewRenameTo" prefHeight="680.0" prefWidth="400.0" />
                            </children>
                         </VBox>
                      </children>
