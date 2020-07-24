@@ -43,7 +43,8 @@ public class ShowRenamer
 
     /**
      * Formats a TV Show file to format: TITLE SXXEXXX
-     * @param name File name
+     *
+     * @param name      File name
      * @param delimiter delimiter to split name by
      * @return Name in format: TITLE SXXEXXX
      */
