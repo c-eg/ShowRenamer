@@ -1,6 +1,5 @@
 package MVC.controller;
 
-import MVC.ShowInfoFromAPI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -8,7 +7,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import org.json.JSONObject;
 
 import javax.swing.*;
 import java.io.File;
@@ -81,24 +79,12 @@ public class RenameController implements Initializable
                 }
             }
         }
-
-        for (String s : listRenameFrom)
-        {
-            listRenameTo.add(getSuggestedNames(s));
-        }
-    }
-
-    private String getSuggestedNames(String name) throws IOException
-    {
-        return ShowInfoFromAPI.generateMovieFileName(ShowInfoFromAPI.getShowInformation(name));
-    }
-
-    private String getSuggestedNames(String name, int seasonNumber, int episodeNumber) throws IOException
-    {
-        JSONObject showInformation = ShowInfoFromAPI.getShowInformation(name);
-        JSONObject tvShowInformation = ShowInfoFromAPI.getTVShowInformation((int) showInformation.get("id"), seasonNumber, episodeNumber);
-
-        return ShowInfoFromAPI.generateTVFilename(tvShowInformation);
+        // TODO:
+        //  - fix this
+//        for (String s : listRenameFrom)
+//        {
+//            listRenameTo.add(ShowInfoFromAPI.getShows(s).get(0));
+//        }
     }
 
     @Override
