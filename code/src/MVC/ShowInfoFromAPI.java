@@ -59,7 +59,7 @@ public class ShowInfoFromAPI
     }
 
     /**
-     * Function to get a list of Shows from the name passed
+     * Function to get a list of Shows from the name passed in
      *
      * @param name title/name of the show being searched
      * @return An ArrayList of Shows that match the searched name
