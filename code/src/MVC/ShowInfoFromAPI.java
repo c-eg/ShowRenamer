@@ -5,8 +5,11 @@ import MVC.model.Show;
 import MVC.model.TVShow;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -15,24 +18,43 @@ import java.util.ArrayList;
 
 public class ShowInfoFromAPI
 {
+    private static String getAPI_KEY()
+    {
+        try
+        {
+            JSONParser p = new JSONParser();
+
+            org.json.simple.JSONObject a = (org.json.simple.JSONObject) p.parse(new FileReader("src/MVC/utils/api_key.json"));
+            return a.get("api_key").toString();
+        }
+        catch (Exception e)
+        {
+            System.out.println("API KEY file not found, please contact c-eg\n");
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     /**
      * Testing
      */
-    public static void main(String[] args) throws IOException
+    public static void main(String[] args) throws IOException, ParseException
     {
         //ArrayList<Show> testShows = getShows("the umbrella academy");
         ArrayList<Show> testShows = getShows("hello");
 
-        if (testShows.get(0) instanceof TVShow)
+        Show s = testShows.get(0);
+
+        if (s instanceof TVShow)
         {
-            for (int i = 0; i < ((TVShow) testShows.get(0)).getAllEpisodeNames().size(); i++)
+            for (int i = 0; i < ((TVShow) s).getAllEpisodeNames().size(); i++)
             {
-                System.out.println(((TVShow) testShows.get(0)).getAllEpisodeNames().get(i));
+                System.out.println(((TVShow) s).getAllEpisodeNames().get(i));
             }
         }
         else
         {
-            System.out.println(testShows.get(0));
+            System.out.println(s);
         }
     }
 
@@ -51,7 +73,7 @@ public class ShowInfoFromAPI
         name = name.replaceAll("[ ]", "%20");
 
         // set up api request
-        final String API_KEY = "4858e6f6fc8c1fee583788ee12130340";
+        final String API_KEY = getAPI_KEY();
         URL url = new URL("https://api.themoviedb.org/3/search/multi?api_key=" + API_KEY + "&language=en-US&query=" + name + "&page=1&include_adult=true");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
@@ -122,7 +144,7 @@ public class ShowInfoFromAPI
         ArrayList<ArrayList<String>> episodeNames = new ArrayList<>();
 
         // set up api request
-        final String API_KEY = "4858e6f6fc8c1fee583788ee12130340";
+        final String API_KEY = getAPI_KEY();
         URL url = new URL("https://api.themoviedb.org/3/tv/" + id + "?api_key=" + API_KEY + "&language=en-US");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
@@ -174,7 +196,7 @@ public class ShowInfoFromAPI
         ArrayList<String> episodeNames = new ArrayList<>();
 
         // set up api request
-        final String API_KEY = "4858e6f6fc8c1fee583788ee12130340";
+        final String API_KEY = getAPI_KEY();
         URL url = new URL("https://api.themoviedb.org/3/tv/" + id + "/season/" + season + "?api_key=" + API_KEY);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");

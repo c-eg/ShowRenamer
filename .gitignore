@@ -7,7 +7,7 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # API Key
-code/src/config.yml
+code/src/MVC/utils/api_key.json
 
 # User-specific stuff
 code/.idea/**/workspace.xml
