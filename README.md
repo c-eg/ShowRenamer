@@ -16,3 +16,6 @@ Renames movies and tv shows to the format the user has specified
   - [ ] Suggestion can be overwritten
 - [ ] Add support to allow being used from command line 
 - [ ] Add support to automatically download subtitles for the Shows
+
+## License
+GNU General Public License v3.0
