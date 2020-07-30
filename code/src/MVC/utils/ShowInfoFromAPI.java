@@ -51,7 +51,7 @@ public class ShowInfoFromAPI
         {
             JSONParser p = new JSONParser();
 
-            org.json.simple.JSONObject a = (org.json.simple.JSONObject) p.parse(new FileReader("src/MVC/config/api_key.json"));
+            org.json.simple.JSONObject a = (org.json.simple.JSONObject) p.parse(new FileReader("src/MVC/utils/api_key.json"));
             return a.get("api_key").toString();
         }
         catch (Exception e)
@@ -63,7 +63,7 @@ public class ShowInfoFromAPI
     }
 
     /**
-     * Function to get a list of Shows from the name passed
+     * Function to get a list of Shows from the name passed in
      *
      * @param name title/name of the show being searched
      * @return An ArrayList of Shows that match the searched name
