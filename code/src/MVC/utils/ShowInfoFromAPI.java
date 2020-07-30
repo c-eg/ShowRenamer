@@ -1,4 +1,4 @@
-package MVC;
+package MVC.utils;
 
 import MVC.model.Movie;
 import MVC.model.Show;
@@ -6,7 +6,6 @@ import MVC.model.TVShow;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -18,13 +17,41 @@ import java.util.ArrayList;
 
 public class ShowInfoFromAPI
 {
+    /**
+     * Testing
+     */
+//    public static void main(String[] args) throws IOException, ParseException
+//    {
+//        //ArrayList<Show> testShows = getShows("the umbrella academy");
+//        ArrayList<Show> testShows = getShows("hello");
+//
+//        Show s = testShows.get(0);
+//
+//        if (s instanceof TVShow)
+//        {
+//            for (int i = 0; i < ((TVShow) s).getAllEpisodeNames().size(); i++)
+//            {
+//                System.out.println(((TVShow) s).getAllEpisodeNames().get(i));
+//            }
+//        }
+//        else
+//        {
+//            System.out.println(s);
+//        }
+//    }
+
+    /**
+     * Function to get the API key from the api_key.json file
+     *
+     * @return String of API key
+     */
     private static String getAPI_KEY()
     {
         try
         {
             JSONParser p = new JSONParser();
 
-            org.json.simple.JSONObject a = (org.json.simple.JSONObject) p.parse(new FileReader("src/MVC/utils/api_key.json"));
+            org.json.simple.JSONObject a = (org.json.simple.JSONObject) p.parse(new FileReader("src/MVC/config/api_key.json"));
             return a.get("api_key").toString();
         }
         catch (Exception e)
@@ -32,29 +59,6 @@ public class ShowInfoFromAPI
             System.out.println("API KEY file not found, please contact c-eg\n");
             e.printStackTrace();
             return null;
-        }
-    }
-
-    /**
-     * Testing
-     */
-    public static void main(String[] args) throws IOException, ParseException
-    {
-        //ArrayList<Show> testShows = getShows("the umbrella academy");
-        ArrayList<Show> testShows = getShows("hello");
-
-        Show s = testShows.get(0);
-
-        if (s instanceof TVShow)
-        {
-            for (int i = 0; i < ((TVShow) s).getAllEpisodeNames().size(); i++)
-            {
-                System.out.println(((TVShow) s).getAllEpisodeNames().get(i));
-            }
-        }
-        else
-        {
-            System.out.println(s);
         }
     }
 

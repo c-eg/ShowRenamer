@@ -79,12 +79,17 @@ public class RenameController implements Initializable
                 }
             }
         }
-        // TODO:
-        //  - fix this
-//        for (String s : listRenameFrom)
-//        {
-//            listRenameTo.add(ShowInfoFromAPI.getShows(s).get(0));
-//        }
+    }
+
+    @FXML
+    public void renameAll() throws IOException
+    {
+        for (String s : listRenameFrom)
+        {
+            // TODO:
+            //  - fix this
+            //listRenameTo.add(ShowInfoFromAPI.getShows(s).get(0));
+        }
     }
 
     @Override

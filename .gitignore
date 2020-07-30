@@ -7,7 +7,7 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # API Key
-code/src/MVC/utils/api_key.json
+code/src/MVC/config/api_key.json
 
 # User-specific stuff
 code/.idea/**/workspace.xml
@@ -15,6 +15,8 @@ code/.idea/**/tasks.xml
 code/.idea/**/usage.statistics.xml
 code/.idea/**/dictionaries
 code/.idea/**/shelf
+
+code/lib
 
 # Generated files
 code/.idea/**/contentModel.xml
