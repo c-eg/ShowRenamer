@@ -13,6 +13,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RenameController implements Initializable
 {
@@ -78,18 +80,81 @@ public class RenameController implements Initializable
                     }
                 }
             }
+
+            for (String s : listRenameFrom)
+            {
+                // TODO:
+                //  - fix this
+                //listRenameTo.add(ShowInfoFromAPI.getShows(s).get(0));
+
+
+                // get title of tv show or movie from original file name
+                System.out.println("original file: " + s);
+
+                String title = getTitleFromFile(s);
+                System.out.println("new file: " + title + "\n");
+
+                // get the first show matching title
+
+                // if tv show
+
+                // get the season and episode number from the original file
+
+                // get the episode name for that season and episode
+
+                // if movie
+
+                // get the info
+
+                // rename
+            }
         }
+    }
+
+    private String getTitleFromFile(String fileName)
+    {
+        Pattern pattern = Pattern.compile("^(.+).(\\d{4}p)");           // CHANGE REGEX FOR BETTER TITLE MATCH
+        Matcher m = pattern.matcher(fileName);
+
+        if (m.find())
+        {
+            return m.group(1);
+        }
+        else
+        {
+            return null;
+        }
+
+
+//        String[] data = fileName.split("\\.");
+//
+//        if (data.length == 0)
+//        {
+//            data = fileName.split("\\s+");  // space character
+//        }
+//        else if (data.length == 0)
+//        {
+//            data = fileName.split("_");
+//        }
+//
+//        StringBuilder title = new StringBuilder();
+//
+//        int i = 0;
+//        // while the split file string doesn't contain 4 numbers in a row
+//        while (data.length > i && !data[i].matches("^(.+).(\\d{4}p)"))
+//        {
+//            title.append(data[i]).append(" ");
+//            i++;
+//        }
+//
+//        return title.toString().trim();
     }
 
     @FXML
     public void renameAll() throws IOException
     {
-        for (String s : listRenameFrom)
-        {
-            // TODO:
-            //  - fix this
-            //listRenameTo.add(ShowInfoFromAPI.getShows(s).get(0));
-        }
+        // TODO:
+        //  - Add functionality to rename files
     }
 
     @Override
