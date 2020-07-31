@@ -32,14 +32,31 @@ public class RenameController implements Initializable
     @FXML private TextField textFieldDirectory;
 
     // listViews
-    @FXML private ListView listViewRenameFrom;
-    @FXML private ListView listViewRenameTo;
+    @FXML
+    private ListView listViewRenameFrom;
+    @FXML
+    private ListView listViewRenameTo;
 
     // listView lists
     private ObservableList<String> listRenameFrom = FXCollections.observableArrayList();
     private ObservableList<String> listRenameFromFullPath = FXCollections.observableArrayList();
     private ObservableList<String> listRenameTo = FXCollections.observableArrayList();
     private ObservableList<String> listRenameToFullPath = FXCollections.observableArrayList();
+
+    private static String getTitleFromFile(String fileName)
+    {
+        Pattern pattern = Pattern.compile("^(.*?)\\W(?:(\\d{4})(?:\\W(\\d+p)?)|(\\d+p)(?:\\W(\\d{4}))?)\\b");
+        Matcher m = pattern.matcher(fileName);
+
+        if (m.find())
+        {
+            return m.group(1);
+        }
+        else
+        {
+            return null;
+        }
+    }
 
     @FXML
     private void openFileDialog() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, IOException
@@ -89,10 +106,10 @@ public class RenameController implements Initializable
 
 
                 // get title of tv show or movie from original file name
-                System.out.println("original file: " + s);
+                System.out.println("original file: \t" + s);
 
                 String title = getTitleFromFile(s);
-                System.out.println("new file: " + title + "\n");
+                System.out.println("new file: \t\t" + title + "\n");
 
                 // get the first show matching title
 
@@ -109,45 +126,6 @@ public class RenameController implements Initializable
                 // rename
             }
         }
-    }
-
-    private String getTitleFromFile(String fileName)
-    {
-        Pattern pattern = Pattern.compile("^(.+).(\\d{4}p)");           // CHANGE REGEX FOR BETTER TITLE MATCH
-        Matcher m = pattern.matcher(fileName);
-
-        if (m.find())
-        {
-            return m.group(1);
-        }
-        else
-        {
-            return null;
-        }
-
-
-//        String[] data = fileName.split("\\.");
-//
-//        if (data.length == 0)
-//        {
-//            data = fileName.split("\\s+");  // space character
-//        }
-//        else if (data.length == 0)
-//        {
-//            data = fileName.split("_");
-//        }
-//
-//        StringBuilder title = new StringBuilder();
-//
-//        int i = 0;
-//        // while the split file string doesn't contain 4 numbers in a row
-//        while (data.length > i && !data[i].matches("^(.+).(\\d{4}p)"))
-//        {
-//            title.append(data[i]).append(" ");
-//            i++;
-//        }
-//
-//        return title.toString().trim();
     }
 
     @FXML
