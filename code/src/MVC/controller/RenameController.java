@@ -1,5 +1,6 @@
 package MVC.controller;
 
+import MVC.utils.ShowInfoFromAPI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -7,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import uk.co.conoregan.ShowInfo;
 
 import javax.swing.*;
 import java.io.File;
@@ -50,7 +52,7 @@ public class RenameController implements Initializable
 
         if (m.find())
         {
-            return m.group(1);
+            return m.group(1).replaceAll("\\.", " ").replaceAll("-", " ");
         }
         else
         {
@@ -98,18 +100,13 @@ public class RenameController implements Initializable
                 }
             }
 
+            ShowInfo showInfo;
+
             for (String s : listRenameFrom)
             {
-                // TODO:
-                //  - fix this
-                //listRenameTo.add(ShowInfoFromAPI.getShows(s).get(0));
-
-
                 // get title of tv show or movie from original file name
-                System.out.println("original file: \t" + s);
-
-                String title = getTitleFromFile(s);
-                System.out.println("new file: \t\t" + title + "\n");
+                showInfo = new ShowInfo(s);
+                listRenameTo.add(ShowInfoFromAPI.getShows(showInfo.getTitle()).get(0).toString());
 
                 // get the first show matching title
 

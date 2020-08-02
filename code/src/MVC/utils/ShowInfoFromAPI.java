@@ -20,25 +20,25 @@ public class ShowInfoFromAPI
     /**
      * Testing
      */
-//    public static void main(String[] args) throws IOException, ParseException
-//    {
-//        //ArrayList<Show> testShows = getShows("the umbrella academy");
-//        ArrayList<Show> testShows = getShows("hello");
-//
-//        Show s = testShows.get(0);
-//
-//        if (s instanceof TVShow)
-//        {
-//            for (int i = 0; i < ((TVShow) s).getAllEpisodeNames().size(); i++)
-//            {
-//                System.out.println(((TVShow) s).getAllEpisodeNames().get(i));
-//            }
-//        }
-//        else
-//        {
-//            System.out.println(s);
-//        }
-//    }
+    public static void main(String[] args) throws IOException
+    {
+        //ArrayList<Show> testShows = getShows("the umbrella academy");
+        ArrayList<Show> testShows = getShows("Ant-Man");
+
+        Show s = testShows.get(0);
+
+        if (s instanceof TVShow)
+        {
+            for (int i = 0; i < ((TVShow) s).getAllEpisodeNames().size(); i++)
+            {
+                System.out.println(((TVShow) s).getAllEpisodeNames().get(i));
+            }
+        }
+        else
+        {
+            System.out.println(s);
+        }
+    }
 
     /**
      * Function to get the API key from the api_key.json file
@@ -51,7 +51,7 @@ public class ShowInfoFromAPI
         {
             JSONParser p = new JSONParser();
 
-            org.json.simple.JSONObject a = (org.json.simple.JSONObject) p.parse(new FileReader("src/MVC/utils/api_key.json"));
+            org.json.simple.JSONObject a = (org.json.simple.JSONObject) p.parse(new FileReader("src/MVC/config/api_key.json"));
             return a.get("api_key").toString();
         }
         catch (Exception e)
@@ -104,7 +104,7 @@ public class ShowInfoFromAPI
             JSONObject temp;
 
             // looping through each show returned
-            for (int i = 0; i < jArray.length(); i++)
+            for (int i = 0; i < jArray.length() && i < 2; i++)
             {
                 temp = (JSONObject) jArray.get(i);
 
