@@ -15,8 +15,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class RenameController implements Initializable
 {
@@ -44,21 +42,6 @@ public class RenameController implements Initializable
     private ObservableList<String> listRenameFromFullPath = FXCollections.observableArrayList();
     private ObservableList<String> listRenameTo = FXCollections.observableArrayList();
     private ObservableList<String> listRenameToFullPath = FXCollections.observableArrayList();
-
-    private static String getTitleFromFile(String fileName)
-    {
-        Pattern pattern = Pattern.compile("^(.*?)\\W(?:(\\d{4})(?:\\W(\\d+p)?)|(\\d+p)(?:\\W(\\d{4}))?)\\b");
-        Matcher m = pattern.matcher(fileName);
-
-        if (m.find())
-        {
-            return m.group(1).replaceAll("\\.", " ").replaceAll("-", " ");
-        }
-        else
-        {
-            return null;
-        }
-    }
 
     @FXML
     private void openFileDialog() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, IOException
