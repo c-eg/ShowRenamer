@@ -1,5 +1,8 @@
 package MVC.controller;
 
+import MVC.model.Movie;
+import MVC.model.Show;
+import MVC.model.TVShow;
 import MVC.utils.ShowInfoFromAPI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,34 +17,39 @@ import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class RenameController implements Initializable
 {
+    // listView lists
+    private final ObservableList<String> listRenameFrom = FXCollections.observableArrayList();
+    private final ObservableList<String> listRenameFromFullPath = FXCollections.observableArrayList();
+    private final ObservableList<String> listRenameTo = FXCollections.observableArrayList();
+    private final ObservableList<String> listRenameToFullPath = FXCollections.observableArrayList();
     // Menu buttons
-    @FXML private Button buttonMenuRename;
-    @FXML private Button buttonMenuSearch;
-    @FXML private Button buttonMenuSettings;
-
-    // buttons
-    @FXML private Button buttonOpenFileDialog;
-    @FXML private Button buttonRenameSelected;
-    @FXML private Button buttonRenameAll;
-
-    // textFields
-    @FXML private TextField textFieldDirectory;
+    @FXML
+    private Button buttonMenuRename;
+    @FXML
+    private Button buttonMenuSearch;
+    @FXML
+    private Button buttonMenuSettings;
 
     // listViews
     @FXML
     private ListView listViewRenameFrom;
     @FXML
     private ListView listViewRenameTo;
-
-    // listView lists
-    private ObservableList<String> listRenameFrom = FXCollections.observableArrayList();
-    private ObservableList<String> listRenameFromFullPath = FXCollections.observableArrayList();
-    private ObservableList<String> listRenameTo = FXCollections.observableArrayList();
-    private ObservableList<String> listRenameToFullPath = FXCollections.observableArrayList();
+    // buttons
+    @FXML
+    private Button buttonOpenFileDialog;
+    @FXML
+    private Button buttonRenameSelected;
+    @FXML
+    private Button buttonRenameAll;
+    // textFields
+    @FXML
+    private TextField textFieldDirectory;
 
     @FXML
     private void openFileDialog() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, IOException
@@ -81,29 +89,49 @@ public class RenameController implements Initializable
                         //  - Make recursive to check for sub folders and add items in those aswell if checkbox is ticked
                     }
                 }
-            }
 
-            ShowInfo showInfo;
+                ShowInfo showInfo;
+                ArrayList<Show> shows;
 
-            for (String s : listRenameFrom)
-            {
-                // get title of tv show or movie from original file name
-                showInfo = new ShowInfo(s);
-                listRenameTo.add(ShowInfoFromAPI.getShows(showInfo.getTitle()).get(0).toString());
+                for (String s : listRenameFrom)
+                {
+                    // get title of tv show or movie from original file name
+                    showInfo = new ShowInfo(s);
 
-                // get the first show matching title
+                    // get the first show matching title
+                    shows = ShowInfoFromAPI.getShows(showInfo.getTitle());
 
-                // if tv show
+                    int season;
+                    int episode;
+                    String episodeName;
+                    Show lookedUpShow;
 
-                // get the season and episode number from the original file
+                    if (shows.size() > 0)
+                    {
+                        lookedUpShow = shows.get(0);
 
-                // get the episode name for that season and episode
+                        if (lookedUpShow instanceof TVShow)
+                        {
+                            // get the season and episode number from the original file
+                            season = Integer.parseInt(showInfo.getSeason());
+                            episode = Integer.parseInt(showInfo.getEpisode());
 
-                // if movie
+                            // get the episode name for that season and episode
+                            episodeName = ((TVShow) lookedUpShow).getEpisodeName(season, episode);
 
-                // get the info
-
-                // rename
+                            listRenameTo.add(lookedUpShow.getTitle() + " - S" + showInfo.getSeason() + "E" + showInfo.getEpisode() + " - " + episodeName);
+                        }
+                        else if (lookedUpShow instanceof Movie)
+                        {
+                            // get the info
+                            listRenameTo.add(lookedUpShow.getTitle() + " (" + ((Movie) lookedUpShow).getReleaseDate().substring(0, 4) + ")");
+                        }
+                    }
+                    else
+                    {
+                        listRenameTo.add("<Unable to find match>");
+                    }
+                }
             }
         }
     }

@@ -224,7 +224,7 @@ public class ShowInfoFromAPI
             JSONObject result = new JSONObject(response.toString());
 
             JSONArray jArray = (JSONArray) result.get("episodes");
-            JSONObject temp = null;
+            JSONObject temp;
 
             // looping through each episode returned
             for (int i = 0; i < jArray.length(); i++)
