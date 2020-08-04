@@ -17,16 +17,26 @@ import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class RenameController implements Initializable
 {
+    // constants
+    private static final String ERROR_MESSAGE = "<Unable to find match>";
+
     // listView lists
     private final ObservableList<String> listRenameFrom = FXCollections.observableArrayList();
     private final ObservableList<String> listRenameFromFullPath = FXCollections.observableArrayList();
     private final ObservableList<String> listRenameTo = FXCollections.observableArrayList();
-    private final ObservableList<String> listRenameToFullPath = FXCollections.observableArrayList();
+    //private final ObservableList<String> listRenameToFullPath = FXCollections.observableArrayList();
+
+    // files
+    File[] files;
+
     // Menu buttons
     @FXML
     private Button buttonMenuRename;
@@ -40,6 +50,7 @@ public class RenameController implements Initializable
     private ListView listViewRenameFrom;
     @FXML
     private ListView listViewRenameTo;
+
     // buttons
     @FXML
     private Button buttonOpenFileDialog;
@@ -47,6 +58,7 @@ public class RenameController implements Initializable
     private Button buttonRenameSelected;
     @FXML
     private Button buttonRenameAll;
+
     // textFields
     @FXML
     private TextField textFieldDirectory;
@@ -71,7 +83,7 @@ public class RenameController implements Initializable
             File dir = chooser.getSelectedFile();
 
             // get list of files
-            File[] files = dir.listFiles();
+            files = dir.listFiles();
 
             // if the folder contains files
             if (files != null)
@@ -101,8 +113,7 @@ public class RenameController implements Initializable
                     // get the first show matching title
                     shows = ShowInfoFromAPI.getShows(showInfo.getTitle());
 
-                    int season;
-                    int episode;
+                    int season, episode;
                     String episodeName;
                     Show lookedUpShow;
 
@@ -119,17 +130,16 @@ public class RenameController implements Initializable
                             // get the episode name for that season and episode
                             episodeName = ((TVShow) lookedUpShow).getEpisodeName(season, episode);
 
-                            listRenameTo.add(lookedUpShow.getTitle() + " - S" + showInfo.getSeason() + "E" + showInfo.getEpisode() + " - " + episodeName);
+                            listRenameTo.add((lookedUpShow.getTitle() + " - S" + showInfo.getSeason() + "E" + showInfo.getEpisode() + " - " + episodeName).replaceAll(":", ""));
                         }
                         else if (lookedUpShow instanceof Movie)
                         {
-                            // get the info
-                            listRenameTo.add(lookedUpShow.getTitle() + " (" + ((Movie) lookedUpShow).getReleaseDate().substring(0, 4) + ")");
+                            listRenameTo.add((lookedUpShow.getTitle() + " (" + ((Movie) lookedUpShow).getReleaseDate().substring(0, 4) + ")").replaceAll(":", ""));
                         }
                     }
                     else
                     {
-                        listRenameTo.add("<Unable to find match>");
+                        listRenameTo.add(RenameController.ERROR_MESSAGE);
                     }
                 }
             }
@@ -139,8 +149,28 @@ public class RenameController implements Initializable
     @FXML
     public void renameAll() throws IOException
     {
-        // TODO:
-        //  - Add functionality to rename files
+        int j = 0;
+
+        for (int i = 0; i < files.length; i++)
+        {
+            if (files[i].isDirectory())
+            {
+                j += 1;
+            }
+            else if (!listRenameTo.get(i - j).equals(RenameController.ERROR_MESSAGE))
+            {
+                // get name of file
+                String name = files[i].getName();
+                int lastIndex = name.lastIndexOf('.');
+                String ext = name.substring(lastIndex);
+
+                // rename
+                String newName = files[i].getCanonicalPath().replace(listRenameFrom.get(i - j), listRenameTo.get(i - j));
+
+                Path p = Paths.get(files[i].getCanonicalPath());
+                Files.move(p, p.resolveSibling(newName));
+            }
+        }
     }
 
     @Override
