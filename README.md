@@ -11,7 +11,7 @@ Todo
 Todo
 
 ## Contributing
-Contributions are always welcome! Make sure to check out the [Contribution Guidelines](https://github.com/c-eg/ShowRenamer/blob/master/CODE_OF_CONDUCT.md) first.
+Contributions are always welcome! Make sure to check out the [Code of Conduct](https://github.com/c-eg/ShowRenamer/blob/master/CODE_OF_CONDUCT.md) and the [Contribution Guidelines](https://github.com/c-eg/ShowRenamer/blob/master/CONTRIBUTING.md) first.
 
 ## License
 GNU General Public License v3.0
