@@ -10,7 +10,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
 import uk.co.conoregan.ShowInfo;
 
 import javax.swing.*;
@@ -30,9 +29,7 @@ public class RenameController implements Initializable
 
     // listView lists
     private final ObservableList<String> listRenameFrom = FXCollections.observableArrayList();
-    private final ObservableList<String> listRenameFromFullPath = FXCollections.observableArrayList();
     private final ObservableList<String> listRenameTo = FXCollections.observableArrayList();
-    //private final ObservableList<String> listRenameToFullPath = FXCollections.observableArrayList();
 
     // files
     File[] files;
@@ -47,9 +44,9 @@ public class RenameController implements Initializable
 
     // listViews
     @FXML
-    private ListView listViewRenameFrom;
+    private ListView<String> listViewRenameFrom;
     @FXML
-    private ListView listViewRenameTo;
+    private ListView<String> listViewRenameTo;
 
     // buttons
     @FXML
@@ -58,10 +55,6 @@ public class RenameController implements Initializable
     private Button buttonRenameSelected;
     @FXML
     private Button buttonRenameAll;
-
-    // textFields
-    @FXML
-    private TextField textFieldDirectory;
 
     @FXML
     private void openFileDialog() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, IOException
@@ -72,14 +65,12 @@ public class RenameController implements Initializable
         // open the dialog
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle("Select a directory");
-        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);    // change to files too, but only allow video extensions
         int returnVal = chooser.showOpenDialog(null);
 
         // if the user selected a folder
         if (returnVal == JFileChooser.APPROVE_OPTION)
         {
-            textFieldDirectory.setText(chooser.getSelectedFile().toString());
-
             File dir = chooser.getSelectedFile();
 
             // get list of files
@@ -93,7 +84,6 @@ public class RenameController implements Initializable
                     if (item.isFile())
                     {
                         listRenameFrom.add(item.getName().substring(0, item.getName().lastIndexOf('.')));
-                        listRenameFromFullPath.add(item.toString());
                     }
                     else if (item.isDirectory()) // add and statement to check if checkbox is ticked
                     {
@@ -101,47 +91,53 @@ public class RenameController implements Initializable
                         //  - Make recursive to check for sub folders and add items in those aswell if checkbox is ticked
                     }
                 }
+            }
+        }
+    }
 
-                ShowInfo showInfo;
-                ArrayList<Show> shows;
+    @FXML
+    public void getSuggestedNames() throws IOException
+    {
+        listRenameTo.clear();
 
-                for (String s : listRenameFrom)
+        ShowInfo showInfo;
+        ArrayList<Show> shows;
+
+        for (String s : listRenameFrom)
+        {
+            // get title of tv show or movie from original file name
+            showInfo = new ShowInfo(s);
+
+            // get the first show matching title
+            shows = ShowInfoFromAPI.getShows(showInfo.getTitle());
+
+            int season, episode;
+            String episodeName;
+            Show lookedUpShow;
+
+            if (shows.size() > 0)
+            {
+                lookedUpShow = shows.get(0);
+
+                if (lookedUpShow instanceof TVShow)
                 {
-                    // get title of tv show or movie from original file name
-                    showInfo = new ShowInfo(s);
+                    // get the season and episode number from the original file
+                    season = Integer.parseInt(showInfo.getSeason());
+                    episode = Integer.parseInt(showInfo.getEpisode());
 
-                    // get the first show matching title
-                    shows = ShowInfoFromAPI.getShows(showInfo.getTitle());
+                    // get the episode name for that season and episode
+                    episodeName = ((TVShow) lookedUpShow).getEpisodeName(season, episode);
 
-                    int season, episode;
-                    String episodeName;
-                    Show lookedUpShow;
-
-                    if (shows.size() > 0)
-                    {
-                        lookedUpShow = shows.get(0);
-
-                        if (lookedUpShow instanceof TVShow)
-                        {
-                            // get the season and episode number from the original file
-                            season = Integer.parseInt(showInfo.getSeason());
-                            episode = Integer.parseInt(showInfo.getEpisode());
-
-                            // get the episode name for that season and episode
-                            episodeName = ((TVShow) lookedUpShow).getEpisodeName(season, episode);
-
-                            listRenameTo.add((lookedUpShow.getTitle() + " - S" + showInfo.getSeason() + "E" + showInfo.getEpisode() + " - " + episodeName).replaceAll(":", ""));
-                        }
-                        else if (lookedUpShow instanceof Movie)
-                        {
-                            listRenameTo.add((lookedUpShow.getTitle() + " (" + ((Movie) lookedUpShow).getReleaseDate().substring(0, 4) + ")").replaceAll(":", ""));
-                        }
-                    }
-                    else
-                    {
-                        listRenameTo.add(RenameController.ERROR_MESSAGE);
-                    }
+                    listRenameTo.add((lookedUpShow.getTitle() + " - S" + showInfo.getSeason() + "E" + showInfo.getEpisode() + " - " + episodeName).replaceAll(":", ""));
                 }
+                else if (lookedUpShow instanceof Movie)
+                {
+                    listRenameTo.add((lookedUpShow.getTitle() + " (" + ((Movie) lookedUpShow).getReleaseDate().substring(0, 4) + ")").replaceAll(":", ""));
+                }
+            }
+            else
+            {
+                listRenameTo.add(RenameController.ERROR_MESSAGE);
             }
         }
     }
@@ -149,26 +145,29 @@ public class RenameController implements Initializable
     @FXML
     public void renameAll() throws IOException
     {
-        int j = 0;
-
-        for (int i = 0; i < files.length; i++)
+        if (listRenameFrom.size() == listRenameTo.size() && listRenameFrom.size() > 0)
         {
-            if (files[i].isDirectory())
-            {
-                j += 1;
-            }
-            else if (!listRenameTo.get(i - j).equals(RenameController.ERROR_MESSAGE))
-            {
-                // get name of file
-                String name = files[i].getName();
-                int lastIndex = name.lastIndexOf('.');
-                String ext = name.substring(lastIndex);
+            int j = 0;
 
-                // rename
-                String newName = files[i].getCanonicalPath().replace(listRenameFrom.get(i - j), listRenameTo.get(i - j));
+            for (int i = 0; i < files.length; i++)
+            {
+                if (files[i].isDirectory())
+                {
+                    j += 1;
+                }
+                else if (!listRenameTo.get(i - j).equals(RenameController.ERROR_MESSAGE))
+                {
+                    // get name of file
+                    String name = files[i].getName();
+                    int lastIndex = name.lastIndexOf('.');
+                    String ext = name.substring(lastIndex);
 
-                Path p = Paths.get(files[i].getCanonicalPath());
-                Files.move(p, p.resolveSibling(newName));
+                    // rename
+                    String newName = files[i].getCanonicalPath().replace(listRenameFrom.get(i - j), listRenameTo.get(i - j));
+
+                    Path p = Paths.get(files[i].getCanonicalPath());
+                    Files.move(p, p.resolveSibling(newName));
+                }
             }
         }
     }

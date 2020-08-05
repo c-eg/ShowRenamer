@@ -41,51 +41,62 @@
             </VBox>
             <VBox prefHeight="720.0" prefWidth="1080.0" spacing="20.0">
                <children>
-                  <HBox alignment="CENTER_LEFT" prefWidth="1040.0" spacing="10.0">
-                     <children>
-                        <Label text="Directory:">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="textFieldDirectory" prefHeight="30.0" prefWidth="400.0" />
-                        <Button fx:id="buttonOpenFileDialog" mnemonicParsing="false" onAction="#openFileDialog" prefHeight="30.0" text="Open File Dialog" />
+                   <HBox prefHeight="680.0" prefWidth="1040.0" spacing="20.0">
+                       <children>
+                           <VBox prefWidth="520.0" spacing="10.0">
+                               <children>
+                                   <HBox alignment="CENTER" prefWidth="200.0">
+                                       <children>
+                                           <Label text="Rename From">
+                                               <font>
+                                                   <Font size="20.0"/>
+                                               </font>
+                                               <HBox.margin>
+                                                   <Insets/>
+                                               </HBox.margin>
+                                           </Label>
+                                       </children>
+                                   </HBox>
+                                   <ListView fx:id="listViewRenameFrom" prefHeight="550.0" prefWidth="400.0"/>
+                                   <HBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="20.0">
+                                       <children>
+                                           <Button fx:id="buttonOpenFileDialog" mnemonicParsing="false"
+                                                   onAction="#openFileDialog" prefHeight="30.0" text="Add Source"/>
+                                           <CheckBox mnemonicParsing="false" text="Include Sub-Folders"/>
+                                           <Button fx:id="buttonGetRenameSuggestions" mnemonicParsing="false"
+                                                   onAction="#getSuggestedNames" prefHeight="30.0"
+                                                   text="Get Rename Suggestions"/>
+                                       </children>
+                                   </HBox>
+                               </children>
+                           </VBox>
+                           <VBox prefWidth="520.0" spacing="10.0">
+                               <children>
+                                   <HBox alignment="CENTER" prefWidth="200.0">
+                                       <children>
+                                           <Label text="Rename To">
+                                               <font>
+                                                   <Font size="20.0"/>
+                                               </font>
+                                           </Label>
+                                       </children>
+                                   </HBox>
+                                   <ListView fx:id="listViewRenameTo" prefHeight="550.0" prefWidth="400.0"/>
+                                   <HBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="20.0">
+                                       <children>
+                                           <Button fx:id="buttonRenameSelected" mnemonicParsing="false"
+                                                   text="Rename Selected"/>
+                                           <Button fx:id="buttonRenameAll" mnemonicParsing="false" onAction="#renameAll"
+                                                   text="Rename ALL"/>
+                                       </children>
+                                       <VBox.margin>
+                                           <Insets/>
+                                       </VBox.margin>
+                                   </HBox>
+                               </children>
+                        </VBox>
                      </children>
                   </HBox>
-                  <HBox prefHeight="450.0" prefWidth="1040.0" spacing="20.0">
-                     <children>
-                        <VBox prefHeight="200.0" prefWidth="450.0" spacing="10.0">
-                           <children>
-                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <Label text="Rename From">
-                                       <font>
-                                          <Font size="20.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </HBox>
-                              <ListView fx:id="listViewRenameFrom" prefHeight="680.0" prefWidth="400.0" />
-                           </children>
-                        </VBox>
-                        <VBox prefHeight="200.0" prefWidth="450.0" spacing="10.0">
-                           <children>
-                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <Label text="Rename To">
-                                       <font>
-                                          <Font size="20.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </HBox>
-                              <ListView fx:id="listViewRenameTo" prefHeight="680.0" prefWidth="400.0" />
-                           </children>
-                        </VBox>
-                     </children>
-                  </HBox>
-                   <Button fx:id="buttonRenameAll" mnemonicParsing="false" onAction="#renameAll" text="Rename ALL"/>
-                  <Button fx:id="buttonRenameSelected" mnemonicParsing="false" text="Rename Selected" />
                </children>
                <HBox.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
