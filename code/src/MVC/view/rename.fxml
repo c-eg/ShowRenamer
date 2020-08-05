@@ -8,17 +8,21 @@
    <children>
       <HBox prefHeight="720.0" prefWidth="1280.0">
          <children>
-            <VBox alignment="TOP_CENTER" prefHeight="720.0" prefWidth="200.0">
-               <children>
-                  <Button fx:id="buttonMenuRename" alignment="BASELINE_LEFT" graphicTextGap="20.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefWidth="200.0" styleClass="buttonMenuSelected" text="Rename">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                     <padding>
-                        <Insets bottom="15.0" left="20.0" top="15.0" />
-                     </padding>
-                  </Button>
-                  <Button fx:id="buttonMenuSearch" alignment="BASELINE_LEFT" graphicTextGap="20.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefWidth="200.0" styleClass="buttonMenu" text="Search">
+            <VBox alignment="CENTER" prefHeight="720.0" prefWidth="200.0" spacing="20.0">
+                <children>
+                    <Button fx:id="buttonMenuRename" alignment="BASELINE_LEFT" graphicTextGap="20.0"
+                            maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefWidth="200.0"
+                            styleClass="buttonMenuSelected" text="Rename">
+                        <font>
+                            <Font size="16.0"/>
+                        </font>
+                        <padding>
+                            <Insets bottom="15.0" left="20.0" top="15.0"/>
+                        </padding>
+                    </Button>
+                    <Button fx:id="buttonMenuSearch" alignment="BASELINE_LEFT" graphicTextGap="20.0"
+                            maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefWidth="200.0"
+                            styleClass="buttonMenu" text="Search">
                      <font>
                         <Font size="16.0" />
                      </font>
