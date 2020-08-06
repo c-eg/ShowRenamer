@@ -1,11 +1,11 @@
-package MVC.utils;
+package uk.co.conoregan.utils;
 
-import MVC.model.Movie;
-import MVC.model.Show;
-import MVC.model.TVShow;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
+import uk.co.conoregan.model.Movie;
+import uk.co.conoregan.model.Show;
+import uk.co.conoregan.model.TVShow;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -17,28 +17,10 @@ import java.util.ArrayList;
 
 public class ShowInfoFromAPI
 {
-    /**
-     * Testing
-     */
-    public static void main(String[] args) throws IOException
-    {
-        //ArrayList<Show> testShows = getShows("the umbrella academy");
-        ArrayList<Show> testShows = getShows("Ant-Man");
-
-        Show s = testShows.get(0);
-
-        if (s instanceof TVShow)
-        {
-            for (int i = 0; i < ((TVShow) s).getAllEpisodeNames().size(); i++)
-            {
-                System.out.println(((TVShow) s).getAllEpisodeNames().get(i));
-            }
-        }
-        else
-        {
-            System.out.println(s);
-        }
-    }
+//    public static void main(String[] args) throws IOException
+//    {
+//        System.out.println(ShowInfoFromAPI.getShows("127 Hours"));
+//    }
 
     /**
      * Function to get the API key from the api_key.json file
@@ -51,7 +33,7 @@ public class ShowInfoFromAPI
         {
             JSONParser p = new JSONParser();
 
-            org.json.simple.JSONObject a = (org.json.simple.JSONObject) p.parse(new FileReader("src/MVC/config/api_key.json"));
+            org.json.simple.JSONObject a = (org.json.simple.JSONObject) p.parse(new FileReader("src/main/java/uk/co/conoregan/config/api_key.json"));
             return a.get("api_key").toString();
         }
         catch (Exception e)

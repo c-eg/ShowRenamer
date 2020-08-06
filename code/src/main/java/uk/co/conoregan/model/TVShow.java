@@ -1,10 +1,10 @@
-package MVC.model;
+package uk.co.conoregan.model;
 
 import java.util.ArrayList;
 
 public class TVShow extends Show
 {
-    private ArrayList<ArrayList<String>> episodeNames;
+    private final ArrayList<ArrayList<String>> episodeNames;
 
     public TVShow(String title, String id, ArrayList<ArrayList<String>> episodeNames)
     {

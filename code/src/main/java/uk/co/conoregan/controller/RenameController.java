@@ -1,16 +1,16 @@
-package MVC.controller;
+package uk.co.conoregan.controller;
 
-import MVC.model.Movie;
-import MVC.model.Show;
-import MVC.model.TVShow;
-import MVC.utils.ShowInfoFromAPI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import uk.co.conoregan.ShowInfo;
+import uk.co.conoregan.model.Movie;
+import uk.co.conoregan.model.Show;
+import uk.co.conoregan.model.TVShow;
+import uk.co.conoregan.utils.ShowInfo;
+import uk.co.conoregan.utils.ShowInfoFromAPI;
 
 import javax.swing.*;
 import java.io.File;
@@ -59,7 +59,7 @@ public class RenameController implements Initializable
     @FXML
     private void openFileDialog() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, IOException
     {
-        // set dialog style to windows
+        // set dialog MVC.style to windows
         UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 
         // open the dialog

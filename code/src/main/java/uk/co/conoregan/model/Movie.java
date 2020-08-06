@@ -1,8 +1,8 @@
-package MVC.model;
+package uk.co.conoregan.model;
 
 public class Movie extends Show
 {
-    private String releaseDate;
+    private final String releaseDate;
 
     public Movie(String title, String id, String releaseDate)
     {

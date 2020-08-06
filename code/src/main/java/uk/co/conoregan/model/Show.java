@@ -1,4 +1,4 @@
-package MVC.model;
+package uk.co.conoregan.model;
 
 public abstract class Show
 {

@@ -1,4 +1,4 @@
-package MVC;
+package uk.co.conoregan;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +16,7 @@ public class Main extends Application
     @Override
     public void start(Stage primaryStage) throws Exception
     {
-        Parent root = FXMLLoader.load(getClass().getResource("view/rename.fxml"));
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/rename.fxml"));
         Scene scene = new Scene(root, 1280, 720);
 
         root.setId("pane");
