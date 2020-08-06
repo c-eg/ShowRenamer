@@ -8,11 +8,12 @@ import uk.co.conoregan.model.Show;
 import uk.co.conoregan.model.TVShow;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class ShowInfoFromAPI
@@ -33,8 +34,12 @@ public class ShowInfoFromAPI
         {
             JSONParser p = new JSONParser();
 
-            org.json.simple.JSONObject a = (org.json.simple.JSONObject) p.parse(new FileReader("src/main/java/uk/co/conoregan/config/api_key.json"));
-            return a.get("api_key").toString();
+            ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+            InputStream is = classloader.getResourceAsStream("config/api_key.json");
+
+            org.json.simple.JSONObject jsonObject = (org.json.simple.JSONObject) p.parse(new InputStreamReader(is, StandardCharsets.UTF_8));
+
+            return jsonObject.get("api_key").toString();
         }
         catch (Exception e)
         {
