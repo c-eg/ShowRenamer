@@ -9,7 +9,7 @@ Currently under development, pre-release should be coming soon!
 2. Import maven to project
 3. Create an account for [themoviedb.org](https://www.themoviedb.org/), and get an API key
 4. Update the file in: `/code/src/main/resources/config/api_key.json` with your api key
-5. install using maven: `mvn install`
+5. Install using maven: `mvn install`
 
 ## Usage
 Todo
