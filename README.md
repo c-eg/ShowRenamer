@@ -2,7 +2,7 @@
 Renames movies and tv shows to the format the user has specified.
 
 ## Project Status
-Currently under development, pre-release should be coming soon!
+Currently under development, pre-release is now out!
 
 ## Usage
 Todo
