@@ -60,7 +60,7 @@ public class RenameController implements Initializable
     private void openFileDialog() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, IOException
     {
         // set dialog MVC.style to windows
-        UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+        //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 
         // open the dialog
         JFileChooser chooser = new JFileChooser();

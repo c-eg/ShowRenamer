@@ -1,17 +1,8 @@
-/*@font-face {*/
-/*    font-family: 'Moon 2.0';*/
-/*    src: url('Moon2.0-Regular.otf');*/
-/*}*/
-
 .text {
-    /*-fx-font-family: "Moon 2.0";
-    -fx-font-size: 105%;
-    */
     -fx-font-smoothing-type: gray;
 }
 
 .root {
-    /*-fx-font-family: "Moon 2.0";*/
     -fx-font-size: 16.0;
     -fx-background-color: #ffffff;
 }
@@ -46,14 +37,21 @@
 }
 
 .buttonMenu {
-    -fx-background-radius: 0px;
+    -fx-background-radius: 20px;
     -fx-background-color: #387eff;
     -fx-text-fill: #ffffff;
     -fx-font-weight: normal;
 }
 
-.buttonMenu > .text {
-    -fx-font-size: 24.0;
+.buttonMenuSelected {
+    -fx-background-radius: 20px;
+    -fx-background-color: #0d62ff;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: normal;
+}
+
+.buttonMenu > .text, .buttonMenuSelected > .text {
+    -fx-font-size: 16.0;
 }
 
 .buttonMenu:hover {
@@ -65,16 +63,7 @@
     -fx-background-color: #0044ff;
 }
 
-.buttonMenuSelected {
-    -fx-background-radius: 0px;
-    -fx-background-color: #0d62ff;
-    -fx-text-fill: #ffffff;
-    -fx-font-weight: normal;
-}
 
-.buttonMenuSelected > .text {
-    -fx-font-size: 24.0;
-}
 
 .buttonMenuSelected:hover {
     -fx-background-color: #0d62ff;
@@ -121,12 +110,29 @@
 }
 
 .progress-bar .track {
-	-fx-background-color: #ffffff;
-	-fx-border-color: #e8e8e8;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e8e8e8;
 }
 
 .groupIcon {
-	-fx-border-color: gray;
+    -fx-border-color: gray;
     -fx-border-style: solid;
     -fx-border-width: 2;
+}
+
+.list-view {
+    -fx-background-radius: 20px;
+}
+
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color: linear-gradient(to right, #030045, #002869);
+    -fx-text-fill: white;
+}
+
+.list-cell:even {
+    -fx-background-color: white;
+}
+
+.list-cell:odd {
+    -fx-background-color: #f5f5f5;
 }
