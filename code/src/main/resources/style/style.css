@@ -24,38 +24,33 @@
 }
 
 .button:hover {
-    -fx-background-color: #387eff;
+    -fx-background-color: linear-gradient(to right, #06008f, #0052d5);
     -fx-text-fill: #ffffff;
-    -fx-font-weight: bold;
     -fx-cursor: hand;
 }
 
 .button:pressed {
-    -fx-background-color: #0d62ff;
+    -fx-background-color: linear-gradient(to right, #030045, #002869);
     -fx-text-fill: #ffffff;
     -fx-font-weight: bold;
 }
 
 .buttonMenu {
     -fx-background-radius: 20px;
-    -fx-background-color: #387eff;
+    -fx-background-color: linear-gradient(to right, #030045, #002869);
     -fx-text-fill: #ffffff;
     -fx-font-weight: normal;
 }
 
 .buttonMenuSelected {
     -fx-background-radius: 20px;
-    -fx-background-color: #0d62ff;
+    -fx-background-color: linear-gradient(to right, #06008f, #0052d5);
     -fx-text-fill: #ffffff;
     -fx-font-weight: normal;
 }
 
-.buttonMenu > .text, .buttonMenuSelected > .text {
-    -fx-font-size: 16.0;
-}
-
-.buttonMenu:hover {
-    -fx-background-color: #0d62ff;
+.buttonMenu:hover, .buttonMenuSelected:hover {
+    -fx-background-color: linear-gradient(to right, #06008f, #0052d5);
     -fx-font-weight: normal;
 }
 
@@ -63,11 +58,8 @@
     -fx-background-color: #0044ff;
 }
 
-
-
-.buttonMenuSelected:hover {
-    -fx-background-color: #0d62ff;
-    -fx-font-weight: normal;
+.buttonMenu > .text, .buttonMenuSelected > .text {
+    -fx-font-size: 16.0;
 }
 
 .hyperlink {
