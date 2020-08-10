@@ -1,5 +1,5 @@
 # ShowRenamer
-Renames movies and tv shows to the format the user has specified.
+Renames movies and tv shows in the format the user has specified.
 
 ## Project Status
 Currently under development, pre-release is now out!
