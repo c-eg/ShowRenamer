@@ -1,5 +1,6 @@
 # ShowRenamer
 Renames movies and tv shows in the format the user has specified.
+![ShowRenamer GUI](https://i.imgur.com/F7UQto6.png)
 
 ## Project Status
 Currently under development, pre-release is now out!
