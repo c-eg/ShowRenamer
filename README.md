@@ -15,7 +15,8 @@ Todo
 5. Install using maven: `mvn install`
 
 ## Contributing
-Contributions are always welcome! Make sure to check out the [Code of Conduct](https://github.com/c-eg/ShowRenamer/blob/master/CODE_OF_CONDUCT.md) and the [Contribution Guidelines](https://github.com/c-eg/ShowRenamer/blob/master/CONTRIBUTING.md) first.
+Contributions are always welcome! Make sure to check out the [Code of Conduct](https://github.com/c-eg/ShowRenamer/blob/master/CODE_OF_CONDUCT.md) and the [Contribution Guidelines](https://github.com/c-eg/ShowRenamer/blob/master/CONTRIBUTING.md) first.<br>
+If you're not sure what to work on, check out the current [issues](https://github.com/c-eg/ShowRenamer/issues).
 
 ## License
 GNU General Public License v3.0
