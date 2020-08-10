@@ -20,7 +20,8 @@ public class ShowInfoFromAPI
 {
 //    public static void main(String[] args) throws IOException
 //    {
-//        System.out.println(ShowInfoFromAPI.getShows("127 Hours"));
+//        System.out.println(ShowInfoFromAPI.getEpisodeNames("65988") + "\n");
+//        System.out.println(ShowInfoFromAPI.getSeasonInfo("65988", 4));
 //    }
 
     /**
@@ -159,11 +160,13 @@ public class ShowInfoFromAPI
             JSONObject result = new JSONObject(response.toString());
             JSONArray jArray = (JSONArray) result.get("seasons");
 
+            //System.out.println("\n" + result.toString() + "\n");
+
             // looping through each season returned
-            for (int i = 1; i < jArray.length(); i++)
+            for (int i = 0; i < jArray.length(); i++)
             {
                 // get the episode names from that season
-                episodeNames.add(getSeasonInfo(id, i));
+                episodeNames.add(getSeasonInfo(id, i + 1));
             }
         }
         // if the request returns nothing
