@@ -5,6 +5,8 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import uk.co.conoregan.model.Movie;
 import uk.co.conoregan.model.Show;
@@ -175,8 +177,73 @@ public class RenameController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        setListViewsWrapText();
+
         // set list views to observe these lists
         listViewRenameFrom.setItems(listRenameFrom);
         listViewRenameTo.setItems(listRenameTo);
+
+        listViewRenameFrom.setPlaceholder(new Label("Click \"Add Sauce\" to add files!"));
+        listViewRenameTo.setPlaceholder(new Label("Click \"Get Rename Suggestions\" to get renamed file suggestions!"));
+    }
+
+    /**
+     * Function to set the styling of the ListViews to wrap the text if it's too long
+     */
+    private void setListViewsWrapText()
+    {
+        listViewRenameFrom.setCellFactory(param -> new ListCell<String>()
+        {
+            @Override
+            protected void updateItem(String item, boolean empty)
+            {
+                super.updateItem(item, empty);
+
+                if (empty || item == null)
+                {
+                    setGraphic(null);
+                    setText(null);
+                }
+                else
+                {
+                    // set the width's
+                    setMinWidth(param.getWidth() - 40);
+                    setMaxWidth(param.getWidth() - 40);
+                    setPrefWidth(param.getWidth() - 40);
+
+                    // allow wrapping
+                    setWrapText(true);
+
+                    setText(item);
+                }
+            }
+        });
+
+        listViewRenameTo.setCellFactory(param -> new ListCell<String>()
+        {
+            @Override
+            protected void updateItem(String item, boolean empty)
+            {
+                super.updateItem(item, empty);
+
+                if (empty || item == null)
+                {
+                    setGraphic(null);
+                    setText(null);
+                }
+                else
+                {
+                    // set the width's
+                    setMinWidth(param.getWidth() - 40);
+                    setMaxWidth(param.getWidth() - 40);
+                    setPrefWidth(param.getWidth() - 40);
+
+                    // allow wrapping
+                    setWrapText(true);
+
+                    setText(item);
+                }
+            }
+        });
     }
 }
