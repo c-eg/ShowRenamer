@@ -28,8 +28,8 @@ public class TVShow extends Show
         return episodeNames.get(season - 1);
     }
 
-    public String getEpisodeName(int season, int eposide)
+    public String getEpisodeName(int season, int episode)
     {
-        return episodeNames.get(season - 1).get(eposide - 1);
+        return episodeNames.get(season - 1).get(episode - 1);
     }
 }
