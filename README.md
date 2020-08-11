@@ -2,6 +2,7 @@
 Renames movies and tv shows in the format the user has specified.  
   <br/>
 ![ShowRenamer GUI](https://i.imgur.com/F7UQto6.png)
+This is a pre-release screenshot of the GUI, changes will be made in the released versions.
 
 ## Project Status
 Currently under development, pre-release is now out!
