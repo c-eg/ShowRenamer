@@ -129,3 +129,26 @@ code/.idea/$CACHE_FILE$
 hs_err_pid*
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij,java
+code/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst
+code/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst
+code/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
+code/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
+code/target/maven-archiver/pom.properties
+code/target/classes/view/rename.fxml
+code/target/classes/style/style.css
+code/target/classes/images/settings_white.png
+code/target/classes/images/settings.png
+code/target/classes/images/search_white.png
+code/target/classes/images/search.png
+code/target/classes/images/rename_white.png
+code/target/classes/images/rename.png
+code/target/classes/config/api_key.json
+code/.idea/vcs.xml
+code/.idea/modules.xml
+code/.idea/misc.xml
+code/.idea/jarRepositories.xml
+code/.idea/inspectionProfiles/Project_Default.xml
+code/.idea/encodings.xml
+code/.idea/compiler.xml
+code/.idea/code.iml
+code/.idea/.name
