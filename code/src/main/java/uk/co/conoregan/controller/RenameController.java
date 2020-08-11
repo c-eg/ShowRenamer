@@ -123,8 +123,6 @@ public class RenameController implements Initializable
 
                 if (lookedUpShow instanceof TVShow)
                 {
-                    //System.out.println(((TVShow) lookedUpShow).getAllEpisodeNames());
-
                     // get the season and episode number from the original file
                     season = Integer.parseInt(showInfo.getSeason());
                     episode = Integer.parseInt(showInfo.getEpisode());
