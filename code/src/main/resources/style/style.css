@@ -22,7 +22,6 @@
     -fx-background-radius: 20px;
     -fx-background-color: linear-gradient(to right, #030045, #002869);
     -fx-text-fill: #ffffff;
-
 }
 
 .button:hover {
@@ -123,7 +122,7 @@
 }
 
 .list-view .list-cell:even {
-    -fx-background-color: white;
+    -fx-background-color: #fafafa;
 }
 
 .list-view .list-cell:odd {

@@ -1,4 +1,4 @@
-package uk.co.conoregan;
+package uk.co.conoregan.showrenamer;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

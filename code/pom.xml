@@ -83,7 +83,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.4</version>
                 <configuration>
-                    <mainClass>uk.co.conoregan.NewMain</mainClass>
+                    <mainClass>uk.co.conoregan.showrenamer.NewMain</mainClass>
                 </configuration>
             </plugin>
 
@@ -95,7 +95,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>uk.co.conoregan.NewMain</mainClass>
+                            <mainClass>uk.co.conoregan.showrenamer.NewMain</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

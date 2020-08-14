@@ -1,4 +1,4 @@
-package uk.co.conoregan.controller;
+package uk.co.conoregan.showrenamer.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,11 +8,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import uk.co.conoregan.model.Movie;
-import uk.co.conoregan.model.Show;
-import uk.co.conoregan.model.TVShow;
-import uk.co.conoregan.utils.ShowInfo;
-import uk.co.conoregan.utils.ShowInfoFromAPI;
+import uk.co.conoregan.showrenamer.model.Movie;
+import uk.co.conoregan.showrenamer.model.Show;
+import uk.co.conoregan.showrenamer.model.TVShow;
+import uk.co.conoregan.showrenamer.utils.ShowInfo;
+import uk.co.conoregan.showrenamer.utils.ShowInfoFromAPI;
 
 import javax.swing.*;
 import java.io.File;
@@ -34,7 +34,7 @@ public class RenameController implements Initializable
     private final ObservableList<String> listRenameTo = FXCollections.observableArrayList();
 
     // files
-    File[] files;
+    private File[] files;
 
     // Menu buttons
     @FXML
@@ -177,7 +177,8 @@ public class RenameController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        setListViewsWrapText();
+        setListViewsWrapText(listViewRenameFrom);
+        setListViewsWrapText(listViewRenameTo);
 
         // set list views to observe these lists
         listViewRenameFrom.setItems(listRenameFrom);
@@ -188,38 +189,11 @@ public class RenameController implements Initializable
     }
 
     /**
-     * Function to set the styling of the ListViews to wrap the text if it's too long
+     * Function to set the styling of the ListView to wrap the text if it's too long
      */
-    private void setListViewsWrapText()
+    private void setListViewsWrapText(ListView<String> listView)
     {
-        listViewRenameFrom.setCellFactory(param -> new ListCell<String>()
-        {
-            @Override
-            protected void updateItem(String item, boolean empty)
-            {
-                super.updateItem(item, empty);
-
-                if (empty || item == null)
-                {
-                    setGraphic(null);
-                    setText(null);
-                }
-                else
-                {
-                    // set the width's
-                    setMinWidth(param.getWidth() - 40);
-                    setMaxWidth(param.getWidth() - 40);
-                    setPrefWidth(param.getWidth() - 40);
-
-                    // allow wrapping
-                    setWrapText(true);
-
-                    setText(item);
-                }
-            }
-        });
-
-        listViewRenameTo.setCellFactory(param -> new ListCell<String>()
+        listView.setCellFactory(param -> new ListCell<String>()
         {
             @Override
             protected void updateItem(String item, boolean empty)

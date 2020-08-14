@@ -1,4 +1,4 @@
-package uk.co.conoregan.utils;
+package uk.co.conoregan.showrenamer.utils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

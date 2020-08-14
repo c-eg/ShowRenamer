@@ -1,11 +1,11 @@
-package uk.co.conoregan.utils;
+package uk.co.conoregan.showrenamer.utils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
-import uk.co.conoregan.model.Movie;
-import uk.co.conoregan.model.Show;
-import uk.co.conoregan.model.TVShow;
+import uk.co.conoregan.showrenamer.model.Movie;
+import uk.co.conoregan.showrenamer.model.Show;
+import uk.co.conoregan.showrenamer.model.TVShow;
 
 import java.io.BufferedReader;
 import java.io.IOException;

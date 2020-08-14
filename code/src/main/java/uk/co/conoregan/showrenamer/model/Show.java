@@ -1,4 +1,4 @@
-package uk.co.conoregan.model;
+package uk.co.conoregan.showrenamer.model;
 
 public abstract class Show
 {

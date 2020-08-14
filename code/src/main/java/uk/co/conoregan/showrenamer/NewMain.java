@@ -1,4 +1,4 @@
-package uk.co.conoregan;
+package uk.co.conoregan.showrenamer;
 
 public class NewMain
 {
