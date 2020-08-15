@@ -174,9 +174,43 @@ public class RenameController implements Initializable
         }
     }
 
+    @FXML
+    public void renameSelected()
+    {
+//        if (listRenameFrom.size() > 0)
+//        {
+//            String toRename = listViewRenameFrom.getSelectionModel().getSelectedItem();
+//
+//            listViewRenameFrom.getItems().remove(toRemove);
+//            listRenameFrom.remove(toRemove);
+//        }
+    }
+
+    @FXML
+    public void removeSelected()
+    {
+        removeItem(listViewRenameFrom);
+    }
+
+    /**
+     * Function to remove selected item from listview
+     *
+     * @param list List for an item to be removed from
+     * @param <T>  Type to of object in list
+     */
+    private <T extends Object> void removeItem(ListView<T> list)
+    {
+        if (list.getItems().size() > 0)
+        {
+            T toRemove = list.getSelectionModel().getSelectedItem();
+            list.getItems().remove(toRemove);
+        }
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        // set ListCells inside ListView to wrap text and adjust max width
         setListViewsWrapText(listViewRenameFrom);
         setListViewsWrapText(listViewRenameTo);
 
@@ -184,6 +218,7 @@ public class RenameController implements Initializable
         listViewRenameFrom.setItems(listRenameFrom);
         listViewRenameTo.setItems(listRenameTo);
 
+        // placeholder text for ListViews
         listViewRenameFrom.setPlaceholder(new Label("Click \"Add Sauce\" to add files!"));
         listViewRenameTo.setPlaceholder(new Label("Click \"Get Rename Suggestions\" to get renamed file suggestions!"));
     }

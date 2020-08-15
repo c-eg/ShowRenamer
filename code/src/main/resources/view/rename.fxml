@@ -23,7 +23,7 @@
                             <graphic>
                                 <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../images/rename_white.png" />
+                                        <Image url="@../images/rename_white.png"/>
                                     </image>
                                 </ImageView>
                             </graphic>
@@ -69,33 +69,37 @@
                         <Insets left="10.0" right="10.0" />
                     </HBox.margin>
                 </VBox>
-                <VBox prefHeight="720.0" prefWidth="1155.0" spacing="20.0">
+                <VBox maxHeight="720.0" prefHeight="720.0" prefWidth="1155.0" spacing="20.0">
                     <children>
-                        <HBox spacing="10.0">
+                        <HBox spacing="10.0" VBox.vgrow="ALWAYS">
                             <children>
-                                <VBox spacing="10.0">
+                                <VBox spacing="10.0" HBox.hgrow="ALWAYS">
                                     <children>
                                         <HBox alignment="CENTER" prefWidth="200.0">
                                             <children>
                                                 <Label text="Rename From">
                                                     <font>
-                                                        <Font size="20.0" />
+                                                        <Font size="20.0"/>
                                                     </font>
                                                     <HBox.margin>
-                                                        <Insets />
+                                                        <Insets/>
                                                     </HBox.margin>
                                            </Label>
                                        </children>
                                    </HBox>
-                                        <ListView fx:id="listViewRenameFrom" prefHeight="610.0" prefWidth="565.0">
-                                 <padding>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                 </padding></ListView>
+                                        <ListView fx:id="listViewRenameFrom" maxHeight="1.7976931348623157E308"
+                                                  maxWidth="565.0" minHeight="300.0" prefWidth="565.0"
+                                                  VBox.vgrow="ALWAYS">
+                                            <padding>
+                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                                            </padding>
+                                        </ListView>
                                    <HBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="20.0">
                                        <children>
                                            <Button fx:id="buttonOpenFileDialog" mnemonicParsing="false" onAction="#openFileDialog" prefHeight="30.0" text="Add Source" />
                                            <CheckBox mnemonicParsing="false" text="Include Sub-Folders" />
-                                           <Button fx:id="buttonGetRenameSuggestions" mnemonicParsing="false" onAction="#getSuggestedNames" prefHeight="30.0" text="Get Rename Suggestions" />
+                                           <Button fx:id="buttonRenameAll1" mnemonicParsing="false"
+                                                   onAction="#removeSelected" text="Remove Selected Item"/>
                                        </children>
                                    </HBox>
                                </children>
@@ -111,14 +115,22 @@
                                                 </Label>
                                             </children>
                                         </HBox>
-                                        <ListView fx:id="listViewRenameTo" prefHeight="610.0" prefWidth="565.0">
-                                 <padding>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                 </padding></ListView>
+                                        <ListView fx:id="listViewRenameTo" maxHeight="1.7976931348623157E308"
+                                                  maxWidth="565.0" minHeight="300.0" prefWidth="565.0"
+                                                  VBox.vgrow="ALWAYS">
+                                            <padding>
+                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                                            </padding>
+                                        </ListView>
                                    <HBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="20.0">
                                        <children>
-                                           <Button fx:id="buttonRenameSelected" mnemonicParsing="false" text="Rename Selected" />
-                                           <Button fx:id="buttonRenameAll" mnemonicParsing="false" onAction="#renameAll" text="Rename ALL" />
+                                           <Button fx:id="buttonGetRenameSuggestions" mnemonicParsing="false"
+                                                   onAction="#getSuggestedNames" prefHeight="30.0"
+                                                   text="Get Rename Suggestions"/>
+                                           <Button fx:id="buttonRenameSelected" mnemonicParsing="false"
+                                                   onAction="#renameSelected" text="Rename Selected"/>
+                                           <Button fx:id="buttonRenameAll" mnemonicParsing="false" onAction="#renameAll"
+                                                   text="Rename ALL"/>
                                        </children>
                                        <VBox.margin>
                                            <Insets />
