@@ -20,7 +20,7 @@ Todo
 Todo
 
 ## How to setup project locally
-1. Clone this repository
+1. Fork this repository, and clone it using "git clone"
 2. Import maven to project
 3. Create an account for [themoviedb.org](https://www.themoviedb.org/), and get an API key
 4. Move the file in: `api_key_default.json` to `/code/src/main/resources/config/api_key.json`. And update it with your api key
