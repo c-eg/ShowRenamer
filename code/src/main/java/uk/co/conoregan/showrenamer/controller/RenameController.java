@@ -149,6 +149,7 @@ public class RenameController implements Initializable
     {
         if (listRenameFrom.size() == listRenameTo.size() && listRenameFrom.size() > 0)
         {
+            // counter for files that are directories
             int j = 0;
 
             for (int i = 0; i < files.length; i++)
@@ -159,16 +160,21 @@ public class RenameController implements Initializable
                 }
                 else if (!listRenameTo.get(i - j).equals(RenameController.ERROR_MESSAGE))
                 {
-                    // get name of file
-                    String name = files[i].getName();
-                    int lastIndex = name.lastIndexOf('.');
-                    String ext = name.substring(lastIndex);
+                    // get path
+                    String path = files[i].getCanonicalPath();
+
+                    // get last occurance of file to be renamed
+                    StringBuilder sb = new StringBuilder();
+                    int lastOccurance = path.lastIndexOf(listRenameFrom.get(i - j));
+
+                    // generate new path string with replaced file name
+                    sb.append(path, 0, lastOccurance);
+                    sb.append(listRenameTo.get(i - j));
+                    sb.append(path.substring(lastOccurance + listRenameFrom.get(i - j).length()));
 
                     // rename
-                    String newName = files[i].getCanonicalPath().replace(listRenameFrom.get(i - j), listRenameTo.get(i - j));
-
-                    Path p = Paths.get(files[i].getCanonicalPath());
-                    Files.move(p, p.resolveSibling(newName));
+                    Path p = Paths.get(path);
+                    Files.move(p, p.resolveSibling(sb.toString()));
                 }
             }
         }
