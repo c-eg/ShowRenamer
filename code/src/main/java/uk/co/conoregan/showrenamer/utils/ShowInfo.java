@@ -89,7 +89,7 @@ public class ShowInfo
      */
     private static String matchTitle(String showFile)
     {
-        Pattern moviePattern = Pattern.compile("(.*?)\\W(directors(.?)cut|480p|720p|1080p|dvdrip|xvid|cd[0-9]|bluray|dvdscr|brrip|divx|S[0-9]{1,3}E[0-9]{1,3}|Season[\\s,0-9]{1,4}|[\\{\\(\\[]?[0-9]{4}).*", Pattern.CASE_INSENSITIVE);
+        Pattern moviePattern = Pattern.compile("(.*?)(\\W| - )(directors(.?)cut|480p|720p|1080p|dvdrip|xvid|cd[0-9]|bluray|dvdscr|brrip|divx|S[0-9]{1,3}E[0-9]{1,3}|Season[\\s,0-9]{1,4}|[\\{\\(\\[]?[0-9]{4}).*", Pattern.CASE_INSENSITIVE);
         Matcher movieMatcher = moviePattern.matcher(showFile);
         String name;
 
@@ -273,23 +273,14 @@ public class ShowInfo
      */
     private static String matchEpisode(String showFile)
     {
-        String s = matchRegex(showFile, "e(?:(\\d{1,3})|(\\d{1,3}([e-]\\d{1,3})+))[\\.\\s]", Pattern.CASE_INSENSITIVE);
+        String s = matchRegex(showFile, "e(?:(\\d{1,3})|(\\d{1,3}([e-]\\d{1,3})+))", Pattern.CASE_INSENSITIVE);
         if (s != null)
         {
-            s = s.substring(1, s.length() - 1);
+            s = s.substring(1);
             return s.replaceAll("e|-", ",");
         }
         else
             return null;
-    }
-
-    /*
-     * Testing example
-     */
-    public static void main(String[] args)
-    {
-        ShowInfo showInfo = new ShowInfo("Anchorman.The.Legend.Of.Ron.Burgundy.2004.720p.BrRip.x264.BOKUTOX.YIFY");
-        System.out.println(showInfo);
     }
 
     public String getTitle()
@@ -356,5 +347,14 @@ public class ShowInfo
     public String toString()
     {
         return String.format("%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s", this.title, this.year, this.resolution, this.type, this.video, this.audio, this.language, this.edition, this.tags, this.release, this.season, this.episode);
+    }
+
+    /*
+     * Testing example
+     */
+    public static void main(String[] args)
+    {
+        ShowInfo showInfo = new ShowInfo("Wynonna Earp - S04E04");
+        System.out.println(showInfo);
     }
 }

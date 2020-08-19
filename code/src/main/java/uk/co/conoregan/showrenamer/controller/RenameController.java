@@ -22,6 +22,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class RenameController implements Initializable
@@ -34,7 +36,7 @@ public class RenameController implements Initializable
     private final ObservableList<String> listRenameTo = FXCollections.observableArrayList();
 
     // files
-    private File[] files;
+    private ArrayList<File> files;
 
     // Menu buttons
     @FXML
@@ -76,10 +78,10 @@ public class RenameController implements Initializable
             File dir = chooser.getSelectedFile();
 
             // get list of files
-            files = dir.listFiles();
+            files = new ArrayList<File>(Arrays.asList(Objects.requireNonNull(dir.listFiles())));
 
             // if the folder contains files
-            if (files != null)
+            if (files.size() > 0)
             {
                 for (File item : files)
                 {
@@ -152,16 +154,16 @@ public class RenameController implements Initializable
             // counter for files that are directories
             int j = 0;
 
-            for (int i = 0; i < files.length; i++)
+            for (int i = 0; i < files.size(); i++)
             {
-                if (files[i].isDirectory())
+                if (files.get(i).isDirectory())
                 {
                     j += 1;
                 }
                 else if (!listRenameTo.get(i - j).equals(RenameController.ERROR_MESSAGE))
                 {
                     // get path
-                    String path = files[i].getCanonicalPath();
+                    String path = files.get(i).getCanonicalPath();
 
                     // get last occurance of file to be renamed
                     StringBuilder sb = new StringBuilder();
@@ -208,8 +210,9 @@ public class RenameController implements Initializable
     {
         if (list.getItems().size() > 0)
         {
-            T toRemove = list.getSelectionModel().getSelectedItem();
-            list.getItems().remove(toRemove);
+            int index = list.getSelectionModel().getSelectedIndex();
+            listRenameFrom.remove(index);
+            files.remove(index);
         }
     }
 
