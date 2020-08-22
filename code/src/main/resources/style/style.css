@@ -121,10 +121,28 @@
     -fx-text-fill: white;
 }
 
-.list-view .list-cell:even {
+.list-view > .list-cell:even {
     -fx-background-color: #fafafa;
 }
 
-.list-view .list-cell:odd {
+.list-view > .list-cell:odd {
     -fx-background-color: #f5f5f5;
+}
+
+.check-box {
+    -fx-background-radius: 20px;
+    -fx-background-color: linear-gradient(to right, #030045, #002869);
+    -fx-text-fill: #ffffff;
+    -fx-padding: 6px 10px;
+}
+
+.check-box > .box {
+    -fx-background-radius: 8px;
+    -fx-background-color: white;
+    -fx-padding: 3px;
+}
+
+.check-box:selected > .box > .mark,
+.check-box:indeterminate > .box > .mark {
+    -fx-background-color: #030045;
 }

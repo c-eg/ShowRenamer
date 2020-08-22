@@ -4,10 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import uk.co.conoregan.showrenamer.model.Movie;
 import uk.co.conoregan.showrenamer.model.Show;
 import uk.co.conoregan.showrenamer.model.TVShow;
@@ -60,6 +57,10 @@ public class RenameController implements Initializable
     @FXML
     private Button buttonRenameAll;
 
+    // checkbox
+    @FXML
+    private CheckBox checkboxSubFolder;
+
     @FXML
     private void openFileDialog() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, IOException
     {
@@ -78,7 +79,7 @@ public class RenameController implements Initializable
             File dir = chooser.getSelectedFile();
 
             // get list of files
-            files = new ArrayList<File>(Arrays.asList(Objects.requireNonNull(dir.listFiles())));
+            files.addAll(Arrays.asList(Objects.requireNonNull(dir.listFiles())));
 
             // if the folder contains files
             if (files.size() > 0)
@@ -206,7 +207,7 @@ public class RenameController implements Initializable
      * @param list List for an item to be removed from
      * @param <T>  Type to of object in list
      */
-    private <T extends Object> void removeItem(ListView<T> list)
+    private <T> void removeItem(ListView<T> list)
     {
         if (list.getItems().size() > 0)
         {
@@ -219,6 +220,12 @@ public class RenameController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        // stops checkbox box resizing when clicking on and off other controls
+        checkboxSubFolder.setFocusTraversable(false);
+
+        // creates an arraylist of files
+        files = new ArrayList<>();
+
         // set ListCells inside ListView to wrap text and adjust max width
         setListViewsWrapText(listViewRenameFrom);
         setListViewsWrapText(listViewRenameTo);

@@ -96,8 +96,10 @@
                                         </ListView>
                                    <HBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="20.0">
                                        <children>
-                                           <Button fx:id="buttonOpenFileDialog" mnemonicParsing="false" onAction="#openFileDialog" prefHeight="30.0" text="Add Source" />
-                                           <CheckBox mnemonicParsing="false" text="Include Sub-Folders" />
+                                           <Button fx:id="buttonOpenFileDialog" mnemonicParsing="false"
+                                                   onAction="#openFileDialog" text="Add Source"/>
+                                           <CheckBox fx:id="checkboxSubFolder" mnemonicParsing="false"
+                                                     text="Include Sub-Folders"/>
                                            <Button fx:id="buttonRenameAll1" mnemonicParsing="false"
                                                    onAction="#removeSelected" text="Remove Selected Item"/>
                                        </children>
