@@ -84,7 +84,7 @@ public class RenameController implements Initializable
             // if the folder contains files
             if (files.size() > 0)
             {
-                for (File item : files)
+                for (File item : Objects.requireNonNull(dir.listFiles()))
                 {
                     if (item.isFile())
                     {
@@ -186,6 +186,7 @@ public class RenameController implements Initializable
     @FXML
     public void renameSelected()
     {
+        System.out.println(files);
 //        if (listRenameFrom.size() > 0)
 //        {
 //            String toRename = listViewRenameFrom.getSelectionModel().getSelectedItem();
