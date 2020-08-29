@@ -186,7 +186,6 @@ public class RenameController implements Initializable
     @FXML
     public void renameSelected()
     {
-        System.out.println(files);
 //        if (listRenameFrom.size() > 0)
 //        {
 //            String toRename = listViewRenameFrom.getSelectionModel().getSelectedItem();
