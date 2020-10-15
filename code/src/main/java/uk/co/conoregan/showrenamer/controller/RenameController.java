@@ -19,7 +19,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -79,23 +78,36 @@ public class RenameController implements Initializable
             File dir = chooser.getSelectedFile();
 
             // get list of files
-            files.addAll(Arrays.asList(Objects.requireNonNull(dir.listFiles())));
+            File[] temp = dir.listFiles();
 
             // if the folder contains files
-            if (files.size() > 0)
+            if (temp != null && temp.length > 0)
             {
                 for (File item : Objects.requireNonNull(dir.listFiles()))
                 {
-                    if (item.isFile())
-                    {
-                        listRenameFrom.add(item.getName().substring(0, item.getName().lastIndexOf('.')));
-                    }
-                    else if (item.isDirectory()) // add and statement to check if checkbox is ticked
-                    {
-                        // TODO:
-                        //  - Make recursive to check for sub folders and add items in those aswell if checkbox is ticked
-                    }
+                    addContentsToRenameFrom(item);
                 }
+            }
+        }
+    }
+
+    /**
+     * Recursive function to add files and subfolders to RenameFrom list
+     *
+     * @param item file from selected folder in open file dialog
+     */
+    private void addContentsToRenameFrom(File item)
+    {
+        if (item.isFile())
+        {
+            listRenameFrom.add(item.getName().substring(0, item.getName().lastIndexOf('.')));
+            files.add(item);
+        }
+        else if (item.isDirectory() && checkboxSubFolder.isSelected())
+        {
+            for (File f : Objects.requireNonNull(item.listFiles()))
+            {
+                addContentsToRenameFrom(f);
             }
         }
     }
@@ -147,37 +159,53 @@ public class RenameController implements Initializable
         }
     }
 
-    @FXML
-    public void renameAll() throws IOException
+    private void renameFile(File f) throws IOException
     {
-        if (listRenameFrom.size() == listRenameTo.size() && listRenameFrom.size() > 0)
+        if (f.isFile())
         {
-            // counter for files that are directories
-            int j = 0;
-
-            for (int i = 0; i < files.size(); i++)
+            for (int i = 0; i < listRenameFrom.size(); i++)
             {
-                if (files.get(i).isDirectory())
-                {
-                    j += 1;
-                }
-                else if (!listRenameTo.get(i - j).equals(RenameController.ERROR_MESSAGE))
+                // check if current file name contains name from listRenameFrom
+                if (f.getCanonicalPath().contains(listRenameFrom.get(i)))
                 {
                     // get path
                     String path = files.get(i).getCanonicalPath();
 
                     // get last occurance of file to be renamed
                     StringBuilder sb = new StringBuilder();
-                    int lastOccurance = path.lastIndexOf(listRenameFrom.get(i - j));
+                    int lastOccurance = path.lastIndexOf(listRenameFrom.get(i));
 
                     // generate new path string with replaced file name
                     sb.append(path, 0, lastOccurance);
-                    sb.append(listRenameTo.get(i - j));
-                    sb.append(path.substring(lastOccurance + listRenameFrom.get(i - j).length()));
+                    sb.append(listRenameTo.get(i));
+                    sb.append(path.substring(lastOccurance + listRenameFrom.get(i).length()));
 
                     // rename
                     Path p = Paths.get(path);
                     Files.move(p, p.resolveSibling(sb.toString()));
+                }
+            }
+        }
+        else if (f.isDirectory())   // recursion
+        {
+            // for each file in the directory, call the recursive function
+            for (File temp : Objects.requireNonNull(f.listFiles()))
+            {
+                renameFile(temp);
+            }
+        }
+    }
+
+    @FXML
+    public void renameAll() throws IOException
+    {
+        if (listRenameFrom.size() == listRenameTo.size() && listRenameFrom.size() > 0)
+        {
+            for (int i = 0; i < files.size(); i++)
+            {
+                if (!listRenameTo.get(i).equals(RenameController.ERROR_MESSAGE))
+                {
+                    renameFile(files.get(i));
                 }
             }
         }
