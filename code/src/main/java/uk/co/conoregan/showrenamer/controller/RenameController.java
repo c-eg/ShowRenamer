@@ -263,7 +263,7 @@ public class RenameController implements Initializable
         listViewRenameTo.setItems(listRenameTo);
 
         // placeholder text for ListViews
-        listViewRenameFrom.setPlaceholder(new Label("Click \"Add Sauce\" to add files!"));
+        listViewRenameFrom.setPlaceholder(new Label("Click \"Add Source\" to add files!"));
         listViewRenameTo.setPlaceholder(new Label("Click \"Get Rename Suggestions\" to get renamed file suggestions!"));
     }
 
