@@ -19,7 +19,7 @@ Todo
 ### Mac
 Todo
 
-# Pictures
+## Pictures
 ![ShowRenamer GUI](https://i.imgur.com/JQc4uRL.png)
 This is a pre-release screenshot of the GUI, changes will be made in the released versions.
 
