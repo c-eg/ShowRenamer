@@ -1,5 +1,9 @@
 # ShowRenamer
-Renames movies and tv shows in the format the user has specified.  
+Renames movie and tv show file names to a much nicer format.
+
+some.random.movie.2010.1080p.blueray.x264 --> Some Random Movie (2010) <br/>
+some.random.tv.show.s01e01.1080p.bluray.x264 --> Some Random TV Show - S01E01 - {episode name} <br/>
+
   <br/>
 ![ShowRenamer GUI](https://i.imgur.com/JQc4uRL.png)
 This is a pre-release screenshot of the GUI, changes will be made in the released versions.
