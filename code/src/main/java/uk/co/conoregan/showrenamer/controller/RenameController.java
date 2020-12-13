@@ -128,22 +128,24 @@ public class RenameController implements Initializable
             // get the first show matching title
             shows = ShowInfoFromAPI.getShows(showInfo.getTitle());
 
-            int season, episode;
+
             String episodeName;
             Show lookedUpShow;
 
             if (shows.size() > 0)
             {
-                lookedUpShow = shows.get(0);
+                lookedUpShow = shows.get(1);
 
                 if (lookedUpShow instanceof TVShow)
                 {
-                    // get the season and episode number from the original file
-                    season = Integer.parseInt(showInfo.getSeason());
-                    episode = Integer.parseInt(showInfo.getEpisode());
+                    int season = Integer.parseInt(showInfo.getSeason());
+                    int episode = Integer.parseInt(showInfo.getEpisode());
 
                     // get the episode name for that season and episode
-                    episodeName = ((TVShow) lookedUpShow).getEpisodeName(season, episode);
+                    episodeName = ShowInfoFromAPI.getEpisodeName(lookedUpShow.getId(), season, episode);
+
+                    // TODO:
+                    //  - Replace '*'  with '' in episode name
 
                     listRenameTo.add((lookedUpShow.getTitle() + " - S" + showInfo.getSeason() + "E" + showInfo.getEpisode() + " - " + episodeName).replaceAll(":", ""));
                 }

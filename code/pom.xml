@@ -6,7 +6,7 @@
 
     <groupId>uk.co.conoregan.show-renamer</groupId>
     <artifactId>show-renamer</artifactId>
-    <version>0.1.0-ALPHA</version>
+    <version>0.2.0-ALPHA</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
