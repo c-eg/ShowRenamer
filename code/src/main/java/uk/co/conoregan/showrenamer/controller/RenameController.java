@@ -134,7 +134,7 @@ public class RenameController implements Initializable
 
             if (shows.size() > 0)
             {
-                lookedUpShow = shows.get(1);
+                lookedUpShow = shows.get(0);
 
                 if (lookedUpShow instanceof TVShow)
                 {
