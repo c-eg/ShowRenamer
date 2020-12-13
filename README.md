@@ -4,10 +4,6 @@ Renames movie and tv show file names to a much nicer format.
 some.random.movie.2010.1080p.blueray.x264 --> Some Random Movie (2010) <br/>
 some.random.tv.show.s01e01.1080p.bluray.x264 --> Some Random TV Show - S01E01 - {episode name} <br/>
 
-  <br/>
-![ShowRenamer GUI](https://i.imgur.com/JQc4uRL.png)
-This is a pre-release screenshot of the GUI, changes will be made in the released versions.
-
 ## Project Status
 Currently under development, pre-release is now out!
 
@@ -22,6 +18,10 @@ Todo
 
 ### Mac
 Todo
+
+# Pictures
+![ShowRenamer GUI](https://i.imgur.com/JQc4uRL.png)
+This is a pre-release screenshot of the GUI, changes will be made in the released versions.
 
 ## How to setup project locally
 1. Fork this repository, and clone it using "git clone"
