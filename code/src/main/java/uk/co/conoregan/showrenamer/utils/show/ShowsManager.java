@@ -15,26 +15,8 @@
  * along with ShowRenamer.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package uk.co.conoregan.showrenamer.model;
+package uk.co.conoregan.showrenamer.utils.show;
 
-public class Movie extends Show
-{
-    private final String releaseDate;
+public class ShowsManager {
 
-    public Movie(String title, String id, String releaseDate)
-    {
-        super(title, id);
-        this.releaseDate = releaseDate;
-    }
-
-    public String getReleaseDate()
-    {
-        return releaseDate;
-    }
-
-    @Override
-    public String toString()
-    {
-        return super.getTitle() + " (" + releaseDate.substring(0, 4) + ")";
-    }
 }

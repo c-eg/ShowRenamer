@@ -15,12 +15,12 @@
  * along with ShowRenamer.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package uk.co.conoregan.showrenamer.utils;
+package uk.co.conoregan.showrenamer.utils.show;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ShowInfo
+public class ShowInfoMatcher
 {
     private final String title;
     private final String year;
@@ -41,7 +41,7 @@ public class ShowInfo
      * @param showFile show string to get info from
      *                 e.g.  Movie.Name.2017.1080p.BluRay.x264
      */
-    public ShowInfo(String showFile)
+    public ShowInfoMatcher(String showFile)
     {
         title = matchTitle(showFile);
         year = matchYear(showFile);
@@ -371,7 +371,7 @@ public class ShowInfo
      */
     public static void main(String[] args)
     {
-        ShowInfo showInfo = new ShowInfo("Wynonna Earp - S04E04");
-        System.out.println(showInfo);
+        ShowInfoMatcher showInfoMatcher = new ShowInfoMatcher("Wynonna Earp - S04E04");
+        System.out.println(showInfoMatcher);
     }
 }

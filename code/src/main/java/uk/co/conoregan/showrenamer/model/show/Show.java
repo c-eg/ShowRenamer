@@ -26,8 +26,6 @@ public abstract class Show {
         this.id = id;
     }
 
-    public abstract String toString();
-
     public String getTitle() {
         return title;
     }

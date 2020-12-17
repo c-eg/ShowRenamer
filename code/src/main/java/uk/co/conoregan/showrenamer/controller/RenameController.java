@@ -25,8 +25,8 @@ import javafx.scene.control.*;
 import uk.co.conoregan.showrenamer.model.Movie;
 import uk.co.conoregan.showrenamer.model.Show;
 import uk.co.conoregan.showrenamer.model.TVShow;
-import uk.co.conoregan.showrenamer.utils.ShowInfo;
 import uk.co.conoregan.showrenamer.utils.ShowInfoFromAPI;
+import uk.co.conoregan.showrenamer.utils.show.ShowInfoMatcher;
 
 import javax.swing.*;
 import java.io.File;
@@ -134,16 +134,16 @@ public class RenameController implements Initializable
     {
         listRenameTo.clear();
 
-        ShowInfo showInfo;
+        ShowInfoMatcher showInfoMatcher;
         ArrayList<Show> shows;
 
         for (String s : listRenameFrom)
         {
             // get title of tv show or movie from original file name
-            showInfo = new ShowInfo(s);
+            showInfoMatcher = new ShowInfoMatcher(s);
 
             // get the first show matching title
-            shows = ShowInfoFromAPI.getShows(showInfo.getTitle());
+            shows = ShowInfoFromAPI.getShows(showInfoMatcher.getTitle());
 
 
             String episodeName;
@@ -155,8 +155,8 @@ public class RenameController implements Initializable
 
                 if (lookedUpShow instanceof TVShow)
                 {
-                    int season = Integer.parseInt(showInfo.getSeason());
-                    int episode = Integer.parseInt(showInfo.getEpisode());
+                    int season = Integer.parseInt(showInfoMatcher.getSeason());
+                    int episode = Integer.parseInt(showInfoMatcher.getEpisode());
 
                     // get the episode name for that season and episode
                     episodeName = ShowInfoFromAPI.getEpisodeName(lookedUpShow.getId(), season, episode);
@@ -164,7 +164,7 @@ public class RenameController implements Initializable
                     // TODO:
                     //  - Replace '*'  with '' in episode name
 
-                    listRenameTo.add((lookedUpShow.getTitle() + " - S" + showInfo.getSeason() + "E" + showInfo.getEpisode() + " - " + episodeName).replaceAll(":", ""));
+                    listRenameTo.add((lookedUpShow.getTitle() + " - S" + showInfoMatcher.getSeason() + "E" + showInfoMatcher.getEpisode() + " - " + episodeName).replaceAll(":", ""));
                 }
                 else if (lookedUpShow instanceof Movie)
                 {

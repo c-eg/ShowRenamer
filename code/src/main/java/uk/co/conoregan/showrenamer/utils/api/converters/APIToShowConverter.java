@@ -18,14 +18,13 @@
 package uk.co.conoregan.showrenamer.utils.api.converters;
 
 import org.json.JSONObject;
+import uk.co.conoregan.showrenamer.model.show.Episode;
 import uk.co.conoregan.showrenamer.model.show.Movie;
-import uk.co.conoregan.showrenamer.model.show.TVShow;
-
-import java.util.ArrayList;
+import uk.co.conoregan.showrenamer.model.show.Season;
 
 public interface APIToShowConverter {
     /**
-     * Converts the JSONObject of movieInfo passed to Movie object
+     * Converts the JSONObject of movieInfo passed to Movie
      *
      * @param movieInfo movieInfo resuls from api call
      * @return Movie
@@ -33,18 +32,18 @@ public interface APIToShowConverter {
     Movie getMovie(JSONObject movieInfo);
 
     /**
-     * Converts the JSONObject of seasonInfo passed to an ArrayList of TVShow object
+     * Converts the JSONObject of seasonInfo passed to a Season
      *
      * @param seasonInfo seasonInfo resuls from api call
-     * @return TVShows
+     * @return Season containing episodes
      */
-    ArrayList<TVShow> getTVSeason(JSONObject seasonInfo);
+    Season getSeason(JSONObject seasonInfo);
 
     /**
-     * Converts the JSONObject of episodeInfo passed to TVShow object
+     * Converts the JSONObject of episodeInfo passed to Episode
      *
      * @param episodeInfo episodeInfo resuls from api call
-     * @return TVShow
+     * @return Episode
      */
-    TVShow getTVShow(JSONObject episodeInfo);
+    Episode getEpisode(JSONObject episodeInfo);
 }

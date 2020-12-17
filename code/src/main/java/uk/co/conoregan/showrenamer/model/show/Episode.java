@@ -15,18 +15,35 @@
  * along with ShowRenamer.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package uk.co.conoregan.showrenamer.model;
+package uk.co.conoregan.showrenamer.model.show;
 
-public class TVShow extends Show
-{
-    public TVShow(String title, String id)
-    {
-        super(title, id);
+public class Episode implements Comparable<Episode> {
+    private String name;
+    private int number;
+
+    public Episode(String name, int number) {
+        this.name = name;
+        this.number = number;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public int getNumber() {
+        return this.number;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
     }
 
     @Override
-    public String toString()
-    {
-        return super.getTitle();
+    public int compareTo(Episode other) {
+        return Integer.compare(this.number, other.number);
     }
 }

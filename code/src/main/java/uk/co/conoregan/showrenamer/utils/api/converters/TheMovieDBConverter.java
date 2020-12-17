@@ -18,10 +18,9 @@
 package uk.co.conoregan.showrenamer.utils.api.converters;
 
 import org.json.JSONObject;
+import uk.co.conoregan.showrenamer.model.show.Episode;
 import uk.co.conoregan.showrenamer.model.show.Movie;
-import uk.co.conoregan.showrenamer.model.show.TVShow;
-
-import java.util.ArrayList;
+import uk.co.conoregan.showrenamer.model.show.Season;
 
 public class TheMovieDBConverter implements APIToShowConverter {
     @Override
@@ -30,12 +29,12 @@ public class TheMovieDBConverter implements APIToShowConverter {
     }
 
     @Override
-    public ArrayList<TVShow> getTVSeason(JSONObject seasonInfo) {
+    public Season getSeason(JSONObject seasonInfo) {
         return null;
     }
 
     @Override
-    public TVShow getTVShow(JSONObject episodeInfo) {
+    public Episode getEpisode(JSONObject episodeInfo) {
         return null;
     }
 }

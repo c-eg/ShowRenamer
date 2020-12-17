@@ -20,24 +20,40 @@ package uk.co.conoregan.showrenamer.model.show;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class TVShow extends Show implements Iterable<Season> {
-    private ArrayList<Season> seasons;
+public class Season implements Iterable<Episode>, Comparable<Season> {
+    private String name = null;
+    private int number;
+    private ArrayList<Episode> episodes;
 
-    public TVShow(String title, String id) {
-        super(title, id);
-        this.seasons = new ArrayList<>();
+    public Season() {
+        this.episodes = new ArrayList<>();
     }
 
-    public Season getSeason(int index) {
-        return this.seasons.get(index);
+    public Season(String name, int number) {
+        this();
+        this.name = name;
+        this.number = number;
     }
 
-    public void addSeason(Season season) {
-        seasons.add(season);
+    public void addEpisode(Episode episode) {
+        this.episodes.add(episode);
+    }
+
+    public Episode getEpisode(int index) {
+        return this.episodes.get(index);
+    }
+
+    public String getName() {
+        return this.name;
     }
 
     @Override
-    public Iterator<Season> iterator() {
-        return seasons.iterator();
+    public Iterator<Episode> iterator() {
+        return episodes.iterator();
+    }
+
+    @Override
+    public int compareTo(Season other) {
+        return Integer.compare(this.number, other.number);
     }
 }
