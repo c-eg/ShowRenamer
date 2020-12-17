@@ -28,7 +28,7 @@ public interface ShowDatabaseAPI {
      *
      * @param title title of show to search for
      * @return show names with an associated unique id
-     * e.g.
+     * e.g. but can be in any form
      * {
      *     "results": [
      *         {

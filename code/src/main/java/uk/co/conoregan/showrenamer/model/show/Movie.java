@@ -17,8 +17,6 @@
 
 package uk.co.conoregan.showrenamer.model.show;
 
-import uk.co.conoregan.showrenamer.model.Show;
-
 public class Movie extends Show {
     private final String releaseDate;
 
