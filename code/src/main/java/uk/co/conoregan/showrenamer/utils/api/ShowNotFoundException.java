@@ -21,7 +21,6 @@ public class ShowNotFoundException extends Exception {
 
     /**
      * Constructor for Exception when show is not found in a search
-     *
      * @param title of show searched
      */
     public ShowNotFoundException(String title) {
