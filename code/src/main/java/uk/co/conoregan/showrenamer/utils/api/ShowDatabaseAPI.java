@@ -20,6 +20,8 @@ package uk.co.conoregan.showrenamer.utils.api;
 import org.json.JSONObject;
 import uk.co.conoregan.showrenamer.exception.ShowNotFoundException;
 
+import java.io.IOException;
+
 public interface ShowDatabaseAPI {
     /**
      * Searches the api for shows matching the String
@@ -36,7 +38,7 @@ public interface ShowDatabaseAPI {
      *     ]
      * }
      */
-    JSONObject getShowsSearch(String title) throws ShowNotFoundException;
+    JSONObject getShowsSearch(String title) throws ShowNotFoundException, IOException;
 
     /**
      * Gets the movie information of a movie from the api
@@ -54,7 +56,7 @@ public interface ShowDatabaseAPI {
      *     ]
      * }
      */
-    JSONObject getMovieInfo(String id);
+    JSONObject getMovieInfo(String id) throws IOException;
 
     /**
      * Gets the season information of a tv show from the api
@@ -76,7 +78,7 @@ public interface ShowDatabaseAPI {
      *     ]
      * }
      */
-    JSONObject getTVShowSeasonInfo(String id, int seasonNumber);
+    JSONObject getTVShowSeasonInfo(String id, int seasonNumber) throws IOException;
 
     /**
      * Gets the episode information of a tv show from the api
@@ -94,5 +96,5 @@ public interface ShowDatabaseAPI {
      *     "episode_number": EPISODE_NUMBER
      * }
      */
-    JSONObject getTVShowEpisodeInfo(String id, int seasonNumber, int episodeNumber);
+    JSONObject getTVShowEpisodeInfo(String id, int seasonNumber, int episodeNumber) throws IOException;
 }
