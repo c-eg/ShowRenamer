@@ -18,6 +18,7 @@
 package uk.co.conoregan.showrenamer.utils.api;
 
 import org.json.JSONObject;
+import uk.co.conoregan.showrenamer.exception.ShowNotFoundException;
 
 public interface ShowDatabaseAPI {
     /**

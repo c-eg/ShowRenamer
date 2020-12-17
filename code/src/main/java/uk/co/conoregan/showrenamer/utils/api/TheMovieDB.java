@@ -17,13 +17,27 @@
 
 package uk.co.conoregan.showrenamer.utils.api;
 
-public class ShowNotFoundException extends Exception {
+import org.json.JSONObject;
+import uk.co.conoregan.showrenamer.exception.ShowNotFoundException;
 
-    /**
-     * Constructor for Exception when show is not found in a search
-     * @param title of show searched
-     */
-    public ShowNotFoundException(String title) {
-        super("Could not find " + title + " in API...");
+public class TheMovieDB implements ShowDatabaseAPI {
+    @Override
+    public JSONObject getShowsSearch(String title) throws ShowNotFoundException {
+        return null;
+    }
+
+    @Override
+    public JSONObject getMovieInfo(String title) throws ShowNotFoundException {
+        return null;
+    }
+
+    @Override
+    public JSONObject getTVShowSeasonInfo(String id, int seasonNumber) {
+        return null;
+    }
+
+    @Override
+    public JSONObject getTVShowEpisodeInfo(String id, int seasonNumber, int episodeNumber) {
+        return null;
     }
 }

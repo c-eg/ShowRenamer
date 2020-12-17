@@ -15,7 +15,7 @@
  * along with ShowRenamer.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package uk.co.conoregan.showrenamer.utils.converters;
+package uk.co.conoregan.showrenamer.utils.api.converters;
 
 import org.json.JSONObject;
 import uk.co.conoregan.showrenamer.model.show.Movie;
@@ -23,25 +23,19 @@ import uk.co.conoregan.showrenamer.model.show.TVShow;
 
 import java.util.ArrayList;
 
-public interface APIToShowConverter {
-    /**
-     * Converts the JSONObject of movieInfo passed to Movie object
-     * @param movieInfo movieInfo resuls from api call
-     * @return Movie
-     */
-    Movie getMovie(JSONObject movieInfo);
+public class TheMovieDBConverter implements APIToShowConverter {
+    @Override
+    public Movie getMovie(JSONObject movieInfo) {
+        return null;
+    }
 
-    /**
-     * Converts the JSONObject of seasonInfo passed to an ArrayList of TVShow object
-     * @param seasonInfo seasonInfo resuls from api call
-     * @return TVShows
-     */
-    ArrayList<TVShow> getTVSeason(JSONObject seasonInfo);
+    @Override
+    public ArrayList<TVShow> getTVSeason(JSONObject seasonInfo) {
+        return null;
+    }
 
-    /**
-     * Converts the JSONObject of episodeInfo passed to TVShow object
-     * @param episodeInfo episodeInfo resuls from api call
-     * @return TVShow
-     */
-    TVShow getTVShow(JSONObject episodeInfo);
+    @Override
+    public TVShow getTVShow(JSONObject episodeInfo) {
+        return null;
+    }
 }
