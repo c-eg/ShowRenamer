@@ -39,9 +39,9 @@ public interface ShowDatabaseAPI {
     JSONObject getShowsSearch(String title) throws ShowNotFoundException;
 
     /**
-     * Searches the api for shows matching the String
+     * Gets the movie information of a movie from the api
      *
-     * @param title title of show to search for
+     * @param id id of movie to search for
      * @return show names with an associated unique id
      * e.g. but can be in any form
      * {
@@ -54,7 +54,7 @@ public interface ShowDatabaseAPI {
      *     ]
      * }
      */
-    JSONObject getMovieInfo(String title) throws ShowNotFoundException;
+    JSONObject getMovieInfo(String id);
 
     /**
      * Gets the season information of a tv show from the api

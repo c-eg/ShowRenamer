@@ -27,7 +27,7 @@ public class TheMovieDB implements ShowDatabaseAPI {
     }
 
     @Override
-    public JSONObject getMovieInfo(String title) throws ShowNotFoundException {
+    public JSONObject getMovieInfo(String id) {
         return null;
     }
 

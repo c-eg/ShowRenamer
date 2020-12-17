@@ -26,6 +26,7 @@ import java.util.ArrayList;
 public interface APIToShowConverter {
     /**
      * Converts the JSONObject of movieInfo passed to Movie object
+     *
      * @param movieInfo movieInfo resuls from api call
      * @return Movie
      */
@@ -33,6 +34,7 @@ public interface APIToShowConverter {
 
     /**
      * Converts the JSONObject of seasonInfo passed to an ArrayList of TVShow object
+     *
      * @param seasonInfo seasonInfo resuls from api call
      * @return TVShows
      */
@@ -40,6 +42,7 @@ public interface APIToShowConverter {
 
     /**
      * Converts the JSONObject of episodeInfo passed to TVShow object
+     *
      * @param episodeInfo episodeInfo resuls from api call
      * @return TVShow
      */
