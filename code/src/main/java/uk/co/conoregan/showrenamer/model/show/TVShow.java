@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class TVShow extends Show implements Iterable<Season> {
-    private ArrayList<Season> seasons;
+    private final ArrayList<Season> seasons;
 
     public TVShow(String title, String id) {
         super(title, id);

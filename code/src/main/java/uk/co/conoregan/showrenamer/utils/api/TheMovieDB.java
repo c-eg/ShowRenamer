@@ -30,6 +30,8 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 public class TheMovieDB implements ShowDatabaseAPI {
+    public TheMovieDB() {}
+
     /**
      * Function to get the API key from the api_key.json file
      *
@@ -52,7 +54,6 @@ public class TheMovieDB implements ShowDatabaseAPI {
         }
     }
 
-    @Override
     public JSONObject getShowsSearch(String title) throws ShowNotFoundException, IOException {
         // format the request properly
         // replace all occurrences of " " with "%20"

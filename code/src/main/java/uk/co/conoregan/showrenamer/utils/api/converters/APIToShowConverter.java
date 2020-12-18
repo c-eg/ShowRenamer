@@ -21,8 +21,19 @@ import org.json.JSONObject;
 import uk.co.conoregan.showrenamer.model.show.Episode;
 import uk.co.conoregan.showrenamer.model.show.Movie;
 import uk.co.conoregan.showrenamer.model.show.Season;
+import uk.co.conoregan.showrenamer.utils.api.ResultContainer;
+
+import java.util.ArrayList;
 
 public interface APIToShowConverter {
+    /**
+     * Converts the JSONObject of the searched title to a ResultContainer
+     *
+     * @param showSearch showSearch results from api call
+     * @return ResultContainer
+     */
+    ArrayList<ResultContainer> getResults(JSONObject showSearch);
+
     /**
      * Converts the JSONObject of movieInfo passed to Movie
      *

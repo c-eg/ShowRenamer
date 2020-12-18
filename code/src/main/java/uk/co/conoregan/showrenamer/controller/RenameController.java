@@ -22,11 +22,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import uk.co.conoregan.showrenamer.model.Movie;
-import uk.co.conoregan.showrenamer.model.Show;
-import uk.co.conoregan.showrenamer.model.TVShow;
-import uk.co.conoregan.showrenamer.utils.ShowInfoFromAPI;
-import uk.co.conoregan.showrenamer.utils.show.ShowInfoMatcher;
 
 import javax.swing.*;
 import java.io.File;
@@ -129,54 +124,54 @@ public class RenameController implements Initializable
         }
     }
 
-    @FXML
-    public void getSuggestedNames() throws IOException
-    {
-        listRenameTo.clear();
-
-        ShowInfoMatcher showInfoMatcher;
-        ArrayList<Show> shows;
-
-        for (String s : listRenameFrom)
-        {
-            // get title of tv show or movie from original file name
-            showInfoMatcher = new ShowInfoMatcher(s);
-
-            // get the first show matching title
-            shows = ShowInfoFromAPI.getShows(showInfoMatcher.getTitle());
-
-
-            String episodeName;
-            Show lookedUpShow;
-
-            if (shows.size() > 0)
-            {
-                lookedUpShow = shows.get(0);
-
-                if (lookedUpShow instanceof TVShow)
-                {
-                    int season = Integer.parseInt(showInfoMatcher.getSeason());
-                    int episode = Integer.parseInt(showInfoMatcher.getEpisode());
-
-                    // get the episode name for that season and episode
-                    episodeName = ShowInfoFromAPI.getEpisodeName(lookedUpShow.getId(), season, episode);
-
-                    // TODO:
-                    //  - Replace '*'  with '' in episode name
-
-                    listRenameTo.add((lookedUpShow.getTitle() + " - S" + showInfoMatcher.getSeason() + "E" + showInfoMatcher.getEpisode() + " - " + episodeName).replaceAll(":", ""));
-                }
-                else if (lookedUpShow instanceof Movie)
-                {
-                    listRenameTo.add((lookedUpShow.getTitle() + " (" + ((Movie) lookedUpShow).getReleaseDate().substring(0, 4) + ")").replaceAll(":", ""));
-                }
-            }
-            else
-            {
-                listRenameTo.add(RenameController.ERROR_MESSAGE);
-            }
-        }
-    }
+//    @FXML
+//    public void getSuggestedNames() throws IOException
+//    {
+//        listRenameTo.clear();
+//
+//        ShowInfoMatcher showInfoMatcher;
+//        ArrayList<Show> shows;
+//
+//        for (String s : listRenameFrom)
+//        {
+//            // get title of tv show or movie from original file name
+//            showInfoMatcher = new ShowInfoMatcher(s);
+//
+//            // get the first show matching title
+//            shows = ShowInfoFromAPI.getShows(showInfoMatcher.getTitle());
+//
+//
+//            String episodeName;
+//            Show lookedUpShow;
+//
+//            if (shows.size() > 0)
+//            {
+//                lookedUpShow = shows.get(0);
+//
+//                if (lookedUpShow instanceof TVShow)
+//                {
+//                    int season = Integer.parseInt(showInfoMatcher.getSeason());
+//                    int episode = Integer.parseInt(showInfoMatcher.getEpisode());
+//
+//                    // get the episode name for that season and episode
+//                    episodeName = ShowInfoFromAPI.getEpisodeName(lookedUpShow.getId(), season, episode);
+//
+//                    // TODO:
+//                    //  - Replace '*'  with '' in episode name
+//
+//                    listRenameTo.add((lookedUpShow.getTitle() + " - S" + showInfoMatcher.getSeason() + "E" + showInfoMatcher.getEpisode() + " - " + episodeName).replaceAll(":", ""));
+//                }
+//                else if (lookedUpShow instanceof Movie)
+//                {
+//                    listRenameTo.add((lookedUpShow.getTitle() + " (" + ((Movie) lookedUpShow).getReleaseDate().substring(0, 4) + ")").replaceAll(":", ""));
+//                }
+//            }
+//            else
+//            {
+//                listRenameTo.add(RenameController.ERROR_MESSAGE);
+//            }
+//        }
+//    }
 
     private void renameFile(File f) throws IOException
     {

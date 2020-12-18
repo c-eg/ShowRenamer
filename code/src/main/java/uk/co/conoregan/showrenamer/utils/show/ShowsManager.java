@@ -17,6 +17,71 @@
 
 package uk.co.conoregan.showrenamer.utils.show;
 
+import org.json.JSONObject;
+import uk.co.conoregan.showrenamer.exception.ShowNotFoundException;
+import uk.co.conoregan.showrenamer.model.show.Show;
+import uk.co.conoregan.showrenamer.utils.api.ResultContainer;
+import uk.co.conoregan.showrenamer.utils.api.TheMovieDB;
+import uk.co.conoregan.showrenamer.utils.api.converters.TheMovieDBConverter;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class ShowsManager {
 
+    private final ArrayList<Show> shows;
+
+    public ShowsManager(List<File> files) {
+        this.shows = new ArrayList<>();
+
+        for (File f : files) {
+            // get show title from ShowInfoMatcher
+            ShowInfoMatcher showInfoMatcher = new ShowInfoMatcher(f.getName().substring(0, f.getName().lastIndexOf('.')));
+            String title = showInfoMatcher.getTitle();
+
+            // search for show
+            TheMovieDB tmdb = new TheMovieDB();
+            JSONObject result = null;
+            try {
+                result = tmdb.getShowsSearch(title);
+            }
+            catch (ShowNotFoundException | IOException e) {
+                e.printStackTrace();
+            }
+
+            // get results
+            TheMovieDBConverter theMovieDBConverter = new TheMovieDBConverter();
+            ArrayList<ResultContainer> data = theMovieDBConverter.getResults(result);
+
+            for (ResultContainer r : data) {
+                System.out.println(r);
+            }
+
+
+            // if movie
+                // api call for movie
+                // get year and create movie object
+            // if tv
+                // check if show exists
+                    // check if season exists
+                        // create episode and add
+                    // create season and episode and add
+                // create show, season and episode
+
+            // once all files have been read
+            // if tv
+                // for each season in a show, create api call
+                // update objects from api data
+        }
+    }
+
+    public static void main(String[] args) {
+        ArrayList<File> files = new ArrayList<>();
+        files.add(new File("Z:\\TV Shows\\Corporate\\Season 1\\Corporate - S01E01 - The Void.mp4"));
+
+        ShowsManager sm = new ShowsManager(files);
+
+    }
 }

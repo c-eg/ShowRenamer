@@ -15,45 +15,46 @@
  * along with ShowRenamer.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package uk.co.conoregan.showrenamer.model.show;
+package uk.co.conoregan.showrenamer.utils.api;
 
-import java.util.ArrayList;
-import java.util.Iterator;
+public class ResultContainer {
+    private final String name;
+    private final int id;
+    private final ShowType type;
 
-public class Season implements Iterable<Episode>, Comparable<Season> {
-    private String name = null;
-    private int number;
-    private final ArrayList<Episode> episodes;
-
-    public Season() {
-        this.episodes = new ArrayList<>();
-    }
-
-    public Season(String name, int number) {
-        this();
+    /**
+     * Constructor
+     * @param name name of show
+     * @param id id of show
+     * @param type type of show (enum)
+     */
+    public ResultContainer(String name, int id, ShowType type) {
         this.name = name;
-        this.number = number;
+        this.id = id;
+        this.type = type;
     }
 
-    public void addEpisode(Episode episode) {
-        this.episodes.add(episode);
-    }
-
-    public Episode getEpisode(int index) {
-        return this.episodes.get(index);
+    /**
+     * ShowType enum to differenciate between different shows
+     */
+    public enum ShowType {
+        MOVIE, TV;
     }
 
     public String getName() {
         return this.name;
     }
 
-    @Override
-    public Iterator<Episode> iterator() {
-        return episodes.iterator();
+    public int getId() {
+        return this.id;
+    }
+
+    public ShowType getType() {
+        return this.type;
     }
 
     @Override
-    public int compareTo(Season other) {
-        return Integer.compare(this.number, other.number);
+    public String toString() {
+        return String.format("%s, %d, %s", this.name, this.id, this.type.toString());
     }
 }

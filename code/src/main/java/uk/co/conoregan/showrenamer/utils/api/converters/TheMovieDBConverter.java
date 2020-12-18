@@ -17,12 +17,43 @@
 
 package uk.co.conoregan.showrenamer.utils.api.converters;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import uk.co.conoregan.showrenamer.model.show.Episode;
 import uk.co.conoregan.showrenamer.model.show.Movie;
 import uk.co.conoregan.showrenamer.model.show.Season;
+import uk.co.conoregan.showrenamer.utils.api.ResultContainer;
+
+import java.util.ArrayList;
 
 public class TheMovieDBConverter implements APIToShowConverter {
+    @Override
+    public ArrayList<ResultContainer> getResults(JSONObject showSearch) {
+        ArrayList<ResultContainer> shows = new ArrayList<>();
+
+        String title = null;
+        int id;
+        ResultContainer.ShowType type;
+
+        JSONArray resultsArray = showSearch.getJSONArray("results");
+
+        for (int i = 0; i < 3 && i < resultsArray.length(); i++) {
+            type = ResultContainer.ShowType.valueOf(resultsArray.getJSONObject(i).get("media_type").toString().toUpperCase());
+            id = (int) resultsArray.getJSONObject(i).get("id");
+
+            if (type == ResultContainer.ShowType.MOVIE) {
+                title = (String) resultsArray.getJSONObject(i).get("title");
+            }
+            else if (type == ResultContainer.ShowType.TV) {
+                title = (String) resultsArray.getJSONObject(i).get("name");
+            }
+
+            shows.add(new ResultContainer(title, id, type));
+        }
+
+        return shows;
+    }
+
     @Override
     public Movie getMovie(JSONObject movieInfo) {
         return null;
