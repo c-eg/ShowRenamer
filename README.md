@@ -16,7 +16,7 @@ Currently under development, pre-release is now out!
 
 ## Usage
 ### Windows
-1. Download the jar from the [releases](https://github.com/c-eg/ShowRenamer/releases)
+1. Download the latest jar from the [releases](https://github.com/c-eg/ShowRenamer/releases)
 2. Double click to run the jar
 3. If step 2. doesn't work, try running from command line using: `java -jar JAR_NAME.jar`
 
