@@ -1,11 +1,18 @@
 # ShowRenamer
-Renames movie and tv show file names to a much nicer format.
+Renames movie and tv show file names to a much nicer format
 
 some.random.movie.2010.1080p.blueray.x264 --> Some Random Movie (2010) <br/>
 some.random.tv.show.s01e01.1080p.bluray.x264 --> Some Random TV Show - S01E01 - {episode name} <br/>
 
 ## Project Status
 Currently under development, pre-release is now out!
+
+### Planned features to be implemented
+- Search page for shows if file doesn't include title
+- Allow to be used on Command Line Interface
+- User specified format to rename shows to
+- Subtitle download page
+- Support for multiple themes e.g. light and dark mode
 
 ## Usage
 ### Windows
