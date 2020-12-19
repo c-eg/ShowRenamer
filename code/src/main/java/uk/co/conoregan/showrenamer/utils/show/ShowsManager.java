@@ -55,13 +55,23 @@ public class ShowsManager {
             TheMovieDBConverter theMovieDBConverter = new TheMovieDBConverter();
             ArrayList<ResultContainer> data = theMovieDBConverter.getResults(result);
 
-            for (ResultContainer r : data) {
-                System.out.println(r);
+            // if movie
+            if (data.get(0).getType() == ResultContainer.ShowType.MOVIE) {
+                try {
+                    // api call for movie
+                    JSONObject movieInfo = tmdb.getMovieInfo(data.get(0).getId());
+                    Show m = theMovieDBConverter.getMovie(movieInfo);
+                    System.out.println(m);
+                    shows.add(m);
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             }
 
 
-            // if movie
-                // api call for movie
+
                 // get year and create movie object
             // if tv
                 // check if show exists

@@ -32,14 +32,14 @@ public class TheMovieDBConverter implements APIToShowConverter {
         ArrayList<ResultContainer> shows = new ArrayList<>();
 
         String title = null;
-        int id;
+        String id;
         ResultContainer.ShowType type;
 
         JSONArray resultsArray = showSearch.getJSONArray("results");
 
         for (int i = 0; i < 3 && i < resultsArray.length(); i++) {
             type = ResultContainer.ShowType.valueOf(resultsArray.getJSONObject(i).get("media_type").toString().toUpperCase());
-            id = (int) resultsArray.getJSONObject(i).get("id");
+            id = resultsArray.getJSONObject(i).get("id").toString();
 
             if (type == ResultContainer.ShowType.MOVIE) {
                 title = (String) resultsArray.getJSONObject(i).get("title");
@@ -56,7 +56,11 @@ public class TheMovieDBConverter implements APIToShowConverter {
 
     @Override
     public Movie getMovie(JSONObject movieInfo) {
-        return null;
+        String title = movieInfo.get("title").toString();
+        String id = movieInfo.get("id").toString();
+        String releaseDate = movieInfo.get("release_date").toString();
+
+        return new Movie(title, id, releaseDate);
     }
 
     @Override

@@ -19,7 +19,7 @@ package uk.co.conoregan.showrenamer.utils.api;
 
 public class ResultContainer {
     private final String name;
-    private final int id;
+    private final String id;
     private final ShowType type;
 
     /**
@@ -28,14 +28,14 @@ public class ResultContainer {
      * @param id id of show
      * @param type type of show (enum)
      */
-    public ResultContainer(String name, int id, ShowType type) {
+    public ResultContainer(String name, String id, ShowType type) {
         this.name = name;
         this.id = id;
         this.type = type;
     }
 
     /**
-     * ShowType enum to differenciate between different shows
+     * ShowType enum to differenciate between different types of show
      */
     public enum ShowType {
         MOVIE, TV;
@@ -45,7 +45,7 @@ public class ResultContainer {
         return this.name;
     }
 
-    public int getId() {
+    public String getId() {
         return this.id;
     }
 
