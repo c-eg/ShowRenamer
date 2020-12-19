@@ -15,25 +15,25 @@
  * along with ShowRenamer.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package uk.co.conoregan.showrenamer.utils.show;
+package uk.co.conoregan.showrenamer.util.show;
 
 import org.json.JSONObject;
 import uk.co.conoregan.showrenamer.exception.ShowNotFoundException;
+import uk.co.conoregan.showrenamer.model.api.ResultContainer;
 import uk.co.conoregan.showrenamer.model.show.Show;
-import uk.co.conoregan.showrenamer.utils.api.ResultContainer;
-import uk.co.conoregan.showrenamer.utils.api.TheMovieDB;
-import uk.co.conoregan.showrenamer.utils.api.converters.TheMovieDBConverter;
+import uk.co.conoregan.showrenamer.util.api.TheMovieDatabase.TheMovieDB;
+import uk.co.conoregan.showrenamer.util.api.TheMovieDatabase.TheMovieDBConverter;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShowsManager {
+public class ShowManager {
 
     private final ArrayList<Show> shows;
 
-    public ShowsManager(List<File> files) {
+    public ShowManager(List<File> files) {
         this.shows = new ArrayList<>();
 
         for (File f : files) {
@@ -67,18 +67,21 @@ public class ShowsManager {
                 catch (IOException e) {
                     e.printStackTrace();
                 }
+            }
+            // if tv
+            else if (data.get(0).getType() == ResultContainer.ShowType.TV) {
+                // check if show exists
+                // TODO start here, maybe make a function to check if a tv show already exisits
+                //  and then add to it if it does, if not create it
 
+
+                // check if season exists
+                // create episode and add
+                // create season and episode and add
+                // create show, season and episode
             }
 
 
-
-                // get year and create movie object
-            // if tv
-                // check if show exists
-                    // check if season exists
-                        // create episode and add
-                    // create season and episode and add
-                // create show, season and episode
 
             // once all files have been read
             // if tv
@@ -91,7 +94,7 @@ public class ShowsManager {
         ArrayList<File> files = new ArrayList<>();
         files.add(new File("Z:\\TV Shows\\Corporate\\Season 1\\Corporate - S01E01 - The Void.mp4"));
 
-        ShowsManager sm = new ShowsManager(files);
+        ShowManager sm = new ShowManager(files);
 
     }
 }

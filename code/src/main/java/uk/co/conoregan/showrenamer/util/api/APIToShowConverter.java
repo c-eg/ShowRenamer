@@ -15,13 +15,13 @@
  * along with ShowRenamer.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package uk.co.conoregan.showrenamer.utils.api.converters;
+package uk.co.conoregan.showrenamer.util.api;
 
 import org.json.JSONObject;
+import uk.co.conoregan.showrenamer.model.api.ResultContainer;
 import uk.co.conoregan.showrenamer.model.show.Episode;
 import uk.co.conoregan.showrenamer.model.show.Movie;
 import uk.co.conoregan.showrenamer.model.show.Season;
-import uk.co.conoregan.showrenamer.utils.api.ResultContainer;
 
 import java.util.ArrayList;
 

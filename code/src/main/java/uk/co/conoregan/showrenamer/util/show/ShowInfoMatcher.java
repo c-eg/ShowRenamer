@@ -15,7 +15,7 @@
  * along with ShowRenamer.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package uk.co.conoregan.showrenamer.utils.show;
+package uk.co.conoregan.showrenamer.util.show;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

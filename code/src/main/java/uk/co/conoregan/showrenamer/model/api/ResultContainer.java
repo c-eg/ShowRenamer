@@ -15,7 +15,7 @@
  * along with ShowRenamer.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package uk.co.conoregan.showrenamer.utils.api;
+package uk.co.conoregan.showrenamer.model.api;
 
 public class ResultContainer {
     private final String name;

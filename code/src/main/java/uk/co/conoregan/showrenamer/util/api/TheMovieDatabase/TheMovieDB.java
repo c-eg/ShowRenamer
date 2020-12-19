@@ -15,11 +15,12 @@
  * along with ShowRenamer.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package uk.co.conoregan.showrenamer.utils.api;
+package uk.co.conoregan.showrenamer.util.api.TheMovieDatabase;
 
 import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
 import uk.co.conoregan.showrenamer.exception.ShowNotFoundException;
+import uk.co.conoregan.showrenamer.util.api.ShowDatabaseAPI;
 
 import java.io.BufferedReader;
 import java.io.IOException;

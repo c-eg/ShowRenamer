@@ -15,7 +15,7 @@
  * along with ShowRenamer.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package uk.co.conoregan.showrenamer.utils.api;
+package uk.co.conoregan.showrenamer.util.api;
 
 import org.json.JSONObject;
 import uk.co.conoregan.showrenamer.exception.ShowNotFoundException;
