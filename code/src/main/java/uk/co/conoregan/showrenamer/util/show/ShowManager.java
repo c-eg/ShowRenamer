@@ -21,6 +21,7 @@ import org.json.JSONObject;
 import uk.co.conoregan.showrenamer.exception.ShowNotFoundException;
 import uk.co.conoregan.showrenamer.model.api.ResultContainer;
 import uk.co.conoregan.showrenamer.model.show.Show;
+import uk.co.conoregan.showrenamer.model.show.TVShow;
 import uk.co.conoregan.showrenamer.util.api.TheMovieDatabase.TheMovieDB;
 import uk.co.conoregan.showrenamer.util.api.TheMovieDatabase.TheMovieDBConverter;
 
@@ -72,7 +73,8 @@ public class ShowManager {
                 // check if show exists
                 // TODO start here, maybe make a function to check if a tv show already exisits
                 //  and then add to it if it does, if not create it
-
+                TVShow tvShow = new TVShow(data.get(1).getName(), data.get(1).getId());
+                System.out.println(tvShow.getTitle());
 
                 // check if season exists
                 // create episode and add

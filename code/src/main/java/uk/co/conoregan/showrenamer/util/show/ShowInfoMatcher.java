@@ -262,9 +262,9 @@ public class ShowInfoMatcher
      *
      * @param showFile show string to get info from
      * @return season number of show, or null it if doesn't exist
-     * <p>
+     * 
      * works in formats:
-     * - {season/s}XXX
+     * - season/sXXX
      */
     private static String matchSeason(String showFile)
     {
@@ -282,11 +282,11 @@ public class ShowInfoMatcher
      *
      * @param showFile show string to get info from
      * @return episode number of show, or null it if doesn't exist
-     * <p>
+     * 
      * works in formats:
-     * - {episode/e}XXX
-     * - {episode/e}XXXeXXXeXXX
-     * - {episode/e}XXX-XXX-XXX
+     * - episode/eXXX
+     * - episode/eXXXeXXXeXXX
+     * - episode/eXXX-XXX-XXX
      */
     private static String matchEpisode(String showFile)
     {
