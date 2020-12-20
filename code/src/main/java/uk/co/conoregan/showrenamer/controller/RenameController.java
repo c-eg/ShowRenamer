@@ -34,8 +34,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class RenameController implements Initializable
-{
+public class RenameController implements Initializable {
     // constants
     private static final String ERROR_MESSAGE = "<Unable to find match>";
 
@@ -73,8 +72,7 @@ public class RenameController implements Initializable
     private CheckBox checkboxSubFolder;
 
     @FXML
-    private void openFileDialog() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, IOException
-    {
+    private void openFileDialog() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, IOException {
         // set dialog MVC.style to windows
         //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 
@@ -85,18 +83,15 @@ public class RenameController implements Initializable
         int returnVal = chooser.showOpenDialog(null);
 
         // if the user selected a folder
-        if (returnVal == JFileChooser.APPROVE_OPTION)
-        {
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
             File dir = chooser.getSelectedFile();
 
             // get list of files
             File[] temp = dir.listFiles();
 
             // if the folder contains files
-            if (temp != null && temp.length > 0)
-            {
-                for (File item : Objects.requireNonNull(dir.listFiles()))
-                {
+            if (temp != null && temp.length > 0) {
+                for (File item : Objects.requireNonNull(dir.listFiles())) {
                     addContentsToRenameFrom(item);
                 }
             }
@@ -108,17 +103,12 @@ public class RenameController implements Initializable
      *
      * @param item file from selected folder in open file dialog
      */
-    private void addContentsToRenameFrom(File item)
-    {
-        if (item.isFile())
-        {
+    private void addContentsToRenameFrom(File item) {
+        if (item.isFile()) {
             listRenameFrom.add(item.getName().substring(0, item.getName().lastIndexOf('.')));
             files.add(item);
-        }
-        else if (item.isDirectory() && checkboxSubFolder.isSelected())
-        {
-            for (File f : Objects.requireNonNull(item.listFiles()))
-            {
+        } else if (item.isDirectory() && checkboxSubFolder.isSelected()) {
+            for (File f : Objects.requireNonNull(item.listFiles())) {
                 addContentsToRenameFrom(f);
             }
         }
@@ -173,15 +163,11 @@ public class RenameController implements Initializable
 //        }
 //    }
 
-    private void renameFile(File f) throws IOException
-    {
-        if (f.isFile())
-        {
-            for (int i = 0; i < listRenameFrom.size(); i++)
-            {
+    private void renameFile(File f) throws IOException {
+        if (f.isFile()) {
+            for (int i = 0; i < listRenameFrom.size(); i++) {
                 // check if current file name contains name from listRenameFrom
-                if (f.getCanonicalPath().contains(listRenameFrom.get(i)))
-                {
+                if (f.getCanonicalPath().contains(listRenameFrom.get(i))) {
                     // get path
                     String path = files.get(i).getCanonicalPath();
 
@@ -199,26 +185,20 @@ public class RenameController implements Initializable
                     Files.move(p, p.resolveSibling(sb.toString()));
                 }
             }
-        }
-        else if (f.isDirectory())   // recursion
+        } else if (f.isDirectory())   // recursion
         {
             // for each file in the directory, call the recursive function
-            for (File temp : Objects.requireNonNull(f.listFiles()))
-            {
+            for (File temp : Objects.requireNonNull(f.listFiles())) {
                 renameFile(temp);
             }
         }
     }
 
     @FXML
-    public void renameAll() throws IOException
-    {
-        if (listRenameFrom.size() == listRenameTo.size() && listRenameFrom.size() > 0)
-        {
-            for (int i = 0; i < files.size(); i++)
-            {
-                if (!listRenameTo.get(i).equals(RenameController.ERROR_MESSAGE))
-                {
+    public void renameAll() throws IOException {
+        if (listRenameFrom.size() == listRenameTo.size() && listRenameFrom.size() > 0) {
+            for (int i = 0; i < files.size(); i++) {
+                if (!listRenameTo.get(i).equals(RenameController.ERROR_MESSAGE)) {
                     renameFile(files.get(i));
                 }
             }
@@ -226,8 +206,7 @@ public class RenameController implements Initializable
     }
 
     @FXML
-    public void renameSelected()
-    {
+    public void renameSelected() {
 //        if (listRenameFrom.size() > 0)
 //        {
 //            String toRename = listViewRenameFrom.getSelectionModel().getSelectedItem();
@@ -238,8 +217,7 @@ public class RenameController implements Initializable
     }
 
     @FXML
-    public void removeSelected()
-    {
+    public void removeSelected() {
         removeItem(listViewRenameFrom);
     }
 
@@ -249,10 +227,8 @@ public class RenameController implements Initializable
      * @param list List for an item to be removed from
      * @param <T>  Type to of object in list
      */
-    private <T> void removeItem(ListView<T> list)
-    {
-        if (list.getItems().size() > 0)
-        {
+    private <T> void removeItem(ListView<T> list) {
+        if (list.getItems().size() > 0) {
             int index = list.getSelectionModel().getSelectedIndex();
             listRenameFrom.remove(index);
             files.remove(index);
@@ -260,8 +236,7 @@ public class RenameController implements Initializable
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle)
-    {
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         // stops checkbox box resizing when clicking on and off other controls
         checkboxSubFolder.setFocusTraversable(false);
 
@@ -284,22 +259,16 @@ public class RenameController implements Initializable
     /**
      * Function to set the styling of the ListView to wrap the text if it's too long
      */
-    private void setListViewsWrapText(ListView<String> listView)
-    {
-        listView.setCellFactory(param -> new ListCell<String>()
-        {
+    private void setListViewsWrapText(ListView<String> listView) {
+        listView.setCellFactory(param -> new ListCell<String>() {
             @Override
-            protected void updateItem(String item, boolean empty)
-            {
+            protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
 
-                if (empty || item == null)
-                {
+                if (empty || item == null) {
                     setGraphic(null);
                     setText(null);
-                }
-                else
-                {
+                } else {
                     // set the width's
                     setMinWidth(param.getWidth() - 40);
                     setMaxWidth(param.getWidth() - 40);

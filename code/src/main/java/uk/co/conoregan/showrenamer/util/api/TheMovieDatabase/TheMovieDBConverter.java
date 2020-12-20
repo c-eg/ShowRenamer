@@ -44,8 +44,7 @@ public class TheMovieDBConverter implements APIToShowConverter {
 
             if (type == ResultContainer.ShowType.MOVIE) {
                 title = (String) resultsArray.getJSONObject(i).get("title");
-            }
-            else if (type == ResultContainer.ShowType.TV) {
+            } else if (type == ResultContainer.ShowType.TV) {
                 title = (String) resultsArray.getJSONObject(i).get("name");
             }
 

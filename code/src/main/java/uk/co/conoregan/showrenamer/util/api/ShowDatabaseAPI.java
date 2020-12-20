@@ -30,12 +30,12 @@ public interface ShowDatabaseAPI {
      * @return show names with an associated unique id
      * e.g. but can be in any form
      * {
-     *     "results": [
-     *         {
-     *             "show_name": SHOW_NAME,
-     *             "show_id": UNIQUE_ID_OF_SHOW,
-     *         }, etc.
-     *     ]
+     * "results": [
+     * {
+     * "show_name": SHOW_NAME,
+     * "show_id": UNIQUE_ID_OF_SHOW,
+     * }, etc.
+     * ]
      * }
      */
     JSONObject getShowsSearch(String title) throws ShowNotFoundException, IOException;
@@ -47,13 +47,13 @@ public interface ShowDatabaseAPI {
      * @return show names with an associated unique id
      * e.g. but can be in any form
      * {
-     *     "results": [
-     *         {
-     *             "show_name": MOVIE_NAME,
-     *             "show_id": UNIQUE_ID_OF_SHOW,
-     *             "movie_year" RELEASE_DATE_OF_MOVIE
-     *         }, etc.
-     *     ]
+     * "results": [
+     * {
+     * "show_name": MOVIE_NAME,
+     * "show_id": UNIQUE_ID_OF_SHOW,
+     * "movie_year" RELEASE_DATE_OF_MOVIE
+     * }, etc.
+     * ]
      * }
      */
     JSONObject getMovieInfo(String id) throws IOException;
@@ -66,16 +66,16 @@ public interface ShowDatabaseAPI {
      * @return season information
      * e.g. but can be in any form
      * {
-     *     "show_title": SHOW_TITLE,
-     *     "show_id": SHOW_ID,
-     *     "season_name": SEASON_NAME,
-     *     "episodes": [
-     *         {
-     *              "episode_name": EPISODE_NAME,
-     *              "season_number": SEASON_NUMBER,
-     *              "episode_number": EPISODE_NUMBER
-     *         }, etc.
-     *     ]
+     * "show_title": SHOW_TITLE,
+     * "show_id": SHOW_ID,
+     * "season_name": SEASON_NAME,
+     * "episodes": [
+     * {
+     * "episode_name": EPISODE_NAME,
+     * "season_number": SEASON_NUMBER,
+     * "episode_number": EPISODE_NUMBER
+     * }, etc.
+     * ]
      * }
      */
     JSONObject getTVShowSeasonInfo(String id, int seasonNumber) throws IOException;
@@ -89,11 +89,11 @@ public interface ShowDatabaseAPI {
      * @return episode information
      * e.g. but can be in any form
      * {
-     *     "show_title": SHOW_TITLE,
-     *     "show_id": SHOW_ID,
-     *     "episode_name": EPISODE_NAME,
-     *     "season_number": SEASON_NUMBER,
-     *     "episode_number": EPISODE_NUMBER
+     * "show_title": SHOW_TITLE,
+     * "show_id": SHOW_ID,
+     * "episode_name": EPISODE_NAME,
+     * "season_number": SEASON_NUMBER,
+     * "episode_number": EPISODE_NUMBER
      * }
      */
     JSONObject getTVShowEpisodeInfo(String id, int seasonNumber, int episodeNumber) throws IOException;

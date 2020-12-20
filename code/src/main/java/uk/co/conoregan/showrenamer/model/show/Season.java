@@ -21,9 +21,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Season implements Iterable<Episode>, Comparable<Season> {
+    private final ArrayList<Episode> episodes;
     private String name = null;
     private int number;
-    private final ArrayList<Episode> episodes;
 
     public Season() {
         this.episodes = new ArrayList<>();

@@ -24,21 +24,15 @@ public class ResultContainer {
 
     /**
      * Constructor
+     *
      * @param name name of show
-     * @param id id of show
+     * @param id   id of show
      * @param type type of show (enum)
      */
     public ResultContainer(String name, String id, ShowType type) {
         this.name = name;
         this.id = id;
         this.type = type;
-    }
-
-    /**
-     * ShowType enum to differenciate between different types of show
-     */
-    public enum ShowType {
-        MOVIE, TV;
     }
 
     public String getName() {
@@ -56,5 +50,12 @@ public class ResultContainer {
     @Override
     public String toString() {
         return String.format("%s, %s, %s", this.name, this.id, this.type.toString());
+    }
+
+    /**
+     * ShowType enum to differenciate between different types of show
+     */
+    public enum ShowType {
+        MOVIE, TV
     }
 }

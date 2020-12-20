@@ -30,12 +30,12 @@ public class Episode implements Comparable<Episode> {
         return this.name;
     }
 
-    public int getNumber() {
-        return this.number;
-    }
-
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getNumber() {
+        return this.number;
     }
 
     public void setNumber(int number) {

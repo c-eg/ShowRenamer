@@ -31,7 +31,8 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 public class TheMovieDB implements ShowDatabaseAPI {
-    public TheMovieDB() {}
+    public TheMovieDB() {
+    }
 
     /**
      * Function to get the API key from the api_key.json file

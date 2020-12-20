@@ -47,8 +47,7 @@ public class ShowManager {
             JSONObject result = null;
             try {
                 result = tmdb.getShowsSearch(title);
-            }
-            catch (ShowNotFoundException | IOException e) {
+            } catch (ShowNotFoundException | IOException e) {
                 e.printStackTrace();
             }
 
@@ -63,8 +62,7 @@ public class ShowManager {
                     JSONObject movieInfo = tmdb.getMovieInfo(data.get(0).getId());
                     Show m = theMovieDBConverter.getMovie(movieInfo);
                     shows.add(m);
-                }
-                catch (IOException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -83,11 +81,10 @@ public class ShowManager {
             }
 
 
-
             // once all files have been read
             // if tv
-                // for each season in a show, create api call
-                // update objects from api data
+            // for each season in a show, create api call
+            // update objects from api data
         }
     }
 

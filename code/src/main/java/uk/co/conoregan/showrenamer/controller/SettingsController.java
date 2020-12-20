@@ -24,8 +24,7 @@ import javafx.scene.control.Button;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class SettingsController implements Initializable
-{
+public class SettingsController implements Initializable {
     // Menu buttons
     @FXML
     private Button buttonMenuRename;
@@ -36,8 +35,7 @@ public class SettingsController implements Initializable
 
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle)
-    {
+    public void initialize(URL url, ResourceBundle resourceBundle) {
 
     }
 }
