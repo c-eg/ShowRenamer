@@ -55,6 +55,6 @@ public class ResultContainer {
 
     @Override
     public String toString() {
-        return String.format("%s, %d, %s", this.name, this.id, this.type.toString());
+        return String.format("%s, %s, %s", this.name, this.id, this.type.toString());
     }
 }

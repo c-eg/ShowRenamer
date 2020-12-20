@@ -61,7 +61,6 @@ public class ShowManager {
                     // api call for movie
                     JSONObject movieInfo = tmdb.getMovieInfo(data.get(0).getId());
                     Show m = theMovieDBConverter.getMovie(movieInfo);
-                    System.out.println(m);
                     shows.add(m);
                 }
                 catch (IOException e) {
@@ -95,6 +94,5 @@ public class ShowManager {
         files.add(new File("Z:\\TV Shows\\Corporate\\Season 1\\Corporate - S01E01 - The Void.mp4"));
 
         ShowManager sm = new ShowManager(files);
-
     }
 }
