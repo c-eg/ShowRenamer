@@ -39,7 +39,8 @@ public class ShowManager {
 
         for (File f : files) {
             // get show title from ShowInfoMatcher
-            ShowInfoMatcher showInfoMatcher = new ShowInfoMatcher(f.getName().substring(0, f.getName().lastIndexOf('.')));
+            ShowInfoMatcher showInfoMatcher = new ShowInfoMatcher(
+                    f.getName().substring(0, f.getName().lastIndexOf('.')));
             String title = showInfoMatcher.getTitle();
 
             // search for show
@@ -69,8 +70,6 @@ public class ShowManager {
             // if tv
             else if (data.get(0).getType() == ResultContainer.ShowType.TV) {
                 // check if show exists
-                // TODO start here, maybe make a function to check if a tv show already exisits
-                //  and then add to it if it does, if not create it
                 TVShow tvShow = new TVShow(data.get(1).getName(), data.get(1).getId());
                 System.out.println(tvShow.getTitle());
 
@@ -79,7 +78,6 @@ public class ShowManager {
                 // create season and episode and add
                 // create show, season and episode
             }
-
 
             // once all files have been read
             // if tv
@@ -90,7 +88,8 @@ public class ShowManager {
 
     public static void main(String[] args) {
         ArrayList<File> files = new ArrayList<>();
-        files.add(new File("Z:\\TV Shows\\Corporate\\Season 1\\Corporate - S01E01 - The Void.mp4"));
+        String path = "Z:\\TV Shows\\Corporate\\Season 1\\Corporate - S01E01 - The Void.mp4";
+        files.add(new File(path));
 
         ShowManager sm = new ShowManager(files);
     }

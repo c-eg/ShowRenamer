@@ -65,11 +65,19 @@ public class TheMovieDBConverter implements APIToShowConverter {
 
     @Override
     public Season getSeason(JSONObject seasonInfo) {
-        return null;
+        String id = seasonInfo.get("id").toString();
+        String name = seasonInfo.get("name").toString();
+        int number = (int) seasonInfo.get("season_number");
+
+        return new Season(id, name, number);
     }
 
     @Override
     public Episode getEpisode(JSONObject episodeInfo) {
-        return null;
+        String id = episodeInfo.get("id").toString();
+        String name = episodeInfo.get("name").toString();
+        int number = (int) episodeInfo.get("episode_number");
+
+        return new Episode(id, name, number);
     }
 }

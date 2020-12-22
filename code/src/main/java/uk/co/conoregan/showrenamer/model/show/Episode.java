@@ -17,12 +17,21 @@
 
 package uk.co.conoregan.showrenamer.model.show;
 
+import java.util.Objects;
+
 public class Episode implements Comparable<Episode> {
+    private String episodeId;
     private String name;
     private int number;
 
-    public Episode(String name, int number) {
+    public Episode(String episodeId, String name, int number) {
+        this.episodeId = episodeId;
         this.name = name;
+        this.number = number;
+    }
+
+    public Episode(String episodeId, int number) {
+        this.episodeId = episodeId;
         this.number = number;
     }
 
@@ -42,8 +51,30 @@ public class Episode implements Comparable<Episode> {
         this.number = number;
     }
 
+    public String getEpisodeId() {
+        return this.episodeId;
+    }
+
     @Override
     public int compareTo(Episode other) {
         return Integer.compare(this.number, other.number);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(episodeId, number);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        else if (!(o instanceof Episode))
+            return false;
+        else {
+            Episode other = (Episode) o;
+            return this.episodeId.equals(other.episodeId) &&
+                    this.number == other.number;
+        }
     }
 }

@@ -19,9 +19,12 @@ package uk.co.conoregan.showrenamer.model.show;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Objects;
 
 public class Season implements Iterable<Episode>, Comparable<Season> {
+
     private final ArrayList<Episode> episodes;
+    private String seasonId;
     private String name = null;
     private int number;
 
@@ -29,9 +32,16 @@ public class Season implements Iterable<Episode>, Comparable<Season> {
         this.episodes = new ArrayList<>();
     }
 
-    public Season(String name, int number) {
+    public Season(String seasonId, String name, int number) {
         this();
+        this.seasonId = seasonId;
         this.name = name;
+        this.number = number;
+    }
+
+    public Season(String seasonId, int number) {
+        this();
+        this.seasonId = seasonId;
         this.number = number;
     }
 
@@ -47,6 +57,10 @@ public class Season implements Iterable<Episode>, Comparable<Season> {
         return this.name;
     }
 
+    public String getSeasonId() {
+        return this.seasonId;
+    }
+
     @Override
     public Iterator<Episode> iterator() {
         return episodes.iterator();
@@ -55,5 +69,23 @@ public class Season implements Iterable<Episode>, Comparable<Season> {
     @Override
     public int compareTo(Season other) {
         return Integer.compare(this.number, other.number);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(seasonId, name, number);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        else if (!(o instanceof Season))
+            return false;
+        else {
+            Season other = (Season) o;
+            return this.seasonId.equals(other.seasonId) &&
+                    this.number == other.number;
+        }
     }
 }

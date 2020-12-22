@@ -36,6 +36,10 @@ public class TVShow extends Show implements Iterable<Season> {
         seasons.add(season);
     }
 
+    public boolean containsSeason(Season other) {
+        return this.seasons.contains(other);
+    }
+
     @Override
     public Iterator<Season> iterator() {
         return seasons.iterator();
