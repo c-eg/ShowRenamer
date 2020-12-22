@@ -17,23 +17,32 @@
 
 package uk.co.conoregan.showrenamer.model.show;
 
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.*;
 
 public class TVShow extends Show implements Iterable<Season> {
-    private final ArrayList<Season> seasons;
+    private final TreeSet<Season> seasons;
 
     public TVShow(String title, String id) {
         super(title, id);
-        this.seasons = new ArrayList<>();
+        this.seasons = new TreeSet<>(new Season.CompareSeasonNumber());
     }
 
-    public Season getSeason(int index) {
-        return this.seasons.get(index);
+    public Season getSeason(int number) {
+        for (Season season : seasons) {
+            if (season.getNumber() == number)
+                return season;
+        }
+
+        // TODO return SeasonNotFoundException
+        return null;
     }
 
     public void addSeason(Season season) {
         seasons.add(season);
+    }
+
+    public void addTVShow(TVShow show) {
+
     }
 
     public boolean containsSeason(Season other) {
@@ -43,5 +52,23 @@ public class TVShow extends Show implements Iterable<Season> {
     @Override
     public Iterator<Season> iterator() {
         return seasons.iterator();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        else if (!(o instanceof TVShow))
+            return false;
+        else {
+            TVShow other = (TVShow) o;
+            return this.getId().equals(other.getId()) &&
+                    this.getTitle().equals(other.getTitle());
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getId(), this.getTitle());
     }
 }

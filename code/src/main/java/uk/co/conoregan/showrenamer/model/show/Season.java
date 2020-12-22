@@ -17,19 +17,22 @@
 
 package uk.co.conoregan.showrenamer.model.show;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Objects;
+import java.util.*;
 
 public class Season implements Iterable<Episode>, Comparable<Season> {
 
-    private final ArrayList<Episode> episodes;
+    private final TreeSet<Episode> episodes;
     private String seasonId;
     private String name = null;
     private int number;
 
     public Season() {
-        this.episodes = new ArrayList<>();
+        this.episodes = new TreeSet<>(new Episode.CompareEpisodeNumber());
+    }
+
+    public Season(int number) {
+        this();
+        this.number = number;
     }
 
     public Season(String seasonId, String name, int number) {
@@ -49,8 +52,15 @@ public class Season implements Iterable<Episode>, Comparable<Season> {
         this.episodes.add(episode);
     }
 
-    public Episode getEpisode(int index) {
-        return this.episodes.get(index);
+    public Episode getEpisode(int number) {
+        for (Episode episode : episodes) {
+            if (episode.getNumber() == number) {
+                return episode;
+            }
+        }
+
+        // TODO return EpisodeNotFoundException
+        return null;
     }
 
     public String getName() {
@@ -59,6 +69,10 @@ public class Season implements Iterable<Episode>, Comparable<Season> {
 
     public String getSeasonId() {
         return this.seasonId;
+    }
+
+    public int getNumber() {
+        return this.number;
     }
 
     @Override
@@ -73,7 +87,7 @@ public class Season implements Iterable<Episode>, Comparable<Season> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(seasonId, name, number);
+        return Objects.hash(number);
     }
 
     @Override
@@ -84,8 +98,17 @@ public class Season implements Iterable<Episode>, Comparable<Season> {
             return false;
         else {
             Season other = (Season) o;
-            return this.seasonId.equals(other.seasonId) &&
-                    this.number == other.number;
+            return this.number == other.number;
+        }
+    }
+
+    /**
+     * Comparator class to order by episode number
+     */
+    public static class CompareSeasonNumber implements Comparator<Season> {
+        @Override
+        public int compare(Season one, Season two) {
+            return Integer.compare(one.getNumber(), two.getNumber());
         }
     }
 }

@@ -17,6 +17,7 @@
 
 package uk.co.conoregan.showrenamer.model.show;
 
+import java.util.Comparator;
 import java.util.Objects;
 
 public class Episode implements Comparable<Episode> {
@@ -27,6 +28,10 @@ public class Episode implements Comparable<Episode> {
     public Episode(String episodeId, String name, int number) {
         this.episodeId = episodeId;
         this.name = name;
+        this.number = number;
+    }
+
+    public Episode(int number) {
         this.number = number;
     }
 
@@ -73,8 +78,17 @@ public class Episode implements Comparable<Episode> {
             return false;
         else {
             Episode other = (Episode) o;
-            return this.episodeId.equals(other.episodeId) &&
-                    this.number == other.number;
+            return this.number == other.number;
+        }
+    }
+
+    /**
+     * Comparator class to order by episode number
+     */
+    public static class CompareEpisodeNumber implements Comparator<Episode> {
+        @Override
+        public int compare(Episode one, Episode two) {
+            return Integer.compare(one.getNumber(), two.getNumber());
         }
     }
 }
