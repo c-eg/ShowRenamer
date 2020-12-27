@@ -19,56 +19,39 @@ package uk.co.conoregan.showrenamer.model.show;
 
 import java.util.*;
 
-public class TVShow extends Show implements Iterable<Season> {
-    private final TreeSet<Season> seasons;
+public class TVShow extends Show {
+    private final TreeMap<Integer, Season> seasons;
 
     public TVShow(String title, String id) {
         super(title, id);
-        this.seasons = new TreeSet<>(new Season.CompareSeasonNumber());
+        seasons = new TreeMap<>();
+    }
+
+    public TVShow(String title, String id, Season... seasons) {
+        this(title, id);
+        for (Season season : seasons) {
+            this.seasons.put(season.getNumber(), season);
+        }
     }
 
     public Season getSeason(int number) {
-        for (Season season : seasons) {
-            if (season.getNumber() == number)
-                return season;
+        return this.seasons.get(number);
+    }
+
+    public void add(Season other) {
+        this.seasons.merge(other.getNumber(), other, Season::merge);
+    }
+
+    public TVShow merge(TVShow other) {
+        for (Season season : other.seasons.values()) {
+            this.seasons.merge(season.getNumber(), season, Season::merge);
         }
 
-        // TODO return SeasonNotFoundException
-        return null;
-    }
-
-    public void addSeason(Season season) {
-        seasons.add(season);
-    }
-
-    public void addTVShow(TVShow show) {
-
-    }
-
-    public boolean containsSeason(Season other) {
-        return this.seasons.contains(other);
+        return this;
     }
 
     @Override
-    public Iterator<Season> iterator() {
-        return seasons.iterator();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        else if (!(o instanceof TVShow))
-            return false;
-        else {
-            TVShow other = (TVShow) o;
-            return this.getId().equals(other.getId()) &&
-                    this.getTitle().equals(other.getTitle());
-        }
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(this.getId(), this.getTitle());
+    public String toString() {
+        return this.seasons.values().toString();
     }
 }

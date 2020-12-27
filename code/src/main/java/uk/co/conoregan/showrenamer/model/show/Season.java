@@ -19,19 +19,27 @@ package uk.co.conoregan.showrenamer.model.show;
 
 import java.util.*;
 
-public class Season implements Iterable<Episode>, Comparable<Season> {
-
-    private final TreeSet<Episode> episodes;
-    private String seasonId;
+public class Season {
+    private final TreeMap<Integer, Episode> episodes;
+    private String seasonId = null;
     private String name = null;
     private int number;
 
-    public Season() {
-        this.episodes = new TreeSet<>(new Episode.CompareEpisodeNumber());
+    /*
+     * Constructors
+     */
+    private Season() {
+        this.episodes = new TreeMap<>();
     }
 
     public Season(int number) {
         this();
+        this.number = number;
+    }
+
+    public Season(String seasonId, int number) {
+        this();
+        this.seasonId = seasonId;
         this.number = number;
     }
 
@@ -42,73 +50,68 @@ public class Season implements Iterable<Episode>, Comparable<Season> {
         this.number = number;
     }
 
-    public Season(String seasonId, int number) {
+    public Season(String seasonId, int number, Episode... episodes) {
         this();
         this.seasonId = seasonId;
         this.number = number;
-    }
 
-    public void addEpisode(Episode episode) {
-        this.episodes.add(episode);
-    }
-
-    public Episode getEpisode(int number) {
         for (Episode episode : episodes) {
-            if (episode.getNumber() == number) {
-                return episode;
-            }
+            this.episodes.put(episode.getNumber(), episode);
         }
+    }
 
-        // TODO return EpisodeNotFoundException
-        return null;
+    public Season(String seasonId, String name, int number, Episode... episodes) {
+        this();
+        this.seasonId = seasonId;
+        this.name = name;
+        this.number = number;
+
+        for (Episode episode : episodes) {
+            this.episodes.put(episode.getNumber(), episode);
+        }
+    }
+    /*
+     * End of Constructors
+     */
+
+    public String getSeasonId() {
+        return this.seasonId;
+    }
+
+    public void setSeasonId(String seasonId) {
+        this.seasonId = seasonId;
     }
 
     public String getName() {
         return this.name;
     }
 
-    public String getSeasonId() {
-        return this.seasonId;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getNumber() {
         return this.number;
     }
 
-    @Override
-    public Iterator<Episode> iterator() {
-        return episodes.iterator();
+    public Episode getEpisode(int number) {
+        return this.episodes.get(number);
     }
 
-    @Override
-    public int compareTo(Season other) {
-        return Integer.compare(this.number, other.number);
+    public void add(Episode other) {
+        this.episodes.merge(other.getNumber(), other, Episode::merge);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(number);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        else if (!(o instanceof Season))
-            return false;
-        else {
-            Season other = (Season) o;
-            return this.number == other.number;
+    public Season merge(Season other) {
+        for (Episode episode : other.episodes.values()) {
+            this.episodes.merge(episode.getNumber(), episode, Episode::merge);
         }
+
+        return this;
     }
 
-    /**
-     * Comparator class to order by episode number
-     */
-    public static class CompareSeasonNumber implements Comparator<Season> {
-        @Override
-        public int compare(Season one, Season two) {
-            return Integer.compare(one.getNumber(), two.getNumber());
-        }
+    @Override
+    public String toString() {
+        return this.number + ": " + this.episodes.values();
     }
 }
