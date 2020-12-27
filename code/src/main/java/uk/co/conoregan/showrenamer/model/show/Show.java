@@ -17,6 +17,8 @@
 
 package uk.co.conoregan.showrenamer.model.show;
 
+import java.util.Objects;
+
 public abstract class Show {
     private final String title;
     private final String id;
@@ -32,6 +34,20 @@ public abstract class Show {
 
     public String getId() {
         return id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Show)) return false;
+
+        Show show = (Show) o;
+        return title.equals(show.title) && id.equals(show.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, id);
     }
 }
 
