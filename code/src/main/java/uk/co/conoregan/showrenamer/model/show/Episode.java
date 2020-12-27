@@ -17,20 +17,14 @@
 
 package uk.co.conoregan.showrenamer.model.show;
 
-import java.util.Comparator;
-import java.util.Objects;
-
-public class Episode implements Comparable<Episode> {
-    private String episodeId;
-    private String name;
+public class Episode {
+    private String episodeId = null;
+    private String name = null;
     private int number;
 
-    public Episode(String episodeId, String name, int number) {
-        this.episodeId = episodeId;
-        this.name = name;
-        this.number = number;
-    }
-
+    /*
+     * Constructors
+     */
     public Episode(int number) {
         this.number = number;
     }
@@ -40,6 +34,18 @@ public class Episode implements Comparable<Episode> {
         this.number = number;
     }
 
+    public Episode(String episodeId, String name, int number) {
+        this.episodeId = episodeId;
+        this.name = name;
+        this.number = number;
+    }
+    /*
+     * End of Constructors
+     */
+
+    /*
+     * Accessor Methods
+     */
     public String getName() {
         return this.name;
     }
@@ -59,36 +65,22 @@ public class Episode implements Comparable<Episode> {
     public String getEpisodeId() {
         return this.episodeId;
     }
-
-    @Override
-    public int compareTo(Episode other) {
-        return Integer.compare(this.number, other.number);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(episodeId, number);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        else if (!(o instanceof Episode))
-            return false;
-        else {
-            Episode other = (Episode) o;
-            return this.number == other.number;
-        }
-    }
-
-    /**
-     * Comparator class to order by episode number
+    /*
+     * End of Accessor Methods
      */
-    public static class CompareEpisodeNumber implements Comparator<Episode> {
-        @Override
-        public int compare(Episode one, Episode two) {
-            return Integer.compare(one.getNumber(), two.getNumber());
+
+    public Episode merge(Episode other) {
+        if (this.episodeId == null && other.getEpisodeId() != null)
+            this.episodeId = other.episodeId;
+        if (this.name == null && other.getName() != null) {
+            this.name = other.name;
         }
+
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(this.number);
     }
 }
