@@ -7,7 +7,7 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # API Key
-code/src/main/resources/config/api_key.json
+src/main/resources/config/api_key.json
 
 # User-specific stuff
 .idea/**/workspace.xml
@@ -16,7 +16,7 @@ code/src/main/resources/config/api_key.json
 .idea/**/dictionaries
 .idea/**/shelf
 
-code/lib
+lib
 
 # Generated files
 .idea/**/contentModel.xml
@@ -45,8 +45,8 @@ show-renamer.iml
 # .idea/modules.xml
 # .idea/*.iml
 # .idea/modules
-# code/*.iml
-# code/*.ipr
+# *.iml
+# *.ipr
 
 # CMake
 cmake-build-*/
@@ -58,7 +58,7 @@ cmake-build-*/
 *.iws
 
 # IntelliJ
-code/out/
+out/
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
@@ -85,7 +85,7 @@ fabric.properties
 # Comment Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-215987721
 
 # *.iml
-# code/modules.xml
+# modules.xml
 # .idea/misc.xml
 # *.ipr
 
@@ -130,5 +130,5 @@ fabric.properties
 hs_err_pid*
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij,java
-code/target/
+target/
 .idea/

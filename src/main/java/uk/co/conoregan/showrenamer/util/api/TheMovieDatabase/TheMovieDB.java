@@ -48,7 +48,7 @@ public class TheMovieDB implements ShowDatabaseAPI {
 
             org.json.simple.JSONObject jsonObject = (org.json.simple.JSONObject) p.parse(new InputStreamReader(is, StandardCharsets.UTF_8));
 
-            return jsonObject.get("api_key").toString();
+            return jsonObject.get("TheMovieDatabase_API").toString();
         } catch (Exception e) {
             System.out.println("API KEY file not found, please create one on themoviedb.org\n");
             e.printStackTrace();

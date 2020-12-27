@@ -60,7 +60,7 @@ public class ShowManager {
             TheMovieDBConverter theMovieDBConverter = new TheMovieDBConverter();
             ArrayList<ResultContainer> data = theMovieDBConverter.getResults(result);
 
-            int index = 0;
+            int index = 2;
 
             // if movie
             if (data.get(index).getType() == ResultContainer.ShowType.MOVIE) {
