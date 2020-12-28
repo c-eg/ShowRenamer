@@ -130,7 +130,7 @@ public class ShowFactory {
         for (Show show : shows) {
             if (show instanceof Movie) {
                 Movie m = (Movie) show;
-                names.add(String.format("%s (%s)", m.getTitle(), m.getReleaseDate()));
+                names.add(String.format("%s (%s)", m.getTitle(), m.getReleaseDate().substring(0, 4)));
             }
             else if (show instanceof TVShow) {
                 TVShow tvShow = (TVShow) show;
