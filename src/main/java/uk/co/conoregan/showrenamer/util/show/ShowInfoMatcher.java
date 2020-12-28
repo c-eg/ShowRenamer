@@ -24,15 +24,16 @@ public class ShowInfoMatcher {
     private final String title;
     private final String year;
     private final String resolution;
-    private final String type;
-    private final String video;
+    private final String source;
+    private final String videoCodec;
     private final String audio;
     private final String language;
     private final String edition;
     private final String tags;
-    private final String release;
+    private final String releaseInfo;
     private final String season;
     private final String episode;
+    private final String releaseGroup;
 
     /**
      * Constructor for ShowInfo
@@ -44,15 +45,16 @@ public class ShowInfoMatcher {
         title = matchTitle(showFile);
         year = matchYear(showFile);
         resolution = matchResolution(showFile);
-        type = matchType(showFile);
-        video = matchVideo(showFile);
+        source = matchSource(showFile);
+        videoCodec = matchVideoCodec(showFile);
         audio = matchAudio(showFile);
         language = matchLanguage(showFile);
         edition = matchEdition(showFile);
         tags = matchTags(showFile);
-        release = matchRelease(showFile);
+        releaseInfo = matchReleaseInfo(showFile);
         season = matchSeason(showFile);
         episode = matchEpisode(showFile);
+        releaseGroup = matchReleaseGroup(showFile);
     }
 
     /**
@@ -135,13 +137,14 @@ public class ShowInfoMatcher {
     }
 
     /**
-     * Function to match the type from the showFile passed
+     * Function to match the source from the showFile passed
      *
      * @param showFile show string to get info from
-     * @return type of show, or null it if doesn't exist
+     * @return source of show, or null it if doesn't exist
      */
-    private static String matchType(String showFile) {
-        String s = matchRegex(showFile, "[\\.\\s](CAM|(DVD|BD)SCR|SCR|DDC|R5[\\.\\s]LINE|R5|(DVD|HD|BR|BD|WEB)Rip|DVDR|(HD|PD)TV|WEB-DL|WEBDL|BluRay|TS(?!C)|TELESYNC)", Pattern.CASE_INSENSITIVE);
+    private static String matchSource(String showFile) {
+        //String s = matchRegex(showFile, "[\\.\\s](CAM|(DVD|BD)SCR|SCR|DDC|R5[\\.\\s]LINE|R5|(DVD|HD|BR|BD|WEB)Rip|DVDR|(HD|PD)TV|WEB-DL|WEBDL|BluRay|TS(?!C)|TELESYNC)", Pattern.CASE_INSENSITIVE);
+        String s = matchRegex(showFile, "[\\.\\s](CAM|(DVD|BD)SCR|SCR|DDC|R5[\\.\\s]LINE|R5|(DVD|HD|BR|BD|WEB)Rip|DVDR|(HD|PD)TV|WEB-DL|WEBDL|BluRay|Blu-Ray|TS(?!C)|TELESYNC)", Pattern.CASE_INSENSITIVE);
         if (s != null) {
             return s.substring(1);
         } else
@@ -154,8 +157,9 @@ public class ShowInfoMatcher {
      * @param showFile show string to get info from
      * @return video format of show, or null it if doesn't exist
      */
-    private static String matchVideo(String showFile) {
-        String s = matchRegex(showFile, "[\\.\\s](NTSC|PAL|[xh][\\.\\s]?264|H264)", Pattern.CASE_INSENSITIVE);
+    private static String matchVideoCodec(String showFile) {
+        //String s = matchRegex(showFile, "[\\.\\s](NTSC|PAL|[xh][\\.\\s]?264|H264)", Pattern.CASE_INSENSITIVE);
+        String s = matchRegex(showFile, "[\\.\\s](NTSC|PAL|[xh][\\.\\s]?264|[xh][\\.\\s]?265|H264|H265)", Pattern.CASE_INSENSITIVE);
         if (s != null) {
             return s.substring(1);
         } else
@@ -211,12 +215,12 @@ public class ShowInfoMatcher {
     }
 
     /**
-     * Function to match the release from the showFile passed
+     * Function to match the release information from the showFile passed
      *
      * @param showFile show string to get info from
      * @return release of show, or null it if doesn't exist
      */
-    private static String matchRelease(String showFile) {
+    private static String matchReleaseInfo(String showFile) {
         String s = matchRegex(showFile, "[\\.\\s](REAL[\\.\\s]PROPER|PROPER|REPACK|READNFO|READ[\\.\\s]NFO|DiRFiX|NFOFiX)", Pattern.CASE_INSENSITIVE);
         if (s != null) {
             return s.substring(1);
@@ -261,6 +265,15 @@ public class ShowInfoMatcher {
             return null;
     }
 
+    private static String matchReleaseGroup(String showFile) {
+        String s = matchRegex(showFile, "e(?:(\\d{1,3})|(\\d{1,3}([e-]\\d{1,3})+))", Pattern.CASE_INSENSITIVE);
+        if (s != null) {
+            s = s.substring(1);
+            return s.replaceAll("e|-", ",");
+        } else
+            return null;
+    }
+
     /*
      * Testing example
      */
@@ -281,12 +294,12 @@ public class ShowInfoMatcher {
         return resolution;
     }
 
-    public String getType() {
-        return type;
+    public String getSource() {
+        return source;
     }
 
-    public String getVideo() {
-        return video;
+    public String getVideoCodec() {
+        return videoCodec;
     }
 
     public String getAudio() {
@@ -305,8 +318,8 @@ public class ShowInfoMatcher {
         return tags;
     }
 
-    public String getRelease() {
-        return release;
+    public String getReleaseInfo() {
+        return releaseInfo;
     }
 
     public String getSeason() {
@@ -317,8 +330,18 @@ public class ShowInfoMatcher {
         return episode;
     }
 
+    public String getReleaseGroup() {
+        return releaseGroup;
+    }
+
     @Override
     public String toString() {
-        return String.format("%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s", this.title, this.year, this.resolution, this.type, this.video, this.audio, this.language, this.edition, this.tags, this.release, this.season, this.episode);
+        return String.format("%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s", this.title, this.year, this.resolution, this.source, this.videoCodec, this.audio, this.language, this.edition, this.tags, this.releaseInfo, this.season, this.episode);
     }
+
+    public String toStringMetdata() {
+        return String.format("Title: %30s\nYear: %31s\nResolution: %25s\nSource: %29s\nVideo codec: %24s\nAudio codec: %24s\nLanguage: %27s\nEdition: %28s\nTags: %31s\nRelease: %28s\nSeason: %29s\nEpisode: %28s\n",
+                this.title, this.year, this.resolution, this.source, this.videoCodec, this.audio, this.language, this.edition, this.tags, this.releaseInfo, this.season, this.episode);
+    }
+
 }
