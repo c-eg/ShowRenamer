@@ -20,10 +20,7 @@ package uk.co.conoregan.showrenamer.util.show;
 import org.json.JSONObject;
 import uk.co.conoregan.showrenamer.exception.ShowNotFoundException;
 import uk.co.conoregan.showrenamer.model.api.ResultContainer;
-import uk.co.conoregan.showrenamer.model.show.Episode;
-import uk.co.conoregan.showrenamer.model.show.Season;
-import uk.co.conoregan.showrenamer.model.show.Show;
-import uk.co.conoregan.showrenamer.model.show.TVShow;
+import uk.co.conoregan.showrenamer.model.show.*;
 import uk.co.conoregan.showrenamer.util.api.TheMovieDatabase.TheMovieDB;
 import uk.co.conoregan.showrenamer.util.api.TheMovieDatabase.TheMovieDBConverter;
 
@@ -35,10 +32,9 @@ import java.util.Iterator;
 import java.util.List;
 
 public class ShowManager {
-
     private final HashSet<Show> shows;
 
-    public ShowManager(List<File> files) {
+    public ShowManager(List<File> files) throws IOException {
         this.shows = new HashSet<>();
 
         for (File f : files) {
@@ -52,7 +48,8 @@ public class ShowManager {
             JSONObject result = null;
             try {
                 result = tmdb.getShowsSearch(title);
-            } catch (ShowNotFoundException | IOException e) {
+            }
+            catch (ShowNotFoundException | IOException e) {
                 e.printStackTrace();
             }
 
@@ -60,7 +57,7 @@ public class ShowManager {
             TheMovieDBConverter theMovieDBConverter = new TheMovieDBConverter();
             ArrayList<ResultContainer> data = theMovieDBConverter.getResults(result);
 
-            int index = 2;
+            int index = 2; // FOR TESTING PURPOSES ONLY
 
             // if movie
             if (data.get(index).getType() == ResultContainer.ShowType.MOVIE) {
@@ -69,7 +66,8 @@ public class ShowManager {
                     JSONObject movieInfo = tmdb.getMovieInfo(data.get(index).getId());
                     Show m = theMovieDBConverter.getMovie(movieInfo);
                     shows.add(m);
-                } catch (IOException e) {
+                }
+                catch (IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -97,22 +95,42 @@ public class ShowManager {
             }
         }
 
-        // loop through all shows
-        // if tv
-        // for each season in a show, create api call
-        // update objects from api data
+        TheMovieDB theMovieDB = new TheMovieDB();
+        TheMovieDBConverter theMovieDBConverter = new TheMovieDBConverter();
 
-        // testing
-        for (Show s : shows) {
-            System.out.println(s);
+        // loop through all shows
+        for (Show show : shows) {
+            if (show instanceof TVShow) {
+                for (Iterator<Season> it = ((TVShow) show).iterator(); it.hasNext();) {
+                    Season season = it.next();
+
+                    // get the season from the api
+                    JSONObject tempObj = theMovieDB.getTVShowSeasonInfo(show.getId(), season.getNumber());
+                    Season newSeason = theMovieDBConverter.getSeason(tempObj);
+
+                    ArrayList<Episode> toRemove = new ArrayList<>();
+
+                    // remove episodes not already in season
+                    for (Episode e : newSeason) {
+                        if (season.getEpisode(e.getNumber()) == null) {
+                            toRemove.add(e);
+                        }
+                    }
+
+                    season.merge(newSeason); // merge updated api season to original
+                    season.remove(toRemove); // remove episodes not in original
+                }
+            }
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         ArrayList<File> files = new ArrayList<>();
+        //String path0 = "Z:\\Movies\\2 Fast 2 Furious (2003).mp4";
         String path1 = "Z:\\TV Shows\\Corporate\\Season 1\\Corporate - S01E01 - The Void.mp4";
         String path2 = "Z:\\TV Shows\\Corporate\\Season 1\\Corporate - S01E02 - The Powerpoint of Death.mp4";
         String path3 = "Z:\\TV Shows\\Corporate\\Season 2\\Corporate - S02E01 - The One Who's There.mp4";
+        //files.add(new File(path0));
         files.add(new File(path1));
         files.add(new File(path2));
         files.add(new File(path3));
