@@ -22,6 +22,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import uk.co.conoregan.showrenamer.util.show.ShowFactory;
 
 import javax.swing.*;
 import java.io.File;
@@ -72,7 +73,7 @@ public class RenameController implements Initializable {
     private CheckBox checkboxSubFolder;
 
     @FXML
-    private void openFileDialog() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, IOException {
+    private void openFileDialog() {
         // set dialog MVC.style to windows
         //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 
@@ -114,54 +115,14 @@ public class RenameController implements Initializable {
         }
     }
 
-//    @FXML
-//    public void getSuggestedNames() throws IOException
-//    {
-//        listRenameTo.clear();
-//
-//        ShowInfoMatcher showInfoMatcher;
-//        ArrayList<Show> shows;
-//
-//        for (String s : listRenameFrom)
-//        {
-//            // get title of tv show or movie from original file name
-//            showInfoMatcher = new ShowInfoMatcher(s);
-//
-//            // get the first show matching title
-//            shows = ShowInfoFromAPI.getShows(showInfoMatcher.getTitle());
-//
-//
-//            String episodeName;
-//            Show lookedUpShow;
-//
-//            if (shows.size() > 0)
-//            {
-//                lookedUpShow = shows.get(0);
-//
-//                if (lookedUpShow instanceof TVShow)
-//                {
-//                    int season = Integer.parseInt(showInfoMatcher.getSeason());
-//                    int episode = Integer.parseInt(showInfoMatcher.getEpisode());
-//
-//                    // get the episode name for that season and episode
-//                    episodeName = ShowInfoFromAPI.getEpisodeName(lookedUpShow.getId(), season, episode);
-//
-//                    // TODO:
-//                    //  - Replace '*'  with '' in episode name
-//
-//                    listRenameTo.add((lookedUpShow.getTitle() + " - S" + showInfoMatcher.getSeason() + "E" + showInfoMatcher.getEpisode() + " - " + episodeName).replaceAll(":", ""));
-//                }
-//                else if (lookedUpShow instanceof Movie)
-//                {
-//                    listRenameTo.add((lookedUpShow.getTitle() + " (" + ((Movie) lookedUpShow).getReleaseDate().substring(0, 4) + ")").replaceAll(":", ""));
-//                }
-//            }
-//            else
-//            {
-//                listRenameTo.add(RenameController.ERROR_MESSAGE);
-//            }
-//        }
-//    }
+    @FXML
+    public void getSuggestedNames() throws IOException
+    {
+        listRenameTo.clear();
+
+        ShowFactory showFactory = new ShowFactory(files);
+        listRenameTo.addAll(showFactory.getNames());
+    }
 
     private void renameFile(File f) throws IOException {
         if (f.isFile()) {
@@ -207,13 +168,7 @@ public class RenameController implements Initializable {
 
     @FXML
     public void renameSelected() {
-//        if (listRenameFrom.size() > 0)
-//        {
-//            String toRename = listViewRenameFrom.getSelectionModel().getSelectedItem();
-//
-//            listViewRenameFrom.getItems().remove(toRemove);
-//            listRenameFrom.remove(toRemove);
-//        }
+
     }
 
     @FXML
