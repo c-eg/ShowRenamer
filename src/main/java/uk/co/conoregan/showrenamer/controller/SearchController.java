@@ -15,26 +15,26 @@
  * along with ShowRenamer.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package uk.co.conoregan.showrenamer.model;
+package uk.co.conoregan.showrenamer.controller;
 
-public class Movie extends Show
-{
-    private final String releaseDate;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 
-    public Movie(String title, String id, String releaseDate)
-    {
-        super(title, id);
-        this.releaseDate = releaseDate;
-    }
+import java.net.URL;
+import java.util.ResourceBundle;
 
-    public String getReleaseDate()
-    {
-        return releaseDate;
-    }
+public class SearchController implements Initializable {
+    // Menu buttons
+    @FXML
+    private Button buttonMenuRename;
+    @FXML
+    private Button buttonMenuSearch;
+    @FXML
+    private Button buttonMenuSettings;
 
     @Override
-    public String toString()
-    {
-        return super.getTitle() + " (" + releaseDate.substring(0, 4) + ")";
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
     }
 }

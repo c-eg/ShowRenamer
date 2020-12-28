@@ -15,28 +15,39 @@
  * along with ShowRenamer.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package uk.co.conoregan.showrenamer.model;
+package uk.co.conoregan.showrenamer.model.show;
 
-public abstract class Show
-{
+import java.util.Objects;
+
+public abstract class Show {
     private final String title;
     private final String id;
 
-    public Show(String title, String id)
-    {
+    public Show(String title, String id) {
         this.title = title;
         this.id = id;
     }
 
-    public abstract String toString();
-
-    public String getTitle()
-    {
+    public String getTitle() {
         return title;
     }
 
-    public String getId()
-    {
+    public String getId() {
         return id;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Show)) return false;
+
+        Show show = (Show) o;
+        return title.equals(show.title) && id.equals(show.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, id);
+    }
 }
+

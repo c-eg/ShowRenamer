@@ -15,12 +15,27 @@
  * along with ShowRenamer.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package uk.co.conoregan.showrenamer;
+package uk.co.conoregan.showrenamer.controller;
 
-public class NewMain
-{
-    public static void main(String[] args)
-    {
-        Main.main(args);
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class SettingsController implements Initializable {
+    // Menu buttons
+    @FXML
+    private Button buttonMenuRename;
+    @FXML
+    private Button buttonMenuSearch;
+    @FXML
+    private Button buttonMenuSettings;
+
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
     }
 }

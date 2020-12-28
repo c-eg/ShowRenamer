@@ -15,28 +15,16 @@
  * along with ShowRenamer.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package uk.co.conoregan.showrenamer.controller;
+package uk.co.conoregan.showrenamer.exception;
 
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
+public class ShowNotFoundException extends Exception {
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
-public class SearchController implements Initializable
-{
-    // Menu buttons
-    @FXML
-    private Button buttonMenuRename;
-    @FXML
-    private Button buttonMenuSearch;
-    @FXML
-    private Button buttonMenuSettings;
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle)
-    {
-
+    /**
+     * Constructor for Exception when show is not found in a search
+     *
+     * @param title of show searched
+     */
+    public ShowNotFoundException(String title) {
+        super("Could not find " + title + " in API...");
     }
 }
