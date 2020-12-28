@@ -19,7 +19,7 @@ package uk.co.conoregan.showrenamer.model.show;
 
 import java.util.*;
 
-public class TVShow extends Show {
+public class TVShow extends Show implements Iterable<Season> {
     private final TreeMap<Integer, Season> seasons;
 
     public TVShow(String title, String id) {
@@ -27,7 +27,7 @@ public class TVShow extends Show {
         seasons = new TreeMap<>();
     }
 
-    public TVShow(String title, String id, Season... seasons) {
+    public TVShow(String title, String id, Collection<Season> seasons) {
         this(title, id);
         for (Season season : seasons) {
             this.seasons.put(season.getNumber(), season);
@@ -53,5 +53,10 @@ public class TVShow extends Show {
     @Override
     public String toString() {
         return this.seasons.values().toString();
+    }
+
+    @Override
+    public Iterator<Season> iterator() {
+        return this.seasons.values().iterator();
     }
 }
