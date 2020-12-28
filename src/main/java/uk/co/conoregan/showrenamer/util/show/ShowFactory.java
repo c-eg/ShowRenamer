@@ -31,10 +31,10 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
-public class ShowManager {
+public class ShowFactory {
     private final HashSet<Show> shows;
 
-    public ShowManager(List<File> files) throws IOException {
+    public ShowFactory(List<File> files) throws IOException {
         this.shows = new HashSet<>();
 
         for (File f : files) {
@@ -57,7 +57,7 @@ public class ShowManager {
             TheMovieDBConverter theMovieDBConverter = new TheMovieDBConverter();
             ArrayList<ResultContainer> data = theMovieDBConverter.getResults(result);
 
-            int index = 2; // FOR TESTING PURPOSES ONLY
+            int index = 0; // FOR TESTING PURPOSES ONLY
 
             // if movie
             if (data.get(index).getType() == ResultContainer.ShowType.MOVIE) {
@@ -124,6 +124,29 @@ public class ShowManager {
         }
     }
 
+    public ArrayList<String> getNames() {
+        ArrayList<String> names = new ArrayList<>();
+
+        for (Show show : shows) {
+            if (show instanceof Movie) {
+                Movie m = (Movie) show;
+                names.add(String.format("%s (%s)", m.getTitle(), m.getReleaseDate()));
+            }
+            else if (show instanceof TVShow) {
+                TVShow tvShow = (TVShow) show;
+
+                for (Season season : tvShow) {
+                    for (Episode episode : season) {
+                        names.add(String.format("%s - S%02dE%02d - %s", tvShow.getTitle(),
+                                season.getNumber(), episode.getNumber(), episode.getName()));
+                    }
+                }
+            }
+        }
+
+        return names;
+    }
+
     public static void main(String[] args) throws IOException {
         ArrayList<File> files = new ArrayList<>();
         //String path0 = "Z:\\Movies\\2 Fast 2 Furious (2003).mp4";
@@ -135,6 +158,7 @@ public class ShowManager {
         files.add(new File(path2));
         files.add(new File(path3));
 
-        ShowManager sm = new ShowManager(files);
+        ShowFactory sm = new ShowFactory(files);
+        System.out.println(sm.getNames());
     }
 }
