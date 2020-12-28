@@ -19,7 +19,7 @@ package uk.co.conoregan.showrenamer.model.show;
 
 import java.util.*;
 
-public class Season {
+public class Season implements Iterable<Episode> {
     private final TreeMap<Integer, Episode> episodes;
     private String seasonId = null;
     private String name = null;
@@ -50,7 +50,7 @@ public class Season {
         this.number = number;
     }
 
-    public Season(String seasonId, int number, Episode... episodes) {
+    public Season(String seasonId, int number, Collection<Episode> episodes) {
         this();
         this.seasonId = seasonId;
         this.number = number;
@@ -60,7 +60,7 @@ public class Season {
         }
     }
 
-    public Season(String seasonId, String name, int number, Episode... episodes) {
+    public Season(String seasonId, String name, int number, Collection<Episode> episodes) {
         this();
         this.seasonId = seasonId;
         this.name = name;
@@ -102,12 +102,30 @@ public class Season {
         this.episodes.merge(other.getNumber(), other, Episode::merge);
     }
 
+    public void remove(Episode other) {
+        this.episodes.values().remove(other);
+    }
+
+    public void remove(Collection<Episode> episodes) {
+        this.episodes.values().removeAll(episodes);
+    }
+
     public Season merge(Season other) {
+        if (this.name == null && other.name != null)
+            this.name = other.name;
+        if (this.seasonId == null && other.seasonId != null)
+            this.seasonId = other.seasonId;
+
         for (Episode episode : other.episodes.values()) {
             this.episodes.merge(episode.getNumber(), episode, Episode::merge);
         }
 
         return this;
+    }
+
+    @Override
+    public Iterator<Episode> iterator() {
+        return this.episodes.values().iterator();
     }
 
     @Override

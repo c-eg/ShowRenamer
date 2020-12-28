@@ -69,7 +69,14 @@ public class TheMovieDBConverter implements APIToShowConverter {
         String name = seasonInfo.get("name").toString();
         int number = (int) seasonInfo.get("season_number");
 
-        return new Season(id, name, number);
+        JSONArray episodes = seasonInfo.getJSONArray("episodes");
+        ArrayList<Episode> episodesList = new ArrayList<>();
+
+        for (int i = 0; i < episodes.length(); i++) {
+            episodesList.add(this.getEpisode((JSONObject) episodes.get(i)));
+        }
+
+        return new Season(id, name, number, episodesList);
     }
 
     @Override

@@ -71,7 +71,8 @@ public class ShowInfoMatcher {
 
         if (m.find()) {
             return m.group();
-        } else
+        }
+        else
             return null;
     }
 
@@ -89,7 +90,8 @@ public class ShowInfoMatcher {
 
         if (m.find()) {
             return m.group();
-        } else
+        }
+        else
             return null;
     }
 
@@ -106,7 +108,8 @@ public class ShowInfoMatcher {
 
         if (movieMatcher.find() && movieMatcher.group(1) != null) {
             name = movieMatcher.group(1).replaceAll("\\.", " ").trim();
-        } else {
+        }
+        else {
             name = showFile;
         }
 
@@ -123,7 +126,8 @@ public class ShowInfoMatcher {
         String s = matchRegex(showFile, "[\\.\\s](?!^)[1,2]\\d{3}[\\.\\s]");
         if (s != null) {
             return s.substring(1, s.length() - 1);
-        } else
+        }
+        else
             return null;
     }
 
@@ -148,7 +152,8 @@ public class ShowInfoMatcher {
         String s = matchRegex(showFile, "[\\.\\s](CAM|(DVD|BD)SCR|SCR|DDC|R5[\\.\\s]LINE|R5|(DVD|HD|BR|BD|WEB)Rip|DVDR|(HD|PD)TV|WEB-DL|WEBDL|BluRay|Blu-Ray|TS(?!C)|TELESYNC)", Pattern.CASE_INSENSITIVE);
         if (s != null) {
             return s.substring(1);
-        } else
+        }
+        else
             return null;
     }
 
@@ -163,7 +168,8 @@ public class ShowInfoMatcher {
         String s = matchRegex(showFile, "[\\.\\s](NTSC|PAL|[xh][\\.\\s]?264|[xh][\\.\\s]?265|H264|H265)", Pattern.CASE_INSENSITIVE);
         if (s != null) {
             return s.substring(1);
-        } else
+        }
+        else
             return null;
     }
 
@@ -187,7 +193,8 @@ public class ShowInfoMatcher {
         String s = matchRegex(showFile, "[\\.\\s](MULTiSUBS|MULTi|NORDiC|DANiSH|SWEDiSH|NORWEGiAN|GERMAN|iTALiAN|FRENCH|SPANiSH)", Pattern.CASE_INSENSITIVE);
         if (s != null) {
             return s.substring(1);
-        } else
+        }
+        else
             return null;
     }
 
@@ -201,7 +208,8 @@ public class ShowInfoMatcher {
         String s = matchRegex(showFile, "UNRATED|DC|(Directors|EXTENDED)[\\.\\s](CUT|EDITION)|EXTENDED|3D|2D|\\bNF\\b", Pattern.CASE_INSENSITIVE);
         if (s != null) {
             return s.substring(1);
-        } else
+        }
+        else
             return null;
     }
 
@@ -225,7 +233,8 @@ public class ShowInfoMatcher {
         String s = matchRegex(showFile, "[\\.\\s](REAL[\\.\\s]PROPER|PROPER|REPACK|READNFO|READ[\\.\\s]NFO|DiRFiX|NFOFiX)", Pattern.CASE_INSENSITIVE);
         if (s != null) {
             return s.substring(1);
-        } else
+        }
+        else
             return null;
     }
 
@@ -242,7 +251,8 @@ public class ShowInfoMatcher {
         String s = matchRegex(showFile, "(?:s|season)(\\d{1,3})", Pattern.CASE_INSENSITIVE);
         if (s != null) {
             return s.substring(1);
-        } else
+        }
+        else
             return null;
     }
 
@@ -262,7 +272,8 @@ public class ShowInfoMatcher {
         if (s != null) {
             s = s.substring(1);
             return s.replaceAll("e|-", ",");
-        } else
+        }
+        else
             return null;
     }
 
