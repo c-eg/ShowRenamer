@@ -278,12 +278,10 @@ public class ShowInfoMatcher {
     }
 
     private static String matchReleaseGroup(String showFile) {
-        String s = matchRegex(showFile, "e(?:(\\d{1,3})|(\\d{1,3}([e-]\\d{1,3})+))", Pattern.CASE_INSENSITIVE);
+        String s = matchRegex(showFile, "- ?([^\\-. ]+)$", Pattern.CASE_INSENSITIVE);
         if (s != null) {
-            s = s.substring(1);
-            return s.replaceAll("e|-", ",");
-        }
-        else
+            return s.substring(1);
+        } else
             return null;
     }
 
@@ -353,8 +351,28 @@ public class ShowInfoMatcher {
     }
 
     public String toStringMetdata() {
-        return String.format("Title: %30s\nYear: %31s\nResolution: %25s\nSource: %29s\nVideo codec: %24s\nAudio codec: %24s\nLanguage: %27s\nEdition: %28s\nTags: %31s\nRelease: %28s\nSeason: %29s\nEpisode: %28s\n",
-                this.title, this.year, this.resolution, this.source, this.videoCodec, this.audio, this.language, this.edition, this.tags, this.releaseInfo, this.season, this.episode);
+        return String.format("Title: %30s\n" + "Year: %31s\nResolution: %25s\nSource: %29s\nVideo codec: %24s\nAudio codec: %24s\nLanguage: %27s\nEdition: %28s\nTags: %31s\nRelease: %28s\nSeason: %29s\nEpisode: %28s\nReleaseGroup: %23s",
+                this.title, this.year, this.resolution, this.source, this.videoCodec, this.audio, this.language, this.edition, this.tags, this.releaseInfo, this.season, this.episode, this.releaseGroup);
+    }
+
+    public HashMap<String, String> toHashMap() {
+        HashMap<String, String> fileData = new HashMap<>();
+
+        fileData.put("title", title);
+        fileData.put("year", year);
+        fileData.put("resolution", resolution);
+        fileData.put("source", source);
+        fileData.put("videoCodec", videoCodec);
+        fileData.put("audio", audio);
+        fileData.put("language", language);
+        fileData.put("edition", edition);
+        fileData.put("tags", tags);
+        fileData.put("releaseInfo", releaseInfo);
+        fileData.put("season", season);
+        fileData.put("episode", episode);
+        fileData.put("releaseGroup", releaseGroup);
+
+        return fileData;
     }
 
 }
