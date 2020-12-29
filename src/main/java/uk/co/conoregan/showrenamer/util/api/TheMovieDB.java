@@ -55,14 +55,14 @@ public class TheMovieDB {
         }
     }
 
-    public JSONArray getMovieInfo(String query, String year, String language, boolean adult) throws IOException {
+    public JSONArray getMovieResults(String query, String year, String language, boolean adult) throws IOException {
         // set up api request
         final String API_KEY = getAPI_KEY();
 
         StringBuilder urlName = new StringBuilder("https://api.themoviedb.org/3/search/movie?api_key=" + API_KEY + "&");
 
         urlName.append("query=").append(query.replace(" ", "%20")).append("&");
-        urlName.append("include_adult=").append(String.valueOf(adult)).append("&");
+        urlName.append("include_adult=").append(adult).append("&");
 
         if (year != null) {
             urlName.append("year=").append(year).append("&");
