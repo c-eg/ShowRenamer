@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
@@ -100,5 +102,79 @@ public class TheMovieDB {
             System.out.println("HTTP response was not OK");
             return null;
         }
+    }
+
+    public JSONObject getTVId(String query) throws IOException {
+        // format the request properly
+        // replace all occurrences of " " with "%20"
+        String reformattedTitle = query.replaceAll("[ ]", "%20");
+
+        // set up api request
+        final String API_KEY = getAPI_KEY();
+        URL url = new URL("https://api.themoviedb.org/3/search/tv?api_key=" + API_KEY + "&language=en-US&query=" + reformattedTitle + "&page=1&include_adult=true");
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        int responseCode = connection.getResponseCode();
+        String readLine;
+
+        // if the request returns something
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            // reading the response from the api
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+
+            while ((readLine = in.readLine()) != null) {
+                response.append(readLine);
+            }
+            in.close();
+
+            return new JSONObject(response.toString());
+        }
+        // if the request returns nothing
+        else {
+            System.out.println("HTTP response was not OK");
+            return null;
+        }
+    }
+
+    public JSONObject getEpisodeResults(String id, int season, int episode) throws IOException {
+        // set up api request
+        final String API_KEY = getAPI_KEY();
+
+        URL url = new URL("https://api.themoviedb.org/3/tv/" + id +
+                "/season/" + season +
+                "/episode/" + episode +
+                "?api_key=" + API_KEY + "&language=en-US");
+
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        int responseCode = connection.getResponseCode();
+        String readLine;
+
+        // if the request returns something
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            // reading the response from the api
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+
+            while ((readLine = in.readLine()) != null) {
+                response.append(readLine);
+            }
+            in.close();
+
+            // creating a json object from the response
+            return new JSONObject(response.toString());
+        }
+        // if the request returns nothing
+        else {
+            System.out.println("HTTP response was not OK");
+            return null;
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+        TheMovieDB test = new TheMovieDB();
+        JSONObject result = test.getTVId("the walking dead");
+        System.out.println(result.toString());
     }
 }

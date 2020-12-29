@@ -17,8 +17,10 @@
 
 package uk.co.conoregan.showrenamer.controller;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -132,23 +134,35 @@ public class RenameController implements Initializable {
 
             // add shows to listViews
             for (File file : files) {
-                listRenameFrom.add(file.getName());
+                listRenameFrom.add(file.getName().substring(0, file.getName().lastIndexOf(".")));
+                listRenameTo.add("");
             }
         }
     }
 
     @FXML
     private void getRenameSuggestions() throws IOException {
-        for (String name : listRenameFrom) {
-            // create initial show object from file name
-            Show show = createShow(name);
+        for (int i = 0; i < listRenameFrom.size(); i++) {
+            renameSuggestionTask(i);
+        }
+    }
 
-            if (show instanceof Movie) {
-                Movie m = (Movie) show;
+    private String getRenameSuggestion(int index) throws IOException {
+        String newName = RenameController.ERROR_MESSAGE;
 
-                // get results from api
-                TheMovieDB theMovieDB = new TheMovieDB();
-                JSONArray results = theMovieDB.getMovieResults(m.getTitle(), m.getReleaseDate(), "en-US", true);
+        String name = listRenameFrom.get(index);
+
+        // create initial show object from file name
+        Show show = createShow(name);
+        TheMovieDB theMovieDB = new TheMovieDB();
+
+        if (show instanceof Movie) {
+            Movie m = (Movie) show;
+
+            // get results from api
+            JSONArray results = theMovieDB.getMovieResults(m.getTitle(), m.getReleaseDate(), "en-US", true);
+
+            if (results.length() > 0) {
                 JSONObject result = (JSONObject) results.get(0);
 
                 // pull info wanted from results
@@ -161,9 +175,56 @@ public class RenameController implements Initializable {
                 m.setId(id);
                 m.setReleaseDate(releaseDate);
 
-                listRenameTo.add(m.toString());
+                newName = m.toString();
             }
         }
+        else if (show instanceof Episode) {
+            Episode e = (Episode) show;
+
+            JSONObject result = theMovieDB.getTVId(e.getTitle());
+            JSONArray results = result.getJSONArray("results");
+
+            if (results.length() > 0) {
+                JSONObject tv = (JSONObject) results.get(0);
+                String title = tv.get("name").toString();
+                String id = tv.get("id").toString();
+
+                JSONObject episodeResult = theMovieDB.getEpisodeResults(id, e.getSeasonNumber(), e.getEpisodeNumber());
+
+                String episodeName = episodeResult.get("name").toString();
+
+                e.setId(id);
+                e.setTitle(title);
+                e.setEpisodeName(episodeName);
+
+                newName = e.toString();
+            }
+        }
+
+        return newName;
+    }
+
+    private void renameSuggestionTask(int index) {
+        Task<String> task = new Task<String>() {
+            @Override
+            protected String call() throws Exception {
+                return getRenameSuggestion(index);
+            }
+        };
+
+        task.setOnSucceeded(workerStateEvent -> {
+            Platform.runLater(() -> {
+                listRenameTo.set(index, task.getValue());
+            });
+        });
+
+        task.setOnFailed(workerStateEvent -> {
+            Platform.runLater(() -> {
+                listRenameTo.set(index, RenameController.ERROR_MESSAGE);
+            });
+        });
+
+        new Thread(task).start();
     }
 
     /**
