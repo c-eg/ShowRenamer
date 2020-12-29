@@ -17,15 +17,14 @@
 
 package uk.co.conoregan.showrenamer.model.show;
 
-import java.util.Objects;
+import java.io.File;
 
-public abstract class Show {
-    private final String title;
-    private final String id;
+public abstract class Show implements Cloneable {
+    private String title;
+    private String id = null;
 
-    public Show(String title, String id) {
+    public Show(String title) {
         this.title = title;
-        this.id = id;
     }
 
     public String getTitle() {
@@ -36,18 +35,14 @@ public abstract class Show {
         return id;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Show)) return false;
-
-        Show show = (Show) o;
-        return title.equals(show.title) && id.equals(show.id);
+    public void setId(String id) {
+        this.id = id;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(title, id);
+    public void setTitle(String title) {
+        this.title = title;
     }
+
+    public abstract String toString();
 }
 

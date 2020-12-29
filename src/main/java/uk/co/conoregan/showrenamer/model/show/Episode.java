@@ -17,70 +17,49 @@
 
 package uk.co.conoregan.showrenamer.model.show;
 
-public class Episode {
-    private String episodeId = null;
-    private String name = null;
-    private int number;
+import java.io.File;
 
-    /*
-     * Constructors
-     */
-    public Episode(int number) {
-        this.number = number;
+public class Episode extends Show {
+    private String episodeName = null;
+    private int seasonNumber;
+    private int episodeNumber;
+
+    public Episode(String title, int seasonNumber, int episodeNumber) {
+        super(title);
+        this.seasonNumber = seasonNumber;
+        this.episodeNumber = episodeNumber;
     }
 
-    public Episode(String episodeId, int number) {
-        this.episodeId = episodeId;
-        this.number = number;
+    public String getEpisodeName() {
+        return episodeName;
     }
 
-    public Episode(String episodeId, String name, int number) {
-        this.episodeId = episodeId;
-        this.name = name;
-        this.number = number;
-    }
-    /*
-     * End of Constructors
-     */
-
-    /*
-     * Accessor Methods
-     */
-    public String getName() {
-        return this.name;
+    public void setEpisodeName(String episodeName) {
+        this.episodeName = episodeName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public int getSeasonNumber() {
+        return seasonNumber;
     }
 
-    public int getNumber() {
-        return this.number;
+    public void setSeasonNumber(int seasonNumber) {
+        this.seasonNumber = seasonNumber;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
+    public int getEpisodeNumber() {
+        return episodeNumber;
     }
 
-    public String getEpisodeId() {
-        return this.episodeId;
-    }
-    /*
-     * End of Accessor Methods
-     */
-
-    public Episode merge(Episode other) {
-        if (this.episodeId == null && other.getEpisodeId() != null)
-            this.episodeId = other.episodeId;
-        if (this.name == null && other.getName() != null) {
-            this.name = other.name;
-        }
-
-        return this;
+    public void setEpisodeNumber(int episodeNumber) {
+        this.episodeNumber = episodeNumber;
     }
 
     @Override
     public String toString() {
-        return String.valueOf(this.number);
+        return String.format("%s - S%02dE%02d - %s",
+                super.getTitle(),
+                this.getSeasonNumber(),
+                this.getEpisodeNumber(),
+                this.episodeName);
     }
 }

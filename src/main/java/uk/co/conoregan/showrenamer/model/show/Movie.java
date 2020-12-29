@@ -17,11 +17,17 @@
 
 package uk.co.conoregan.showrenamer.model.show;
 
-public class Movie extends Show {
-    private final String releaseDate;
+import java.io.File;
 
-    public Movie(String title, String id, String releaseDate) {
-        super(title, id);
+public class Movie extends Show {
+    private String releaseDate = null;
+
+    public Movie(String title) {
+        super(title);
+    }
+
+    public Movie(String title, String releaseDate) {
+        super(title);
         this.releaseDate = releaseDate;
     }
 
@@ -29,8 +35,11 @@ public class Movie extends Show {
         return releaseDate;
     }
 
-    @Override
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
     public String toString() {
-        return super.getTitle() + " (" + releaseDate.substring(0, 4) + ")";
+        return String.format("%s (%s)", super.getTitle(), this.releaseDate.substring(0, 4));
     }
 }

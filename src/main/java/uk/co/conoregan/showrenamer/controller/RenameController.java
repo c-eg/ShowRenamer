@@ -22,15 +22,18 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import uk.co.conoregan.showrenamer.util.show.ShowFactory;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import uk.co.conoregan.showrenamer.model.show.Episode;
+import uk.co.conoregan.showrenamer.model.show.Movie;
+import uk.co.conoregan.showrenamer.model.show.Show;
+import uk.co.conoregan.showrenamer.util.api.TheMovieDB;
+import uk.co.conoregan.showrenamer.util.show.ShowInfoMatcher;
 
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -72,6 +75,36 @@ public class RenameController implements Initializable {
     @FXML
     private CheckBox checkboxSubFolder;
 
+    /**
+     * Creates a show object from a file
+     * @param name name of file
+     * @return Show with missing values
+     */
+    private Show createShow(String name) {
+        Show show;
+        ShowInfoMatcher showInfo = new ShowInfoMatcher(name);
+
+        // check if tv show or movie
+        if (showInfo.getSeason() == null && showInfo.getEpisode() == null) {
+
+            // if year is not in file name
+            if (showInfo.getYear() != null) {
+                show = new Movie(showInfo.getTitle(), showInfo.getYear());
+            }
+            // if year is in file name
+            else {
+                show = new Movie(showInfo.getTitle());
+            }
+        }
+        else {
+            show = new Episode(showInfo.getTitle(),
+                    Integer.parseInt(showInfo.getSeason()),
+                    Integer.parseInt(showInfo.getEpisode()));
+        }
+
+        return show;
+    }
+
     @FXML
     private void openFileDialog() {
         // set dialog MVC.style to windows
@@ -90,102 +123,61 @@ public class RenameController implements Initializable {
             // get list of files
             File[] temp = dir.listFiles();
 
-            // if the folder contains files
+            // add files to file list
             if (temp != null && temp.length > 0) {
                 for (File item : Objects.requireNonNull(dir.listFiles())) {
-                    addContentsToRenameFrom(item);
+                    addFile(item);
                 }
+            }
+
+            // add shows to listViews
+            for (File file : files) {
+                listRenameFrom.add(file.getName());
+            }
+        }
+    }
+
+    @FXML
+    private void getRenameSuggestions() throws IOException {
+        for (String name : listRenameFrom) {
+            // create initial show object from file name
+            Show show = createShow(name);
+
+            if (show instanceof Movie) {
+                Movie m = (Movie) show;
+
+                // get results from api
+                TheMovieDB theMovieDB = new TheMovieDB();
+                JSONArray results = theMovieDB.getMovieInfo(m.getTitle(), m.getReleaseDate(), "en-US", true);
+                JSONObject result = (JSONObject) results.get(0);
+
+                // pull info wanted from results
+                String title = result.get("title").toString();
+                String id = result.get("id").toString();
+                String releaseDate = result.get("release_date").toString().substring(0, 4);
+
+                // set movie object to info retrieved
+                m.setTitle(title);
+                m.setId(id);
+                m.setReleaseDate(releaseDate);
+
+                listRenameTo.add(m.toString());
             }
         }
     }
 
     /**
-     * Recursive function to add files and subfolders to RenameFrom list
+     * Recursive function to add files and subfolders
      *
      * @param item file from selected folder in open file dialog
      */
-    private void addContentsToRenameFrom(File item) {
+    private void addFile(File item) {
         if (item.isFile()) {
-            listRenameFrom.add(item.getName().substring(0, item.getName().lastIndexOf('.')));
             files.add(item);
         } else if (item.isDirectory() && checkboxSubFolder.isSelected()) {
             for (File f : Objects.requireNonNull(item.listFiles())) {
-                addContentsToRenameFrom(f);
+                addFile(f);
             }
-        }
-    }
-
-    @FXML
-    public void getSuggestedNames() throws IOException
-    {
-        listRenameTo.clear();
-        ShowFactory showFactory = new ShowFactory(files);
-        listRenameTo.addAll(showFactory.getNames());
-    }
-
-    private void renameFile(File f) throws IOException {
-        if (f.isFile()) {
-            for (int i = 0; i < listRenameFrom.size(); i++) {
-                // check if current file name contains name from listRenameFrom
-                if (f.getCanonicalPath().contains(listRenameFrom.get(i))) {
-                    // get path
-                    String path = files.get(i).getCanonicalPath();
-
-                    // get last occurance of file to be renamed
-                    StringBuilder sb = new StringBuilder();
-                    int lastOccurance = path.lastIndexOf(listRenameFrom.get(i));
-
-                    // generate new path string with replaced file name
-                    sb.append(path, 0, lastOccurance);
-                    sb.append(listRenameTo.get(i));
-                    sb.append(path.substring(lastOccurance + listRenameFrom.get(i).length()));
-
-                    // rename
-                    Path p = Paths.get(path);
-                    Files.move(p, p.resolveSibling(sb.toString()));
-                }
-            }
-        } else if (f.isDirectory())   // recursion
-        {
-            // for each file in the directory, call the recursive function
-            for (File temp : Objects.requireNonNull(f.listFiles())) {
-                renameFile(temp);
-            }
-        }
-    }
-
-    @FXML
-    public void renameAll() throws IOException {
-        if (listRenameFrom.size() == listRenameTo.size() && listRenameFrom.size() > 0) {
-            for (int i = 0; i < files.size(); i++) {
-                if (!listRenameTo.get(i).equals(RenameController.ERROR_MESSAGE)) {
-                    renameFile(files.get(i));
-                }
-            }
-        }
-    }
-
-    @FXML
-    public void renameSelected() {
-
-    }
-
-    @FXML
-    public void removeSelected() {
-        removeItem(listViewRenameFrom);
-    }
-
-    /**
-     * Function to remove selected item from listview
-     *
-     * @param list List for an item to be removed from
-     * @param <T>  Type to of object in list
-     */
-    private <T> void removeItem(ListView<T> list) {
-        if (list.getItems().size() > 0) {
-            int index = list.getSelectionModel().getSelectedIndex();
-            listRenameFrom.remove(index);
-            files.remove(index);
         }
     }
 
@@ -197,10 +189,6 @@ public class RenameController implements Initializable {
         // creates an arraylist of files
         files = new ArrayList<>();
 
-        // set ListCells inside ListView to wrap text and adjust max width
-        setListViewsWrapText(listViewRenameFrom);
-        setListViewsWrapText(listViewRenameTo);
-
         // set list views to observe these lists
         listViewRenameFrom.setItems(listRenameFrom);
         listViewRenameTo.setItems(listRenameTo);
@@ -208,32 +196,5 @@ public class RenameController implements Initializable {
         // placeholder text for ListViews
         listViewRenameFrom.setPlaceholder(new Label("Click \"Add Source\" to add files!"));
         listViewRenameTo.setPlaceholder(new Label("Click \"Get Rename Suggestions\" to get renamed file suggestions!"));
-    }
-
-    /**
-     * Function to set the styling of the ListView to wrap the text if it's too long
-     */
-    private void setListViewsWrapText(ListView<String> listView) {
-        listView.setCellFactory(param -> new ListCell<String>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (empty || item == null) {
-                    setGraphic(null);
-                    setText(null);
-                } else {
-                    // set the width's
-                    setMinWidth(param.getWidth() - 40);
-                    setMaxWidth(param.getWidth() - 40);
-                    setPrefWidth(param.getWidth() - 40);
-
-                    // allow wrapping
-                    setWrapText(true);
-
-                    setText(item);
-                }
-            }
-        });
     }
 }
