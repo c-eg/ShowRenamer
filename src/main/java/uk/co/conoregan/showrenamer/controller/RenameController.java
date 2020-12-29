@@ -148,7 +148,7 @@ public class RenameController implements Initializable {
 
                 // get results from api
                 TheMovieDB theMovieDB = new TheMovieDB();
-                JSONArray results = theMovieDB.getMovieInfo(m.getTitle(), m.getReleaseDate(), "en-US", true);
+                JSONArray results = theMovieDB.getMovieResults(m.getTitle(), m.getReleaseDate(), "en-US", true);
                 JSONObject result = (JSONObject) results.get(0);
 
                 // pull info wanted from results
