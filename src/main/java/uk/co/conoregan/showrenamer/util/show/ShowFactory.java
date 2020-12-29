@@ -18,6 +18,7 @@
 package uk.co.conoregan.showrenamer.util.show;
 
 import org.json.JSONObject;
+import uk.co.conoregan.showrenamer.controller.RenameController;
 import uk.co.conoregan.showrenamer.exception.ShowNotFoundException;
 import uk.co.conoregan.showrenamer.model.api.ResultContainer;
 import uk.co.conoregan.showrenamer.model.show.*;
@@ -32,10 +33,10 @@ import java.util.Iterator;
 import java.util.List;
 
 public class ShowFactory {
-    private final HashSet<Show> shows;
+    private final ArrayList<Show> shows;
 
     public ShowFactory(List<File> files) throws IOException {
-        this.shows = new HashSet<>();
+        this.shows = new ArrayList<>();
 
         for (File f : files) {
             // get show title from ShowInfoMatcher
@@ -59,39 +60,44 @@ public class ShowFactory {
 
             int index = 0; // FOR TESTING PURPOSES ONLY
 
-            // if movie
-            if (data.get(index).getType() == ResultContainer.ShowType.MOVIE) {
-                try {
-                    // api call for movie
-                    JSONObject movieInfo = tmdb.getMovieInfo(data.get(index).getId());
-                    Show m = theMovieDBConverter.getMovie(movieInfo);
-                    shows.add(m);
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            // if tv
-            else if (data.get(index).getType() == ResultContainer.ShowType.TV) {
-                // create new TVShow
-                TVShow newShow = new TVShow(data.get(index).getName(), data.get(index).getId());
-                Season season = new Season(Integer.parseInt(showInfoMatcher.getSeason()));
-                Episode episode = new Episode(Integer.parseInt(showInfoMatcher.getEpisode()));
-
-                season.add(episode);
-                newShow.add(season);
-
-                // merge if exists
-                if (shows.contains(newShow)) {
-                    for (Show show : shows) {
-                        if (show.equals(newShow))
-                            ((TVShow) show).merge(newShow);
+            if (data.size() > 0) {
+                // if movie
+                if (data.get(index).getType() == ResultContainer.ShowType.MOVIE) {
+                    try {
+                        // api call for movie
+                        JSONObject movieInfo = tmdb.getMovieInfo(data.get(index).getId());
+                        Show m = theMovieDBConverter.getMovie(movieInfo);
+                        shows.add(m);
+                    }
+                    catch (IOException e) {
+                        e.printStackTrace();
                     }
                 }
-                // add if doesn't exist
-                else {
-                    shows.add(newShow);
+                // if tv
+                else if (data.get(index).getType() == ResultContainer.ShowType.TV) {
+                    // create new TVShow
+                    TVShow newShow = new TVShow(data.get(index).getName(), data.get(index).getId());
+                    Season season = new Season(Integer.parseInt(showInfoMatcher.getSeason()));
+                    Episode episode = new Episode(Integer.parseInt(showInfoMatcher.getEpisode()));
+
+                    season.add(episode);
+                    newShow.add(season);
+
+                    // merge if exists
+                    if (shows.contains(newShow)) {
+                        for (Show show : shows) {
+                            if (show.equals(newShow))
+                                ((TVShow) show).merge(newShow);
+                        }
+                    }
+                    // add if doesn't exist
+                    else {
+                        shows.add(newShow);
+                    }
                 }
+            }
+            else {
+                shows.add(null);
             }
         }
 
@@ -128,7 +134,10 @@ public class ShowFactory {
         ArrayList<String> names = new ArrayList<>();
 
         for (Show show : shows) {
-            if (show instanceof Movie) {
+            if (show == null) {
+                names.add(RenameController.ERROR_MESSAGE);
+            }
+            else if (show instanceof Movie) {
                 Movie m = (Movie) show;
                 names.add(String.format("%s (%s)", m.getTitle(), m.getReleaseDate().substring(0, 4)));
             }
@@ -145,20 +154,5 @@ public class ShowFactory {
         }
 
         return names;
-    }
-
-    public static void main(String[] args) throws IOException {
-        ArrayList<File> files = new ArrayList<>();
-        //String path0 = "Z:\\Movies\\2 Fast 2 Furious (2003).mp4";
-        String path1 = "Z:\\TV Shows\\Corporate\\Season 1\\Corporate - S01E01 - The Void.mp4";
-        String path2 = "Z:\\TV Shows\\Corporate\\Season 1\\Corporate - S01E02 - The Powerpoint of Death.mp4";
-        String path3 = "Z:\\TV Shows\\Corporate\\Season 2\\Corporate - S02E01 - The One Who's There.mp4";
-        //files.add(new File(path0));
-        files.add(new File(path1));
-        files.add(new File(path2));
-        files.add(new File(path3));
-
-        ShowFactory sm = new ShowFactory(files);
-        System.out.println(sm.getNames());
     }
 }

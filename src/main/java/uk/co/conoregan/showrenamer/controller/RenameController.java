@@ -37,7 +37,7 @@ import java.util.ResourceBundle;
 
 public class RenameController implements Initializable {
     // constants
-    private static final String ERROR_MESSAGE = "<Unable to find match>";
+    public static final String ERROR_MESSAGE = "<Unable to find match>";
 
     // listView lists
     private final ObservableList<String> listRenameFrom = FXCollections.observableArrayList();
@@ -119,7 +119,6 @@ public class RenameController implements Initializable {
     public void getSuggestedNames() throws IOException
     {
         listRenameTo.clear();
-
         ShowFactory showFactory = new ShowFactory(files);
         listRenameTo.addAll(showFactory.getNames());
     }
