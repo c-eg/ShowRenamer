@@ -15,72 +15,98 @@
  * along with ShowRenamer.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+
 package uk.co.conoregan.showrenamer.model.show;
 
-public class Episode {
-    private String episodeId = null;
-    private String name = null;
-    private int number;
+/**
+ * Class to represent an episode from a tv show.
+ *
+ * @author c-eg
+ */
+public class Episode extends Show {
+    private String episodeName = null;
+    private int seasonNumber;
+    private int episodeNumber;
 
-    /*
-     * Constructors
+    /**
+     * Episode constructor.
+     *
+     * @param title         show title
+     * @param seasonNumber  season number
+     * @param episodeNumber episode number
      */
-    public Episode(int number) {
-        this.number = number;
+    public Episode(final String title, final int seasonNumber,
+                   final int episodeNumber) {
+        super(title);
+        this.seasonNumber = seasonNumber;
+        this.episodeNumber = episodeNumber;
     }
 
-    public Episode(String episodeId, int number) {
-        this.episodeId = episodeId;
-        this.number = number;
-    }
-
-    public Episode(String episodeId, String name, int number) {
-        this.episodeId = episodeId;
-        this.name = name;
-        this.number = number;
-    }
-    /*
-     * End of Constructors
+    /**
+     * Gets episode name.
+     *
+     * @return String episode name
      */
+    public String getEpisodeName() {
+        return episodeName;
+    }
 
-    /*
-     * Accessor Methods
+    /**
+     * Sets episode name.
+     *
+     * @param episodeName String episode name
      */
-    public String getName() {
-        return this.name;
+    public void setEpisodeName(final String episodeName) {
+        this.episodeName = episodeName;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getNumber() {
-        return this.number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
-    public String getEpisodeId() {
-        return this.episodeId;
-    }
-    /*
-     * End of Accessor Methods
+    /**
+     * Gets season number.
+     *
+     * @return int season number
      */
-
-    public Episode merge(Episode other) {
-        if (this.episodeId == null && other.getEpisodeId() != null)
-            this.episodeId = other.episodeId;
-        if (this.name == null && other.getName() != null) {
-            this.name = other.name;
-        }
-
-        return this;
+    public int getSeasonNumber() {
+        return seasonNumber;
     }
 
+    /**
+     * Sets seaon number.
+     *
+     * @param seasonNumber int season number
+     */
+    public void setSeasonNumber(final int seasonNumber) {
+        this.seasonNumber = seasonNumber;
+    }
+
+    /**
+     * Gets episode number.
+     *
+     * @return int episode number
+     */
+    public int getEpisodeNumber() {
+        return episodeNumber;
+    }
+
+    /**
+     * Sets episode number.
+     *
+     * @param episodeNumber int episode number
+     */
+    public void setEpisodeNumber(final int episodeNumber) {
+        this.episodeNumber = episodeNumber;
+    }
+
+    /**
+     * Episode String format.
+     *
+     * @return String
+     */
     @Override
     public String toString() {
-        return String.valueOf(this.number);
+        return String.format("%s - S%02dE%02d - %s",
+                super.getTitle(),
+                this.getSeasonNumber(),
+                this.getEpisodeNumber(),
+                this.episodeName);
     }
 }

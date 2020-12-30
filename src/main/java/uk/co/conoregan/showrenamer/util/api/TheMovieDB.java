@@ -15,12 +15,11 @@
  * along with ShowRenamer.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package uk.co.conoregan.showrenamer.util.api.TheMovieDatabase;
+package uk.co.conoregan.showrenamer.util.api;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
-import uk.co.conoregan.showrenamer.exception.ShowNotFoundException;
-import uk.co.conoregan.showrenamer.util.api.ShowDatabaseAPI;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,12 +29,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
-public class TheMovieDB implements ShowDatabaseAPI {
-    public TheMovieDB() {
-    }
-
+/**
+ * Class to call themoviedb.org api on shows.
+ *
+ * @author c-eg
+ */
+public class TheMovieDB {
     /**
-     * Function to get the API key from the api_key.json file
+     * Function to get the API key from the api_key.json file.
      *
      * @return String of API key
      */
@@ -49,21 +50,84 @@ public class TheMovieDB implements ShowDatabaseAPI {
             org.json.simple.JSONObject jsonObject = (org.json.simple.JSONObject) p.parse(new InputStreamReader(is, StandardCharsets.UTF_8));
 
             return jsonObject.get("TheMovieDatabase_API").toString();
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             System.out.println("API KEY file not found, please create one on themoviedb.org\n");
             e.printStackTrace();
             return null;
         }
     }
 
-    public JSONObject getShowsSearch(String title) throws ShowNotFoundException, IOException {
+    /**
+     * Gets movie results.
+     *
+     * @param query    the movie name
+     * @param year     the year
+     * @param language the language in format xx or xx-xx, e.g. en-US
+     * @param adult    allow adult content or not
+     * @return the movie results
+     */
+    public static JSONArray getMovieResults(String query, String year, String language, boolean adult) throws IOException {
+        // set up api request
+        final String API_KEY = getAPI_KEY();
+
+        StringBuilder urlName = new StringBuilder("https://api.themoviedb.org/3/search/movie?api_key=" + API_KEY + "&");
+
+        urlName.append("query=").append(query.replace(" ", "%20")).append("&");
+        urlName.append("include_adult=").append(adult).append("&");
+
+        if (year != null) {
+            urlName.append("year=").append(year).append("&");
+        }
+        if (language != null) {
+            urlName.append("language=").append(language).append("&");
+        }
+
+        urlName.append("page=1");
+
+        URL url = new URL(urlName.toString());
+
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        int responseCode = connection.getResponseCode();
+        String readLine;
+
+        // if the request returns something
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            // reading the response from the api
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+
+            while ((readLine = in.readLine()) != null) {
+                response.append(readLine);
+            }
+            in.close();
+
+            // creating a json object from the response
+            JSONObject result = new JSONObject(response.toString());
+            return result.getJSONArray("results");
+        }
+        // if the request returns nothing
+        else {
+            System.out.println("HTTP response was not OK");
+            return null;
+        }
+    }
+
+    /**
+     * Gets tv id.
+     *
+     * @param query the tv show name
+     * @return the tv id
+     */
+    public static JSONObject getTVId(String query) throws IOException {
         // format the request properly
         // replace all occurrences of " " with "%20"
-        String reformattedTitle = title.replaceAll("[ ]", "%20");
+        String reformattedTitle = query.replaceAll("[ ]", "%20");
 
         // set up api request
         final String API_KEY = getAPI_KEY();
-        URL url = new URL("https://api.themoviedb.org/3/search/multi?api_key=" + API_KEY + "&language=en-US&query=" + reformattedTitle + "&page=1&include_adult=true");
+        URL url = new URL("https://api.themoviedb.org/3/search/tv?api_key=" + API_KEY + "&language=en-US&query=" + reformattedTitle + "&page=1&include_adult=true");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
         int responseCode = connection.getResponseCode();
@@ -80,39 +144,6 @@ public class TheMovieDB implements ShowDatabaseAPI {
             }
             in.close();
 
-            // creating a json object from the response
-            return new JSONObject(response.toString());
-        }
-        // if the request returns nothing
-        else {
-            throw new ShowNotFoundException(title);
-        }
-    }
-
-    @Override
-    public JSONObject getMovieInfo(String id) throws IOException {
-        // set up api request
-        final String API_KEY = getAPI_KEY();
-
-        URL url = new URL("https://api.themoviedb.org/3/movie/" + id + "?api_key=" + API_KEY + "&language=en-US");
-
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("GET");
-        int responseCode = connection.getResponseCode();
-        String readLine;
-
-        // if the request returns something
-        if (responseCode == HttpURLConnection.HTTP_OK) {
-            // reading the response from the api
-            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            StringBuilder response = new StringBuilder();
-
-            while ((readLine = in.readLine()) != null) {
-                response.append(readLine);
-            }
-            in.close();
-
-            // creating a json object from the response
             return new JSONObject(response.toString());
         }
         // if the request returns nothing
@@ -122,47 +153,21 @@ public class TheMovieDB implements ShowDatabaseAPI {
         }
     }
 
-    @Override
-    public JSONObject getTVShowSeasonInfo(String id, int seasonNumber) throws IOException {
-        // set up api request
-        final String API_KEY = getAPI_KEY();
-
-        URL url = new URL("https://api.themoviedb.org/3/tv/" + id + "/season/" + seasonNumber + "?api_key=" + API_KEY + "&language=en-US");
-
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("GET");
-        int responseCode = connection.getResponseCode();
-        String readLine;
-
-        // if the request returns something
-        if (responseCode == HttpURLConnection.HTTP_OK) {
-            // reading the response from the api
-            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            StringBuilder response = new StringBuilder();
-
-            while ((readLine = in.readLine()) != null) {
-                response.append(readLine);
-            }
-            in.close();
-
-            // creating a json object from the response
-            return new JSONObject(response.toString());
-        }
-        // if the request returns nothing
-        else {
-            System.out.println("HTTP response was not OK");
-            return null;
-        }
-    }
-
-    @Override
-    public JSONObject getTVShowEpisodeInfo(String id, int seasonNumber, int episodeNumber) throws IOException {
+    /**
+     * Gets episode results.
+     *
+     * @param id      the id
+     * @param season  the season number
+     * @param episode the episode number
+     * @return the episode results
+     */
+    public static JSONObject getEpisodeResults(String id, int season, int episode) throws IOException {
         // set up api request
         final String API_KEY = getAPI_KEY();
 
         URL url = new URL("https://api.themoviedb.org/3/tv/" + id +
-                "/season/" + seasonNumber +
-                "/episode/" + episodeNumber +
+                "/season/" + season +
+                "/episode/" + episode +
                 "?api_key=" + API_KEY + "&language=en-US");
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();

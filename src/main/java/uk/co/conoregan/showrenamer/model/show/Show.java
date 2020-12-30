@@ -17,37 +17,65 @@
 
 package uk.co.conoregan.showrenamer.model.show;
 
-import java.util.Objects;
-
+/**
+ * Abstract Class to represent a Show.
+ *
+ * @author c-eg
+ */
 public abstract class Show {
-    private final String title;
-    private final String id;
+    private String title;
+    private String id = null;
 
-    public Show(String title, String id) {
+    /**
+     * Show constructor.
+     *
+     * @param title title of show
+     */
+    public Show(final String title) {
         this.title = title;
-        this.id = id;
     }
 
+    /**
+     * Gets show title.
+     *
+     * @return String title
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * Gets show id.
+     *
+     * @return String id
+     */
     public String getId() {
         return id;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Show)) return false;
-
-        Show show = (Show) o;
-        return title.equals(show.title) && id.equals(show.id);
+    /**
+     * Sets show id.
+     *
+     * @param id String
+     */
+    public void setId(final String id) {
+        this.id = id;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(title, id);
+    /**
+     * Sets title.
+     *
+     * @param title the title
+     */
+    public void setTitle(final String title) {
+        this.title = title;
     }
+
+    /**
+     * Show String format.
+     *
+     * @return the string
+     */
+    public abstract String toString();
 }
 

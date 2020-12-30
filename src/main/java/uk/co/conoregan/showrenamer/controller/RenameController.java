@@ -17,12 +17,20 @@
 
 package uk.co.conoregan.showrenamer.controller;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import uk.co.conoregan.showrenamer.util.show.ShowFactory;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import uk.co.conoregan.showrenamer.model.show.Episode;
+import uk.co.conoregan.showrenamer.model.show.Movie;
+import uk.co.conoregan.showrenamer.model.show.Show;
+import uk.co.conoregan.showrenamer.util.api.TheMovieDB;
+import uk.co.conoregan.showrenamer.util.show.ShowInfoMatcher;
 
 import javax.swing.*;
 import java.io.File;
@@ -35,6 +43,11 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+/**
+ * Class to control the renaming of files that are about shows (movie or tv)
+ *
+ * @author c-eg
+ */
 public class RenameController implements Initializable {
     // constants
     public static final String ERROR_MESSAGE = "<Unable to find match>";
@@ -72,10 +85,44 @@ public class RenameController implements Initializable {
     @FXML
     private CheckBox checkboxSubFolder;
 
+    /**
+     * Creates a show object from a file.
+     *
+     * @param name name of file
+     * @return Show with missing values
+     */
+    private Show createShow(String name) {
+        Show show;
+        ShowInfoMatcher showInfo = new ShowInfoMatcher(name);
+
+        // check if tv show or movie
+        if (showInfo.getSeason() == null && showInfo.getEpisode() == null) {
+
+            // if year is not in file name
+            if (showInfo.getYear() != null) {
+                show = new Movie(showInfo.getTitle(), showInfo.getYear());
+            }
+            // if year is in file name
+            else {
+                show = new Movie(showInfo.getTitle());
+            }
+        }
+        else {
+            show = new Episode(showInfo.getTitle(),
+                    Integer.parseInt(showInfo.getSeason()),
+                    Integer.parseInt(showInfo.getEpisode()));
+        }
+
+        return show;
+    }
+
+    /**
+     * Open file dialog to select files to be renamed.
+     */
     @FXML
-    private void openFileDialog() {
+    private void openFileDialog() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
         // set dialog MVC.style to windows
-        //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+        UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 
         // open the dialog
         JFileChooser chooser = new JFileChooser();
@@ -90,39 +137,147 @@ public class RenameController implements Initializable {
             // get list of files
             File[] temp = dir.listFiles();
 
-            // if the folder contains files
+            // add files to file list
             if (temp != null && temp.length > 0) {
                 for (File item : Objects.requireNonNull(dir.listFiles())) {
-                    addContentsToRenameFrom(item);
+                    addFile(item);
                 }
+            }
+
+            // add shows to listViews
+            for (File file : files) {
+                listRenameFrom.add(file.getName().substring(0, file.getName().lastIndexOf(".")));
+                listRenameTo.add("");
             }
         }
     }
 
     /**
-     * Recursive function to add files and subfolders to RenameFrom list
+     * Function is called by user from GUI. Gets rename suggestions for files
+     * on left list.
+     */
+    @FXML
+    private void getRenameSuggestions() {
+        for (int i = 0; i < listRenameFrom.size(); i++) {
+            renameSuggestionTask(i);
+        }
+    }
+
+    /**
+     * Gets rename suggestion.
+     *
+     * @param index the index
+     * @return the rename suggestion
+     * @throws IOException the io exception
+     */
+    private String getRenameSuggestion(int index) throws IOException {
+        String newName = RenameController.ERROR_MESSAGE;
+        String name = listRenameFrom.get(index);
+
+        // create initial show object from file name
+        Show show = createShow(name);
+
+        if (show instanceof Movie) {
+            Movie m = (Movie) show;
+
+            // get results from api
+            JSONArray results = TheMovieDB.getMovieResults(m.getTitle(), m.getReleaseDate(), "en-US", true);
+
+            if (results != null) {
+                JSONObject result = (JSONObject) results.get(0);
+
+                // pull info wanted from results
+                String title = result.get("title").toString();
+                String id = result.get("id").toString();
+                String releaseDate = result.get("release_date").toString().substring(0, 4);
+
+                // set movie object to info retrieved
+                m.setTitle(title);
+                m.setId(id);
+                m.setReleaseDate(releaseDate);
+
+                newName = m.toString();
+            }
+        }
+        else if (show instanceof Episode) {
+            Episode e = (Episode) show;
+
+            JSONObject result = TheMovieDB.getTVId(e.getTitle());
+
+            if (result != null) {
+                JSONArray results = result.getJSONArray("results");
+
+                if (results.length() > 0) {
+                    JSONObject tv = (JSONObject) results.get(0);
+                    String title = tv.get("name").toString();
+                    String id = tv.get("id").toString();
+
+                    JSONObject episodeResult = TheMovieDB.getEpisodeResults(id, e.getSeasonNumber(), e.getEpisodeNumber());
+
+                    String episodeName = episodeResult.get("name").toString();
+
+                    e.setId(id);
+                    e.setTitle(title);
+                    e.setEpisodeName(episodeName);
+
+                    newName = e.toString();
+                }
+            }
+
+        }
+
+        return newName;
+    }
+
+    /**
+     * Rename suggestion task for threaded api calls.
+     *
+     * @param index the index
+     */
+    private void renameSuggestionTask(int index) {
+        Task<String> task = new Task<String>() {
+            @Override
+            protected String call() throws Exception {
+                return getRenameSuggestion(index);
+            }
+        };
+
+        task.setOnSucceeded(workerStateEvent -> {
+            Platform.runLater(() -> {
+                listRenameTo.set(index, task.getValue());
+            });
+        });
+
+        task.setOnFailed(workerStateEvent -> {
+            Platform.runLater(() -> {
+                listRenameTo.set(index, RenameController.ERROR_MESSAGE);
+            });
+        });
+
+        new Thread(task).start();
+    }
+
+    /**
+     * Recursive function to add files and sub folders.
      *
      * @param item file from selected folder in open file dialog
      */
-    private void addContentsToRenameFrom(File item) {
+    private void addFile(File item) {
         if (item.isFile()) {
-            listRenameFrom.add(item.getName().substring(0, item.getName().lastIndexOf('.')));
             files.add(item);
-        } else if (item.isDirectory() && checkboxSubFolder.isSelected()) {
+        }
+        else if (item.isDirectory() && checkboxSubFolder.isSelected()) {
             for (File f : Objects.requireNonNull(item.listFiles())) {
-                addContentsToRenameFrom(f);
+                addFile(f);
             }
         }
     }
 
-    @FXML
-    public void getSuggestedNames() throws IOException
-    {
-        listRenameTo.clear();
-        ShowFactory showFactory = new ShowFactory(files);
-        listRenameTo.addAll(showFactory.getNames());
-    }
-
+    /**
+     * Recursive function to rename a file passed, or if directory call function again on each file.
+     *
+     * @param f file to be renamed
+     */
     private void renameFile(File f) throws IOException {
         if (f.isFile()) {
             for (int i = 0; i < listRenameFrom.size(); i++) {
@@ -145,7 +300,8 @@ public class RenameController implements Initializable {
                     Files.move(p, p.resolveSibling(sb.toString()));
                 }
             }
-        } else if (f.isDirectory())   // recursion
+        }
+        else if (f.isDirectory())   // recursion
         {
             // for each file in the directory, call the recursive function
             for (File temp : Objects.requireNonNull(f.listFiles())) {
@@ -154,6 +310,9 @@ public class RenameController implements Initializable {
         }
     }
 
+    /**
+     * Function to rename all files with api updated info.
+     */
     @FXML
     public void renameAll() throws IOException {
         if (listRenameFrom.size() == listRenameTo.size() && listRenameFrom.size() > 0) {
@@ -163,11 +322,6 @@ public class RenameController implements Initializable {
                 }
             }
         }
-    }
-
-    @FXML
-    public void renameSelected() {
-
     }
 
     @FXML
@@ -184,11 +338,23 @@ public class RenameController implements Initializable {
     private <T> void removeItem(ListView<T> list) {
         if (list.getItems().size() > 0) {
             int index = list.getSelectionModel().getSelectedIndex();
+
+            if (listRenameFrom.size() == listRenameTo.size()) {
+                listRenameTo.remove(index);
+            }
+
             listRenameFrom.remove(index);
             files.remove(index);
         }
     }
 
+
+    /**
+     * Function is run when object is initialized.
+     *
+     * @param url            the url
+     * @param resourceBundle the resource bundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // stops checkbox box resizing when clicking on and off other controls

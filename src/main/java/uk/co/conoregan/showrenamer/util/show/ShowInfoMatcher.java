@@ -21,6 +21,11 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Class to match show information from a the file name passed.
+ *
+ * @author c-eg, chris-sutcliffe
+ */
 public class ShowInfoMatcher {
     private final String title;
     private final String year;
@@ -37,7 +42,7 @@ public class ShowInfoMatcher {
     private final String releaseGroup;
 
     /**
-     * Constructor for ShowInfo
+     * Constructor for ShowInfo.
      *
      * @param showFile show string to get info from
      *                 e.g.  Movie.Name.2017.1080p.BluRay.x264
@@ -59,13 +64,13 @@ public class ShowInfoMatcher {
     }
 
     /**
-     * Function to match the regex passed against the file
+     * Function to match the regex passed against the file.
      *
      * @param showFile show string to get info from
      * @param regex    regex to match against showFile
      * @return String with result of match from regex
      */
-    private static String matchRegex(String showFile, String regex) {
+    private static String matchRegex(final String showFile, final String regex) {
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(showFile);
 
@@ -77,14 +82,14 @@ public class ShowInfoMatcher {
     }
 
     /**
-     * Function to match the regex passed against the file
+     * Function to match the regex passed against the file.
      *
      * @param showFile     show string to get info from
      * @param regex        regex to match against showFile
      * @param regexPattern regex flag condition
      * @return String with result of match from regex
      */
-    private static String matchRegex(String showFile, String regex, int regexPattern) {
+    private static String matchRegex(final String showFile, final String regex, final int regexPattern) {
         Pattern p = Pattern.compile(regex, regexPattern);
         Matcher m = p.matcher(showFile);
 
@@ -96,12 +101,12 @@ public class ShowInfoMatcher {
     }
 
     /**
-     * Function to match the title from the showFile passed
+     * Function to match the title from the showFile passed.
      *
      * @param showFile show string to get info from
      * @return title of show
      */
-    private static String matchTitle(String showFile) {
+    private static String matchTitle(final String showFile) {
         Pattern moviePattern = Pattern.compile("(.*?)(\\W| - )(directors(.?)cut|480p|720p|1080p|dvdrip|xvid|cd[0-9]|bluray|dvdscr|brrip|divx|S[0-9]{1,3}E[0-9]{1,3}|Season[\\s,0-9]{1,4}|[\\{\\(\\[]?[0-9]{4}).*", Pattern.CASE_INSENSITIVE);
         Matcher movieMatcher = moviePattern.matcher(showFile);
         String name;
@@ -117,12 +122,12 @@ public class ShowInfoMatcher {
     }
 
     /**
-     * Function to match the year from the showFile passed
+     * Function to match the year from the showFile passed.
      *
      * @param showFile show string to get info from
      * @return year of show, or null it if doesn't exist
      */
-    private static String matchYear(String showFile) {
+    private static String matchYear(final String showFile) {
         String s = matchRegex(showFile, "[\\.\\s](?!^)[1,2]\\d{3}[\\.\\s]");
         if (s != null) {
             return s.substring(1, s.length() - 1);
@@ -132,22 +137,22 @@ public class ShowInfoMatcher {
     }
 
     /**
-     * Function to match the resolution from the showFile passed
+     * Function to match the resolution from the showFile passed.
      *
      * @param showFile show string to get info from
      * @return resolution of show, or null it if doesn't exist
      */
-    private static String matchResolution(String showFile) {
+    private static String matchResolution(final String showFile) {
         return matchRegex(showFile, "\\d{3,4}p", Pattern.CASE_INSENSITIVE);
     }
 
     /**
-     * Function to match the source from the showFile passed
+     * Function to match the source from the showFile passed.
      *
      * @param showFile show string to get info from
      * @return source of show, or null it if doesn't exist
      */
-    private static String matchSource(String showFile) {
+    private static String matchSource(final String showFile) {
         //String s = matchRegex(showFile, "[\\.\\s](CAM|(DVD|BD)SCR|SCR|DDC|R5[\\.\\s]LINE|R5|(DVD|HD|BR|BD|WEB)Rip|DVDR|(HD|PD)TV|WEB-DL|WEBDL|BluRay|TS(?!C)|TELESYNC)", Pattern.CASE_INSENSITIVE);
         String s = matchRegex(showFile, "[\\.\\s](CAM|(DVD|BD)SCR|SCR|DDC|R5[\\.\\s]LINE|R5|(DVD|HD|BR|BD|WEB)Rip|DVDR|(HD|PD)TV|WEB-DL|WEBDL|BluRay|Blu-Ray|TS(?!C)|TELESYNC)", Pattern.CASE_INSENSITIVE);
         if (s != null) {
@@ -158,12 +163,12 @@ public class ShowInfoMatcher {
     }
 
     /**
-     * Function to match the video format from the showFile passed
+     * Function to match the video format from the showFile passed.
      *
      * @param showFile show string to get info from
      * @return video format of show, or null it if doesn't exist
      */
-    private static String matchVideoCodec(String showFile) {
+    private static String matchVideoCodec(final String showFile) {
         //String s = matchRegex(showFile, "[\\.\\s](NTSC|PAL|[xh][\\.\\s]?264|H264)", Pattern.CASE_INSENSITIVE);
         String s = matchRegex(showFile, "[\\.\\s](NTSC|PAL|[xh][\\.\\s]?264|[xh][\\.\\s]?265|H264|H265)", Pattern.CASE_INSENSITIVE);
         if (s != null) {
@@ -174,22 +179,22 @@ public class ShowInfoMatcher {
     }
 
     /**
-     * Function to match the audio format from the showFile passed
+     * Function to match the audio format from the showFile passed.
      *
      * @param showFile show string to get info from
      * @return audio format of show, or null it if doesn't exist
      */
-    private static String matchAudio(String showFile) {
+    private static String matchAudio(final String showFile) {
         return matchRegex(showFile, "AAC2[\\.\\s]0|AAC|AC3|DTS|DD5[\\.\\s]1", Pattern.CASE_INSENSITIVE);
     }
 
     /**
-     * Function to match the language from the showFile passed
+     * Function to match the language from the showFile passed.
      *
      * @param showFile show string to get info from
      * @return language of show, or null it if doesn't exist
      */
-    private static String matchLanguage(String showFile) {
+    private static String matchLanguage(final String showFile) {
         String s = matchRegex(showFile, "[\\.\\s](MULTiSUBS|MULTi|NORDiC|DANiSH|SWEDiSH|NORWEGiAN|GERMAN|iTALiAN|FRENCH|SPANiSH)", Pattern.CASE_INSENSITIVE);
         if (s != null) {
             return s.substring(1);
@@ -199,12 +204,12 @@ public class ShowInfoMatcher {
     }
 
     /**
-     * Function to match the edition from the showFile passed
+     * Function to match the edition from the showFile passed.
      *
      * @param showFile show string to get info from
      * @return edition of show, or null it if doesn't exist
      */
-    private static String matchEdition(String showFile) {
+    private static String matchEdition(final String showFile) {
         String s = matchRegex(showFile, "UNRATED|DC|(Directors|EXTENDED)[\\.\\s](CUT|EDITION)|EXTENDED|3D|2D|\\bNF\\b", Pattern.CASE_INSENSITIVE);
         if (s != null) {
             return s.substring(1);
@@ -214,22 +219,22 @@ public class ShowInfoMatcher {
     }
 
     /**
-     * Function to match the tags from the showFile passed
+     * Function to match the tags from the showFile passed.
      *
      * @param showFile show string to get info from
      * @return tags of show, or null it if doesn't exist
      */
-    private static String matchTags(String showFile) {
+    private static String matchTags(final String showFile) {
         return matchRegex(showFile, "COMPLETE|LiMiTED|iNTERNAL", Pattern.CASE_INSENSITIVE);
     }
 
     /**
-     * Function to match the release information from the showFile passed
+     * Function to match the release information from the showFile passed.
      *
      * @param showFile show string to get info from
      * @return release of show, or null it if doesn't exist
      */
-    private static String matchReleaseInfo(String showFile) {
+    private static String matchReleaseInfo(final String showFile) {
         String s = matchRegex(showFile, "[\\.\\s](REAL[\\.\\s]PROPER|PROPER|REPACK|READNFO|READ[\\.\\s]NFO|DiRFiX|NFOFiX)", Pattern.CASE_INSENSITIVE);
         if (s != null) {
             return s.substring(1);
@@ -239,7 +244,7 @@ public class ShowInfoMatcher {
     }
 
     /**
-     * Function to match the season number from the showFile passed
+     * Function to match the season number from the showFile passed.
      *
      * @param showFile show string to get info from
      * @return season number of show, or null it if doesn't exist
@@ -247,7 +252,7 @@ public class ShowInfoMatcher {
      * works in formats:
      * - season/sXXX
      */
-    private static String matchSeason(String showFile) {
+    private static String matchSeason(final String showFile) {
         String s = matchRegex(showFile, "(?:s|season)(\\d{1,3})", Pattern.CASE_INSENSITIVE);
         if (s != null) {
             return s.substring(1);
@@ -257,7 +262,7 @@ public class ShowInfoMatcher {
     }
 
     /**
-     * Function to match the episode number from the showFile passed
+     * Function to match the episode number from the showFile passed.
      *
      * @param showFile show string to get info from
      * @return episode number of show, or null it if doesn't exist
@@ -267,7 +272,7 @@ public class ShowInfoMatcher {
      * - episode/eXXXeXXXeXXX
      * - episode/eXXX-XXX-XXX
      */
-    private static String matchEpisode(String showFile) {
+    private static String matchEpisode(final String showFile) {
         String s = matchRegex(showFile, "e(?:(\\d{1,3})|(\\d{1,3}([e-]\\d{1,3})+))", Pattern.CASE_INSENSITIVE);
         if (s != null) {
             s = s.substring(1);
@@ -277,20 +282,19 @@ public class ShowInfoMatcher {
             return null;
     }
 
-    private static String matchReleaseGroup(String showFile) {
+    /**
+     * Function to match the show release group from the showFile passed
+     *
+     * @param showFile show string to get info from
+     * @return release group of show, or null if it doesn't exist
+     */
+    private static String matchReleaseGroup(final String showFile) {
         String s = matchRegex(showFile, "- ?([^\\-. ]+)$", Pattern.CASE_INSENSITIVE);
         if (s != null) {
             return s.substring(1);
-        } else
+        }
+        else
             return null;
-    }
-
-    /*
-     * Testing example
-     */
-    public static void main(String[] args) {
-        ShowInfoMatcher showInfoMatcher = new ShowInfoMatcher("Wynonna Earp - S04E04");
-        System.out.println(showInfoMatcher);
     }
 
     public String getTitle() {
@@ -355,6 +359,11 @@ public class ShowInfoMatcher {
                 this.title, this.year, this.resolution, this.source, this.videoCodec, this.audio, this.language, this.edition, this.tags, this.releaseInfo, this.season, this.episode, this.releaseGroup);
     }
 
+    /**
+     * Function to convert showInfoMatcher object to hash map.
+     *
+     * @return HashMap of showInfoMatcher
+     */
     public HashMap<String, String> toHashMap() {
         HashMap<String, String> fileData = new HashMap<>();
 
@@ -374,5 +383,4 @@ public class ShowInfoMatcher {
 
         return fileData;
     }
-
 }
