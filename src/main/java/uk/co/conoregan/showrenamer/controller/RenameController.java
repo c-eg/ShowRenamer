@@ -36,6 +36,9 @@ import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -43,7 +46,7 @@ import java.util.ResourceBundle;
 /**
  * Class to control the renaming of files that are about shows (movie or tv)
  *
- * @author c -eg
+ * @author c-eg
  */
 public class RenameController implements Initializable {
     // constants
@@ -270,6 +273,81 @@ public class RenameController implements Initializable {
         }
     }
 
+    /**
+     * Recursive function to rename a file passed, or if directory call function again on each file.
+     *
+     * @param f file to be renamed
+     */
+    private void renameFile(File f) throws IOException {
+        if (f.isFile()) {
+            for (int i = 0; i < listRenameFrom.size(); i++) {
+                // check if current file name contains name from listRenameFrom
+                if (f.getCanonicalPath().contains(listRenameFrom.get(i))) {
+                    // get path
+                    String path = files.get(i).getCanonicalPath();
+
+                    // get last occurance of file to be renamed
+                    StringBuilder sb = new StringBuilder();
+                    int lastOccurance = path.lastIndexOf(listRenameFrom.get(i));
+
+                    // generate new path string with replaced file name
+                    sb.append(path, 0, lastOccurance);
+                    sb.append(listRenameTo.get(i));
+                    sb.append(path.substring(lastOccurance + listRenameFrom.get(i).length()));
+
+                    // rename
+                    Path p = Paths.get(path);
+                    Files.move(p, p.resolveSibling(sb.toString()));
+                }
+            }
+        }
+        else if (f.isDirectory())   // recursion
+        {
+            // for each file in the directory, call the recursive function
+            for (File temp : Objects.requireNonNull(f.listFiles())) {
+                renameFile(temp);
+            }
+        }
+    }
+
+    /**
+     * Function to rename all files with api updated info.
+     */
+    @FXML
+    public void renameAll() throws IOException {
+        if (listRenameFrom.size() == listRenameTo.size() && listRenameFrom.size() > 0) {
+            for (int i = 0; i < files.size(); i++) {
+                if (!listRenameTo.get(i).equals(RenameController.ERROR_MESSAGE)) {
+                    renameFile(files.get(i));
+                }
+            }
+        }
+    }
+
+    @FXML
+    public void removeSelected() {
+        removeItem(listViewRenameFrom);
+    }
+
+    /**
+     * Function to remove selected item from listview
+     *
+     * @param list List for an item to be removed from
+     * @param <T>  Type to of object in list
+     */
+    private <T> void removeItem(ListView<T> list) {
+        if (list.getItems().size() > 0) {
+            int index = list.getSelectionModel().getSelectedIndex();
+
+            if (listRenameFrom.size() == listRenameTo.size()) {
+                listRenameTo.remove(index);
+            }
+
+            listRenameFrom.remove(index);
+            files.remove(index);
+        }
+    }
+
 
     /**
      * Function is run when object is initialized.
@@ -285,6 +363,10 @@ public class RenameController implements Initializable {
         // creates an arraylist of files
         files = new ArrayList<>();
 
+        // set ListCells inside ListView to wrap text and adjust max width
+        setListViewsWrapText(listViewRenameFrom);
+        setListViewsWrapText(listViewRenameTo);
+
         // set list views to observe these lists
         listViewRenameFrom.setItems(listRenameFrom);
         listViewRenameTo.setItems(listRenameTo);
@@ -292,5 +374,32 @@ public class RenameController implements Initializable {
         // placeholder text for ListViews
         listViewRenameFrom.setPlaceholder(new Label("Click \"Add Source\" to add files!"));
         listViewRenameTo.setPlaceholder(new Label("Click \"Get Rename Suggestions\" to get renamed file suggestions!"));
+    }
+
+    /**
+     * Function to set the styling of the ListView to wrap the text if it's too long
+     */
+    private void setListViewsWrapText(ListView<String> listView) {
+        listView.setCellFactory(param -> new ListCell<String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null) {
+                    setGraphic(null);
+                    setText(null);
+                } else {
+                    // set the width's
+                    setMinWidth(param.getWidth() - 40);
+                    setMaxWidth(param.getWidth() - 40);
+                    setPrefWidth(param.getWidth() - 40);
+
+                    // allow wrapping
+                    setWrapText(true);
+
+                    setText(item);
+                }
+            }
+        });
     }
 }
