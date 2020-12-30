@@ -17,28 +17,60 @@
 
 package uk.co.conoregan.showrenamer.model.show;
 
-import java.io.File;
-
+/**
+ * Class to represent an movie.
+ *
+ * @author c-eg
+ */
 public class Movie extends Show {
+    /**
+     * The Release date.
+     */
     private String releaseDate = null;
 
+    /**
+     * Movie constructor.
+     *
+     * @param title title of movie
+     */
     public Movie(String title) {
         super(title);
     }
 
+    /**
+     * Movie constructor.
+     *
+     * @param title       title of movie
+     * @param releaseDate year of movie
+     */
     public Movie(String title, String releaseDate) {
         super(title);
         this.releaseDate = releaseDate;
     }
 
+    /**
+     * Gets movie release date.
+     *
+     * @return String release date
+     */
     public String getReleaseDate() {
         return releaseDate;
     }
 
+    /**
+     * Sets release date.
+     *
+     * @param releaseDate String release date
+     */
     public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
     }
 
+    /**
+     * Movie String format.
+     *
+     * @return String string
+     */
     public String toString() {
         return String.format("%s (%s)", super.getTitle(), this.releaseDate.substring(0, 4));
     }

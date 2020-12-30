@@ -15,45 +15,92 @@
  * along with ShowRenamer.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+
 package uk.co.conoregan.showrenamer.model.show;
 
-import java.io.File;
-
+/**
+ * Class to represent an episode from a tv show.
+ *
+ * @author c-eg
+ */
 public class Episode extends Show {
     private String episodeName = null;
     private int seasonNumber;
     private int episodeNumber;
 
-    public Episode(String title, int seasonNumber, int episodeNumber) {
+    /**
+     * Episode constructor.
+     *
+     * @param title         show title
+     * @param seasonNumber  season number
+     * @param episodeNumber episode number
+     */
+    public Episode(final String title, final int seasonNumber,
+                   final int episodeNumber) {
         super(title);
         this.seasonNumber = seasonNumber;
         this.episodeNumber = episodeNumber;
     }
 
+    /**
+     * Gets episode name.
+     *
+     * @return String episode name
+     */
     public String getEpisodeName() {
         return episodeName;
     }
 
-    public void setEpisodeName(String episodeName) {
+    /**
+     * Sets episode name.
+     *
+     * @param episodeName String episode name
+     */
+    public void setEpisodeName(final String episodeName) {
         this.episodeName = episodeName;
     }
 
+    /**
+     * Gets season number.
+     *
+     * @return int season number
+     */
     public int getSeasonNumber() {
         return seasonNumber;
     }
 
-    public void setSeasonNumber(int seasonNumber) {
+    /**
+     * Sets seaon number.
+     *
+     * @param seasonNumber int season number
+     */
+    public void setSeasonNumber(final int seasonNumber) {
         this.seasonNumber = seasonNumber;
     }
 
+    /**
+     * Gets episode number.
+     *
+     * @return int episode number
+     */
     public int getEpisodeNumber() {
         return episodeNumber;
     }
 
-    public void setEpisodeNumber(int episodeNumber) {
+    /**
+     * Sets episode number.
+     *
+     * @param episodeNumber int episode number
+     */
+    public void setEpisodeNumber(final int episodeNumber) {
         this.episodeNumber = episodeNumber;
     }
 
+    /**
+     * Episode String format.
+     *
+     * @return String
+     */
     @Override
     public String toString() {
         return String.format("%s - S%02dE%02d - %s",

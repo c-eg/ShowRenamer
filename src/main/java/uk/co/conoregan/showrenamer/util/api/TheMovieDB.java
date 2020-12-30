@@ -26,17 +26,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * Class to call themoviedb.org api on shows.
+ *
+ * @author c-eg
+ */
 public class TheMovieDB {
-    public TheMovieDB() {
-    }
-
     /**
-     * Function to get the API key from the api_key.json file
+     * Function to get the API key from the api_key.json file.
      *
      * @return String of API key
      */
@@ -50,14 +50,24 @@ public class TheMovieDB {
             org.json.simple.JSONObject jsonObject = (org.json.simple.JSONObject) p.parse(new InputStreamReader(is, StandardCharsets.UTF_8));
 
             return jsonObject.get("TheMovieDatabase_API").toString();
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             System.out.println("API KEY file not found, please create one on themoviedb.org\n");
             e.printStackTrace();
             return null;
         }
     }
 
-    public JSONArray getMovieResults(String query, String year, String language, boolean adult) throws IOException {
+    /**
+     * Gets movie results.
+     *
+     * @param query    the movie name
+     * @param year     the year
+     * @param language the language in format xx or xx-xx, e.g. en-US
+     * @param adult    allow adult content or not
+     * @return the movie results
+     */
+    public static JSONArray getMovieResults(String query, String year, String language, boolean adult) throws IOException {
         // set up api request
         final String API_KEY = getAPI_KEY();
 
@@ -104,7 +114,13 @@ public class TheMovieDB {
         }
     }
 
-    public JSONObject getTVId(String query) throws IOException {
+    /**
+     * Gets tv id.
+     *
+     * @param query the tv show name
+     * @return the tv id
+     */
+    public static JSONObject getTVId(String query) throws IOException {
         // format the request properly
         // replace all occurrences of " " with "%20"
         String reformattedTitle = query.replaceAll("[ ]", "%20");
@@ -137,7 +153,15 @@ public class TheMovieDB {
         }
     }
 
-    public JSONObject getEpisodeResults(String id, int season, int episode) throws IOException {
+    /**
+     * Gets episode results.
+     *
+     * @param id      the id
+     * @param season  the season number
+     * @param episode the episode number
+     * @return the episode results
+     */
+    public static JSONObject getEpisodeResults(String id, int season, int episode) throws IOException {
         // set up api request
         final String API_KEY = getAPI_KEY();
 
@@ -170,11 +194,5 @@ public class TheMovieDB {
             System.out.println("HTTP response was not OK");
             return null;
         }
-    }
-
-    public static void main(String[] args) throws IOException {
-        TheMovieDB test = new TheMovieDB();
-        JSONObject result = test.getTVId("the walking dead");
-        System.out.println(result.toString());
     }
 }

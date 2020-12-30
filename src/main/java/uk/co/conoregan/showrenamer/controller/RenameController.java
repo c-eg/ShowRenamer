@@ -40,6 +40,11 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+/**
+ * Class to control the renaming of files that are about shows (movie or tv)
+ *
+ * @author c -eg
+ */
 public class RenameController implements Initializable {
     // constants
     public static final String ERROR_MESSAGE = "<Unable to find match>";
@@ -78,7 +83,8 @@ public class RenameController implements Initializable {
     private CheckBox checkboxSubFolder;
 
     /**
-     * Creates a show object from a file
+     * Creates a show object from a file.
+     *
      * @param name name of file
      * @return Show with missing values
      */
@@ -107,6 +113,9 @@ public class RenameController implements Initializable {
         return show;
     }
 
+    /**
+     * Open file dialog to select files to be renamed.
+     */
     @FXML
     private void openFileDialog() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
         // set dialog MVC.style to windows
@@ -140,29 +149,38 @@ public class RenameController implements Initializable {
         }
     }
 
+    /**
+     * Function is called by user from GUI. Gets rename suggestions for files
+     * on left list.
+     */
     @FXML
-    private void getRenameSuggestions() throws IOException {
+    private void getRenameSuggestions() {
         for (int i = 0; i < listRenameFrom.size(); i++) {
             renameSuggestionTask(i);
         }
     }
 
+    /**
+     * Gets rename suggestion.
+     *
+     * @param index the index
+     * @return the rename suggestion
+     * @throws IOException the io exception
+     */
     private String getRenameSuggestion(int index) throws IOException {
         String newName = RenameController.ERROR_MESSAGE;
-
         String name = listRenameFrom.get(index);
 
         // create initial show object from file name
         Show show = createShow(name);
-        TheMovieDB theMovieDB = new TheMovieDB();
 
         if (show instanceof Movie) {
             Movie m = (Movie) show;
 
             // get results from api
-            JSONArray results = theMovieDB.getMovieResults(m.getTitle(), m.getReleaseDate(), "en-US", true);
+            JSONArray results = TheMovieDB.getMovieResults(m.getTitle(), m.getReleaseDate(), "en-US", true);
 
-            if (results.length() > 0) {
+            if (results != null) {
                 JSONObject result = (JSONObject) results.get(0);
 
                 // pull info wanted from results
@@ -181,29 +199,38 @@ public class RenameController implements Initializable {
         else if (show instanceof Episode) {
             Episode e = (Episode) show;
 
-            JSONObject result = theMovieDB.getTVId(e.getTitle());
-            JSONArray results = result.getJSONArray("results");
+            JSONObject result = TheMovieDB.getTVId(e.getTitle());
 
-            if (results.length() > 0) {
-                JSONObject tv = (JSONObject) results.get(0);
-                String title = tv.get("name").toString();
-                String id = tv.get("id").toString();
+            if (result != null) {
+                JSONArray results = result.getJSONArray("results");
 
-                JSONObject episodeResult = theMovieDB.getEpisodeResults(id, e.getSeasonNumber(), e.getEpisodeNumber());
+                if (results.length() > 0) {
+                    JSONObject tv = (JSONObject) results.get(0);
+                    String title = tv.get("name").toString();
+                    String id = tv.get("id").toString();
 
-                String episodeName = episodeResult.get("name").toString();
+                    JSONObject episodeResult = TheMovieDB.getEpisodeResults(id, e.getSeasonNumber(), e.getEpisodeNumber());
 
-                e.setId(id);
-                e.setTitle(title);
-                e.setEpisodeName(episodeName);
+                    String episodeName = episodeResult.get("name").toString();
 
-                newName = e.toString();
+                    e.setId(id);
+                    e.setTitle(title);
+                    e.setEpisodeName(episodeName);
+
+                    newName = e.toString();
+                }
             }
+
         }
 
         return newName;
     }
 
+    /**
+     * Rename suggestion task for threaded api calls.
+     *
+     * @param index the index
+     */
     private void renameSuggestionTask(int index) {
         Task<String> task = new Task<String>() {
             @Override
@@ -228,20 +255,28 @@ public class RenameController implements Initializable {
     }
 
     /**
-     * Recursive function to add files and subfolders
+     * Recursive function to add files and sub folders.
      *
      * @param item file from selected folder in open file dialog
      */
     private void addFile(File item) {
         if (item.isFile()) {
             files.add(item);
-        } else if (item.isDirectory() && checkboxSubFolder.isSelected()) {
+        }
+        else if (item.isDirectory() && checkboxSubFolder.isSelected()) {
             for (File f : Objects.requireNonNull(item.listFiles())) {
                 addFile(f);
             }
         }
     }
 
+
+    /**
+     * Function is run when object is initialized.
+     *
+     * @param url            the url
+     * @param resourceBundle the resource bundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // stops checkbox box resizing when clicking on and off other controls
