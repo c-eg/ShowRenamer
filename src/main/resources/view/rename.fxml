@@ -115,7 +115,7 @@ along with ShowRenamer.  If not, see <https://www.gnu.org/licenses/>.
                                        <children>
                                            <Button fx:id="buttonOpenFileDialog" mnemonicParsing="false" onAction="#openFileDialog" text="Add Source" />
                                            <CheckBox fx:id="checkboxSubFolder" mnemonicParsing="false" text="Include Sub-Folders" />
-                                           <Button fx:id="buttonRenameAll1" mnemonicParsing="false" text="Remove Selected Item" />
+                                           <Button fx:id="buttonRenameAll1" mnemonicParsing="false" onAction="#removeSelected" text="Remove Selected Item" />
                                        </children>
                                    </HBox>
                                </children>
@@ -139,8 +139,7 @@ along with ShowRenamer.  If not, see <https://www.gnu.org/licenses/>.
                                    <HBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="20.0">
                                        <children>
                                            <Button fx:id="buttonGetRenameSuggestions" mnemonicParsing="false" onAction="#getRenameSuggestions" prefHeight="30.0" text="Get Rename Suggestions" />
-                                           <Button fx:id="buttonRenameSelected" mnemonicParsing="false" text="Rename Selected" />
-                                           <Button fx:id="buttonRenameAll" mnemonicParsing="false" text="Rename ALL" />
+                                           <Button fx:id="buttonRenameAll" mnemonicParsing="false" onAction="#renameAll" text="Rename ALL" />
                                        </children>
                                        <VBox.margin>
                                            <Insets />
