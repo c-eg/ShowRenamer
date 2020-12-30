@@ -42,7 +42,7 @@ public class ShowInfoMatcher {
     private final String releaseGroup;
 
     /**
-     * Constructor for ShowInfo
+     * Constructor for ShowInfo.
      *
      * @param showFile show string to get info from
      *                 e.g.  Movie.Name.2017.1080p.BluRay.x264
