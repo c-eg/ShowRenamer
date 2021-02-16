@@ -20,6 +20,7 @@ package uk.co.conoregan.showrenamer.controller;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -164,6 +165,50 @@ public class RenameController implements Initializable {
     }
 
     /**
+     * Rename suggestion task for threaded api calls.
+     *
+     * @param index the index
+     */
+    private void renameSuggestionTask(int index) {
+        Task<String> task = new Task<String>() {
+            @Override
+            protected String call() throws Exception {
+                return getRenameSuggestion(index);
+            }
+        };
+
+        task.setOnSucceeded(workerStateEvent -> {
+            Platform.runLater(() -> {
+                listRenameTo.set(index, task.getValue());
+            });
+        });
+
+        task.setOnFailed(workerStateEvent -> {
+            Platform.runLater(() -> {
+                listRenameTo.set(index, RenameController.ERROR_MESSAGE);
+            });
+        });
+
+        new Thread(task).start();
+    }
+
+    // TODO: implement this as a class as it's the correct usage
+    private class FetchResultsService extends Service<String> {
+        private int index;
+
+        @Override
+        protected Task<String> createTask() {
+            return new Task<String>() {
+                @Override
+                protected String call() throws Exception {
+                    return getRenameSuggestion(index);
+                }
+            };
+        }
+    }
+
+
+    /**
      * Gets rename suggestion.
      *
      * @param index the index
@@ -226,35 +271,21 @@ public class RenameController implements Initializable {
 
         }
 
-        return newName;
+        return filterForIlegalChars(newName);
     }
 
     /**
-     * Rename suggestion task for threaded api calls.
+     * Function to filter any chars not allowed on file system.
+     * <p>
+     * e.g. TODO write example here
+     * </p>
      *
-     * @param index the index
+     * @param name name to filter
+     * @return filtered string of name
      */
-    private void renameSuggestionTask(int index) {
-        Task<String> task = new Task<String>() {
-            @Override
-            protected String call() throws Exception {
-                return getRenameSuggestion(index);
-            }
-        };
-
-        task.setOnSucceeded(workerStateEvent -> {
-            Platform.runLater(() -> {
-                listRenameTo.set(index, task.getValue());
-            });
-        });
-
-        task.setOnFailed(workerStateEvent -> {
-            Platform.runLater(() -> {
-                listRenameTo.set(index, RenameController.ERROR_MESSAGE);
-            });
-        });
-
-        new Thread(task).start();
+    private String filterForIlegalChars(final String name) {
+        // TODO implement this to replace chars not allowed by windows here.
+        return name;
     }
 
     /**
@@ -324,11 +355,6 @@ public class RenameController implements Initializable {
         }
     }
 
-    @FXML
-    public void removeSelected() {
-        removeItem(listViewRenameFrom);
-    }
-
     /**
      * Function to remove selected item from listview
      *
@@ -348,6 +374,10 @@ public class RenameController implements Initializable {
         }
     }
 
+    @FXML
+    public void removeSelected() {
+        removeItem(listViewRenameFrom);
+    }
 
     /**
      * Function is run when object is initialized.
@@ -388,7 +418,8 @@ public class RenameController implements Initializable {
                 if (empty || item == null) {
                     setGraphic(null);
                     setText(null);
-                } else {
+                }
+                else {
                     // set the width's
                     setMinWidth(param.getWidth() - 40);
                     setMaxWidth(param.getWidth() - 40);
