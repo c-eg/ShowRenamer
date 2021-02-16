@@ -19,142 +19,106 @@ along with ShowRenamer.  If not, see <https://www.gnu.org/licenses/>.
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchor" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #e8e8e8;" stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uk.co.conoregan.showrenamer.controller.RenameController">
+<AnchorPane fx:id="anchor" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #e8e8e8;" stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uk.co.conoregan.showrenamer.controller.RenameController">
     <children>
-        <HBox prefHeight="720.0" prefWidth="1280.0">
-            <children>
-                <VBox alignment="CENTER" prefHeight="720.0" prefWidth="125.0" spacing="10.0">
-                    <children>
-                        <Button fx:id="buttonMenuRename" alignment="CENTER" contentDisplay="TOP" graphicTextGap="5.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefWidth="150.0" styleClass="buttonMenuSelected" text="Rename" textAlignment="CENTER">
-                            <font>
-                                <Font size="16.0" />
-                            </font>
-                            <graphic>
-                                <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@../images/rename_white.png" />
-                                    </image>
-                                </ImageView>
-                            </graphic>
-                            <padding>
-                                <Insets bottom="5.0" top="15.0" />
-                            </padding>
-                        </Button>
-                        <Button fx:id="buttonMenuSearch" alignment="CENTER" contentDisplay="TOP" graphicTextGap="5.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefWidth="150.0" styleClass="buttonMenu" text="Search" textAlignment="CENTER">
-                            <font>
-                                <Font size="16.0" />
-                            </font>
-                            <graphic>
-                                <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@../images/search_white.png" />
-                                    </image>
-                                </ImageView>
-                            </graphic>
-                            <padding>
-                                <Insets bottom="5.0" top="15.0" />
-                            </padding>
-                        </Button>
-                        <Button fx:id="buttonMenuSettings" alignment="CENTER" contentDisplay="TOP" graphicTextGap="5.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefWidth="150.0" styleClass="buttonMenu" text="Settings" textAlignment="CENTER">
-                            <font>
-                                <Font size="16.0" />
-                            </font>
-                            <graphic>
-                                <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@../images/settings_white.png" />
-                                    </image>
-                                </ImageView>
-                            </graphic>
-                            <padding>
-                                <Insets bottom="5.0" top="15.0" />
-                            </padding>
-                        </Button>
-                    </children>
-                    <opaqueInsets>
+      <VBox prefHeight="720.0" prefWidth="1280.0">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="1280.0" spacing="20.0">
+               <children>
+                  <Button graphicTextGap="10.0" mnemonicParsing="false" styleClass="navSelected" text="Rename">
+                     <graphic>
+                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/rename.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <HBox.margin>
                         <Insets />
-                    </opaqueInsets>
-                    <HBox.margin>
-                        <Insets left="10.0" right="10.0" />
-                    </HBox.margin>
-                </VBox>
-                <VBox maxHeight="720.0" prefHeight="720.0" prefWidth="1155.0" spacing="20.0">
-                    <children>
-                        <HBox spacing="10.0" VBox.vgrow="ALWAYS">
-                            <children>
-                                <VBox spacing="10.0" HBox.hgrow="ALWAYS">
-                                    <children>
-                                        <HBox alignment="CENTER" prefWidth="200.0">
-                                            <children>
-                                                <Label text="Rename From">
-                                                    <font>
-                                                        <Font size="20.0" />
-                                                    </font>
-                                                    <HBox.margin>
-                                                        <Insets />
-                                                    </HBox.margin>
-                                           </Label>
-                                       </children>
-                                   </HBox>
-                                        <ListView fx:id="listViewRenameFrom" maxHeight="1.7976931348623157E308" maxWidth="565.0" minHeight="300.0" prefWidth="565.0" VBox.vgrow="ALWAYS">
-                                            <padding>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                            </padding>
-                                        </ListView>
-                                   <HBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="20.0">
-                                       <children>
-                                           <Button fx:id="buttonOpenFileDialog" mnemonicParsing="false" onAction="#openFileDialog" text="Add Source" />
-                                           <CheckBox fx:id="checkboxSubFolder" mnemonicParsing="false" text="Include Sub-Folders" />
-                                           <Button fx:id="buttonRenameAll1" mnemonicParsing="false" onAction="#removeSelected" text="Remove Selected Item" />
-                                       </children>
-                                   </HBox>
-                               </children>
-                           </VBox>
-                                <VBox spacing="10.0">
-                                    <children>
-                                        <HBox alignment="CENTER" prefWidth="200.0">
-                                            <children>
-                                                <Label text="Rename To">
-                                                    <font>
-                                                        <Font size="20.0" />
-                                                    </font>
-                                                </Label>
-                                            </children>
-                                        </HBox>
-                                        <ListView fx:id="listViewRenameTo" maxHeight="1.7976931348623157E308" maxWidth="565.0" minHeight="300.0" prefWidth="565.0" VBox.vgrow="ALWAYS">
-                                            <padding>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                            </padding>
-                                        </ListView>
-                                   <HBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="20.0">
-                                       <children>
-                                           <Button fx:id="buttonGetRenameSuggestions" mnemonicParsing="false" onAction="#getRenameSuggestions" prefHeight="30.0" text="Get Rename Suggestions" />
-                                           <Button fx:id="buttonRenameAll" mnemonicParsing="false" onAction="#renameAll" text="Rename ALL" />
-                                       </children>
-                                       <VBox.margin>
-                                           <Insets />
-                                       </VBox.margin>
-                                   </HBox>
-                               </children>
-                        </VBox>
-                     </children>
-                  </HBox>
+                     </HBox.margin>
+                  </Button>
+                  <Button graphicTextGap="10.0" mnemonicParsing="false" styleClass="nav" text="Settings">
+                     <graphic>
+                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/settings.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                </children>
-               <HBox.margin>
-                   <Insets bottom="10.0" right="10.0" top="10.0" />
-               </HBox.margin>
-            </VBox>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </HBox>
+              <HBox prefHeight="620.0" prefWidth="1280.0">
+               <children>
+                  <VBox alignment="CENTER" prefWidth="300.0">
+                     <children>
+                        <StackPane alignment="TOP_LEFT">
+                           <children>
+                              <VBox prefHeight="620.0" prefWidth="300.0" styleClass="tile">
+                                 <children>
+                                    <Label styleClass="title" text="Source &amp; Options">
+                                       <VBox.margin>
+                                          <Insets left="25.0" top="20.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <HBox alignment="BOTTOM_CENTER" translateY="15.0">
+                                 <children>
+                                    <Button mnemonicParsing="false" styleClass="tileButton" text="Add Folders">
+                                       <padding>
+                                          <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                       </padding>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </StackPane>
+                     </children>
+                     <HBox.margin>
+                        <Insets bottom="40.0" left="20.0" />
+                     </HBox.margin>
+                  </VBox>
+                  <VBox prefWidth="400.0" styleClass="tile">
+                     <HBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" />
+                     </HBox.margin>
+                     <children>
+                        <Label styleClass="title" text="Movies &amp; Shows">
+                           <VBox.margin>
+                              <Insets left="25.0" top="20.0" />
+                           </VBox.margin>
+                        </Label>
+                     </children></VBox>
+                  <VBox prefWidth="400.0" styleClass="tile">
+                     <HBox.margin>
+                        <Insets bottom="20.0" right="20.0" />
+                     </HBox.margin>
+                     <children>
+                        <Label styleClass="title" text="Renamed Titles">
+                           <VBox.margin>
+                              <Insets left="25.0" top="20.0" />
+                           </VBox.margin>
+                        </Label>
+                     </children>
+                  </VBox>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </HBox>
          </children>
-      </HBox>
+      </VBox>
    </children>
 </AnchorPane>

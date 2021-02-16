@@ -26,6 +26,18 @@
     -fx-faint-focus-color: transparent;
 }
 
+.tile {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 20px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+}
+
+.title {
+    -fx-font-size: 25px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #454545;
+}
+
 .text-field {
     -fx-background-color: #ffffff;
     -fx-border-color: #e8e8e8;
@@ -35,10 +47,30 @@
     -fx-border-color: #387eff;
 }
 
-.button {
+.tileButton {
     -fx-background-radius: 20px;
-    -fx-background-color: linear-gradient(to right, #030045, #002869);
+    -fx-background-color: #2599f5;
     -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+}
+
+.nav {
+    -fx-background-radius: 0px;
+    -fx-background-color: transparent;
+    -fx-text-fill: #000000;
+    -fx-font-weight: normal;
+    -fx-font-size: 20px;
+    -fx-opacity: 60%;
+}
+
+.navSelected {
+    -fx-background-radius: 0px;
+    -fx-background-color: transparent;
+    -fx-text-fill: #000000;
+    -fx-font-weight: bold;
+    -fx-font-size: 40px;
 }
 
 .button:hover {
