@@ -10,10 +10,10 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>14</maven.compiler.source>
+        <maven.compiler.target>14</maven.compiler.target>
         <java.version>1.14</java.version>
-        <javafx.version>14</javafx.version>
+        <javafx.version>15.0.1</javafx.version>
     </properties>
 
     <dependencies>
@@ -22,6 +22,13 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
             <version>3.8.1</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-maven-plugin -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-maven-plugin</artifactId>
+            <version>0.0.5</version>
         </dependency>
 
         <!-- javafx -->
@@ -58,7 +65,7 @@
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>20200518</version>
+            <version>20201115</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple -->
@@ -78,14 +85,14 @@
                 <version>3.8.1</version>
             </plugin>
 
-            <plugin>
-                <groupId>org.openjfx</groupId>
-                <artifactId>javafx-maven-plugin</artifactId>
-                <version>0.0.4</version>
-                <configuration>
-                    <mainClass>uk.co.conoregan.showrenamer.NewMain</mainClass>
-                </configuration>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.openjfx</groupId>-->
+<!--                <artifactId>javafx-maven-plugin</artifactId>-->
+<!--                <version>0.0.5</version>-->
+<!--                <configuration>-->
+<!--                    <mainClass>uk.co.conoregan.showrenamer.NewMain</mainClass>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
 
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
