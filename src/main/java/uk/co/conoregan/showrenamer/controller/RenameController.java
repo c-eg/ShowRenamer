@@ -388,22 +388,22 @@ public class RenameController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // stops checkbox box resizing when clicking on and off other controls
-        checkboxSubFolder.setFocusTraversable(false);
+        //checkboxSubFolder.setFocusTraversable(false);
 
         // creates an arraylist of files
         files = new ArrayList<>();
 
         // set ListCells inside ListView to wrap text and adjust max width
-        setListViewsWrapText(listViewRenameFrom);
-        setListViewsWrapText(listViewRenameTo);
+        //setListViewsWrapText(listViewRenameFrom);
+        //setListViewsWrapText(listViewRenameTo);
 
         // set list views to observe these lists
-        listViewRenameFrom.setItems(listRenameFrom);
-        listViewRenameTo.setItems(listRenameTo);
+        //listViewRenameFrom.setItems(listRenameFrom);
+        //listViewRenameTo.setItems(listRenameTo);
 
         // placeholder text for ListViews
-        listViewRenameFrom.setPlaceholder(new Label("Click \"Add Source\" to add files!"));
-        listViewRenameTo.setPlaceholder(new Label("Click \"Get Rename Suggestions\" to get renamed file suggestions!"));
+        //listViewRenameFrom.setPlaceholder(new Label("Click \"Add Source\" to add files!"));
+        //listViewRenameTo.setPlaceholder(new Label("Click \"Get Rename Suggestions\" to get renamed file suggestions!"));
     }
 
     /**

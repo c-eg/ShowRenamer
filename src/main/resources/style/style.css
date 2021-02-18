@@ -21,9 +21,12 @@
 
 .root {
     -fx-font-size: 16.0;
-    -fx-background-color: #ffffff;
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
+}
+
+.anchorPane {
+    -fx-background-color: linear-gradient(#F1F1F2, #D5DEEA);
 }
 
 .tile {
@@ -49,7 +52,7 @@
 
 .tileButton {
     -fx-background-radius: 20px;
-    -fx-background-color: #2599f5;
+    -fx-background-color: #3298E3;
     -fx-text-fill: #ffffff;
     -fx-font-weight: bold;
     -fx-font-size: 15px;
@@ -143,18 +146,6 @@
 	-fx-prompt-text-fill: derive(-fx-control-inner-background, -50%);
 }
 
-.progress-bar .bar {
-	-fx-background-color: -fx-accent;
-	-fx-background-radius: 2;
-	-fx-background-insets: 0, 1, 2;
-	-fx-padding: 0.416667em;
-}
-
-.progress-bar .track {
-    -fx-background-color: #ffffff;
-    -fx-border-color: #e8e8e8;
-}
-
 .list-view {
     -fx-background-radius: 20px;
     -fx-border-radius: 20px;
@@ -179,19 +170,22 @@
 }
 
 .check-box {
-    -fx-background-radius: 20px;
-    -fx-background-color: linear-gradient(to right, #030045, #002869);
-    -fx-text-fill: #ffffff;
+    -fx-text-fill: rgba(69, 69, 69, 0.6);
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
     -fx-padding: 6px 10px;
+    -fx-label-padding: 0 0 0 1em;
 }
 
 .check-box > .box {
-    -fx-background-radius: 8px;
-    -fx-background-color: white;
-    -fx-padding: 3px;
+    -fx-effect: dropshadow(gaussian, rgba(50, 152, 227, 1), 8, 0.6, 0, 0);
+    -fx-background-radius: 6px;
+    -fx-background-color: #fff;
+    -fx-padding: 0.15em;
 }
 
 .check-box:selected > .box > .mark,
 .check-box:indeterminate > .box > .mark {
-    -fx-background-color: #030045;
+    -fx-background-color: rgba(50, 152, 227, 1);
+    -fx-shape: "m0 274.226 176.549 176.886 339.007-338.672-48.67-47.997-290.337 290-128.553-128.552z";
 }
