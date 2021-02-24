@@ -21,6 +21,7 @@ along with ShowRenamer.  If not, see <https://www.gnu.org/licenses/>.
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TreeView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -68,7 +69,7 @@ along with ShowRenamer.  If not, see <https://www.gnu.org/licenses/>.
                               <Insets />
                            </VBox.margin>
                         </Label>
-                        <CheckBox mnemonicParsing="false" text="Include sub-folders" />
+                        <CheckBox fx:id="checkboxSubFolder" mnemonicParsing="false" text="Include sub-folders" />
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <ImageView fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
@@ -83,7 +84,7 @@ along with ShowRenamer.  If not, see <https://www.gnu.org/licenses/>.
                         </HBox>
                         <HBox alignment="BOTTOM_CENTER" translateY="128.0">
                            <children>
-                              <Button mnemonicParsing="false" styleClass="tileButton" text="Add Folders">
+                              <Button fx:id="buttonOpenFileDialog" mnemonicParsing="false" onAction="#openFileDialog" styleClass="tileButton" text="Add Folders">
                                  <padding>
                                     <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
                                  </padding>
@@ -98,7 +99,7 @@ along with ShowRenamer.  If not, see <https://www.gnu.org/licenses/>.
                         <Insets bottom="20.0" left="25.0" right="25.0" top="20.0" />
                      </padding>
                   </VBox>
-                  <VBox disable="true" prefWidth="440.0" styleClass="tile">
+                  <VBox prefWidth="440.0" styleClass="tile">
                      <HBox.margin>
                         <Insets bottom="40.0" left="25.0" right="25.0" />
                      </HBox.margin>
@@ -108,22 +109,28 @@ along with ShowRenamer.  If not, see <https://www.gnu.org/licenses/>.
                               <Insets left="25.0" top="20.0" />
                            </VBox.margin>
                         </Label>
+                        <TreeView fx:id="treeViewRenameFrom" prefHeight="500.0" />
+                        <HBox alignment="BOTTOM_CENTER">
+                           <children>
+                              <Button fx:id="buttonGetRenameSuggestions" mnemonicParsing="false" onAction="#getRenameTitles" styleClass="tileButton" text="Get Renamed Titles">
+                                 <padding>
+                                    <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
+                                 </padding>
+                              </Button>
+                           </children>
+                        </HBox>
                      </children></VBox>
-                  <VBox prefHeight="620.0" prefWidth="300.0" spacing="20.0" styleClass="tile">
+                  <VBox prefHeight="620.0" prefWidth="440.0" styleClass="tile">
                      <children>
-                        <Label styleClass="title" text="Source &amp; Options">
+                        <Label styleClass="title" text="Renamed Titles">
                            <VBox.margin>
-                              <Insets />
+                              <Insets left="25.0" top="20.0" />
                            </VBox.margin>
                         </Label>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                           <VBox.margin>
-                              <Insets top="80.0" />
-                           </VBox.margin>
-                        </HBox>
-                        <HBox alignment="BOTTOM_CENTER" translateY="112.0">
+                        <TreeView fx:id="treeViewRenameTo" prefHeight="500.0" />
+                        <HBox alignment="BOTTOM_CENTER">
                            <children>
-                              <Button mnemonicParsing="false" styleClass="tileButton" text="Add Folders">
+                              <Button fx:id="buttonSaveSuggestions" mnemonicParsing="false" styleClass="tileButton" text="Save All">
                                  <padding>
                                     <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
                                  </padding>
@@ -131,9 +138,6 @@ along with ShowRenamer.  If not, see <https://www.gnu.org/licenses/>.
                            </children>
                         </HBox>
                      </children>
-                     <padding>
-                        <Insets bottom="20.0" left="25.0" right="25.0" top="20.0" />
-                     </padding>
                      <HBox.margin>
                         <Insets bottom="40.0" right="25.0" />
                      </HBox.margin>

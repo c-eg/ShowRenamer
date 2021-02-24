@@ -19,14 +19,17 @@ package uk.co.conoregan.showrenamer.controller;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import uk.co.conoregan.showrenamer.model.RenamedStuff;
 import uk.co.conoregan.showrenamer.model.show.Episode;
 import uk.co.conoregan.showrenamer.model.show.Movie;
 import uk.co.conoregan.showrenamer.model.show.Show;
@@ -34,6 +37,7 @@ import uk.co.conoregan.showrenamer.util.api.TheMovieDB;
 import uk.co.conoregan.showrenamer.util.show.ShowInfoMatcher;
 
 import javax.swing.*;
+import javax.swing.tree.TreeNode;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -43,6 +47,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.TreeMap;
 
 /**
  * Class to control the renaming of files that are about shows (movie or tv)
@@ -58,7 +63,7 @@ public class RenameController implements Initializable {
     private final ObservableList<String> listRenameTo = FXCollections.observableArrayList();
 
     // files
-    private ArrayList<File> files;
+    private ObservableList<File> files = FXCollections.observableArrayList();
 
     // Menu buttons
     @FXML
@@ -73,6 +78,15 @@ public class RenameController implements Initializable {
     private ListView<String> listViewRenameFrom;
     @FXML
     private ListView<String> listViewRenameTo;
+
+    // treeViews
+    @FXML
+    private TreeView<String> treeViewRenameFrom;
+    @FXML
+    private TreeView<String> treeViewRenameTo;
+
+    // treemap
+    TreeMap<File, RenamedStuff> fileMapToNames;
 
     // buttons
     @FXML
@@ -117,6 +131,33 @@ public class RenameController implements Initializable {
         return show;
     }
 
+    private void initListenerObservableArray() {
+        files.addListener((ListChangeListener<File>) change -> {
+            System.out.println("Changed on " + change);
+
+            if (change.next())
+                addTreeNode(treeViewRenameFrom.getRoot(), files.get(change.getFrom()));
+        });
+    }
+
+    private void addTreeNode(TreeItem<String> rootToAddTo, File dir) {
+        TreeItem<String> currentRoot = new TreeItem<>(dir.getName());
+        rootToAddTo.getChildren().add(currentRoot);
+
+        if (dir.isDirectory()) {
+            for (File f : dir.listFiles()) {
+                if (f.isFile()) {
+                    TreeItem<String> item = new TreeItem<>(f.getName());
+                    currentRoot.getChildren().add(item);
+                    RenamedStuff rs = new RenamedStuff(f.getName());
+                    fileMapToNames.put(f, rs);
+                }
+                else if (checkboxSubFolder.isSelected())
+                    addTreeNode(currentRoot, f);
+            }
+        }
+    }
+
     /**
      * Open file dialog to select files to be renamed.
      */
@@ -134,22 +175,7 @@ public class RenameController implements Initializable {
         // if the user selected a folder
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File dir = chooser.getSelectedFile();
-
-            // get list of files
-            File[] temp = dir.listFiles();
-
-            // add files to file list
-            if (temp != null && temp.length > 0) {
-                for (File item : Objects.requireNonNull(dir.listFiles())) {
-                    addFile(item);
-                }
-            }
-
-            // add shows to listViews
-            for (File file : files) {
-                listRenameFrom.add(file.getName().substring(0, file.getName().lastIndexOf(".")));
-                listRenameTo.add("");
-            }
+            files.add(dir);
         }
     }
 
@@ -158,69 +184,80 @@ public class RenameController implements Initializable {
      * on left list.
      */
     @FXML
-    private void getRenameSuggestions() {
-        for (int i = 0; i < listRenameFrom.size(); i++) {
-            renameSuggestionTask(i);
+    private void getRenameTitles() {
+        TreeItem<String> rootCopy = deepCopyTreeItem(treeViewRenameFrom.getRoot());
+        treeViewRenameTo.setRoot(rootCopy);
+
+        getRenameTitle(rootCopy);
+    }
+
+    private void getRenameTitle(TreeItem<String> item) {
+        if (item.getChildren().size() == 0) {
+            renameSuggestionTask(item);
         }
+        else {
+            for (TreeItem<String> child : item.getChildren()) {
+                getRenameTitle(child);
+            }
+        }
+    }
+
+    /**
+     * Deep copy of TreeItem.
+     *
+     * @param item to deep copy
+     * @return new object copy of item passed.
+     */
+    private <T> TreeItem<T> deepCopyTreeItem(TreeItem<T> item) {
+        TreeItem<T> copy = new TreeItem<>(item.getValue());
+
+        for (TreeItem<T> child : item.getChildren()) {
+            copy.getChildren().add(deepCopyTreeItem(child));
+        }
+
+        return copy;
     }
 
     /**
      * Rename suggestion task for threaded api calls.
      *
-     * @param index the index
+     * @param title of show
      */
-    private void renameSuggestionTask(int index) {
-        Task<String> task = new Task<String>() {
+    private void renameSuggestionTask(TreeItem<String> item) {
+        Task<String> task = new Task<>() {
             @Override
             protected String call() throws Exception {
-                return getRenameSuggestion(index);
+                return getRenameSuggestion(item.getValue());
             }
         };
 
         task.setOnSucceeded(workerStateEvent -> {
             Platform.runLater(() -> {
-                listRenameTo.set(index, task.getValue());
+                item.setValue(task.getValue());
             });
         });
 
         task.setOnFailed(workerStateEvent -> {
             Platform.runLater(() -> {
-                listRenameTo.set(index, RenameController.ERROR_MESSAGE);
+                item.setValue(RenameController.ERROR_MESSAGE);
             });
         });
 
         new Thread(task).start();
     }
 
-    // TODO: implement this as a class as it's the correct usage
-    private class FetchResultsService extends Service<String> {
-        private int index;
-
-        @Override
-        protected Task<String> createTask() {
-            return new Task<String>() {
-                @Override
-                protected String call() throws Exception {
-                    return getRenameSuggestion(index);
-                }
-            };
-        }
-    }
-
-
     /**
      * Gets rename suggestion.
      *
-     * @param index the index
+     * @param fileName of the file
      * @return the rename suggestion
      * @throws IOException the io exception
      */
-    private String getRenameSuggestion(int index) throws IOException {
+    private String getRenameSuggestion(String fileName) throws IOException {
         String newName = RenameController.ERROR_MESSAGE;
-        String name = listRenameFrom.get(index);
 
         // create initial show object from file name
-        Show show = createShow(name);
+        Show show = createShow(fileName);
 
         if (show instanceof Movie) {
             Movie m = (Movie) show;
@@ -271,7 +308,10 @@ public class RenameController implements Initializable {
 
         }
 
-        return filterForIlegalChars(newName);
+        if (newName.equals(RenameController.ERROR_MESSAGE))
+            return newName;
+        else
+            return filterForIlegalChars(newName);
     }
 
     /**
@@ -390,47 +430,61 @@ public class RenameController implements Initializable {
         // stops checkbox box resizing when clicking on and off other controls
         //checkboxSubFolder.setFocusTraversable(false);
 
-        // creates an arraylist of files
-        files = new ArrayList<>();
+        // create tree map to map files to old and new name
+        fileMapToNames = new TreeMap<>();
 
-        // set ListCells inside ListView to wrap text and adjust max width
-        //setListViewsWrapText(listViewRenameFrom);
-        //setListViewsWrapText(listViewRenameTo);
+        initListenerObservableArray();
 
-        // set list views to observe these lists
-        //listViewRenameFrom.setItems(listRenameFrom);
-        //listViewRenameTo.setItems(listRenameTo);
-
-        // placeholder text for ListViews
-        //listViewRenameFrom.setPlaceholder(new Label("Click \"Add Source\" to add files!"));
-        //listViewRenameTo.setPlaceholder(new Label("Click \"Get Rename Suggestions\" to get renamed file suggestions!"));
+        initTree(treeViewRenameFrom);
+        initTree(treeViewRenameTo);
     }
 
-    /**
-     * Function to set the styling of the ListView to wrap the text if it's too long
-     */
-    private void setListViewsWrapText(ListView<String> listView) {
-        listView.setCellFactory(param -> new ListCell<String>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
+    private void initTree(TreeView<String> treeView) {
+        TreeItem<String> item = new TreeItem<>("Root");
+        treeView.setRoot(item);
+        treeView.setShowRoot(false);
 
-                if (empty || item == null) {
-                    setGraphic(null);
-                    setText(null);
-                }
-                else {
-                    // set the width's
-                    setMinWidth(param.getWidth() - 40);
-                    setMaxWidth(param.getWidth() - 40);
-                    setPrefWidth(param.getWidth() - 40);
-
-                    // allow wrapping
-                    setWrapText(true);
-
-                    setText(item);
-                }
-            }
-        });
+//        treeView.setCellFactory(param -> new TreeCell<File>() {
+//            @Override
+//            public void updateItem(File item, boolean empty) {
+//                super.updateItem(item, empty);
+//
+//                if (empty) {
+//                    setText("");
+//                    setGraphic(null);
+//                }
+//                else {
+//                    setText(item.getName());
+//                }
+//            }
+//        });
     }
+
+//    /**
+//     * Function to set the styling of the ListView to wrap the text if it's too long
+//     */
+//    private void setListViewsWrapText(ListView<String> listView) {
+//        listView.setCellFactory(param -> new ListCell<String>() {
+//            @Override
+//            protected void updateItem(String item, boolean empty) {
+//                super.updateItem(item, empty);
+//
+//                if (empty || item == null) {
+//                    setGraphic(null);
+//                    setText(null);
+//                }
+//                else {
+//                    // set the width's
+//                    setMinWidth(param.getWidth() - 40);
+//                    setMaxWidth(param.getWidth() - 40);
+//                    setPrefWidth(param.getWidth() - 40);
+//
+//                    // allow wrapping
+//                    setWrapText(true);
+//
+//                    setText(item);
+//                }
+//            }
+//        });
+//    }
 }
