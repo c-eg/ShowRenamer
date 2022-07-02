@@ -5,26 +5,13 @@ some.random.movie.2010.1080p.blueray.x264 --> Some Random Movie (2010) <br/>
 some.random.tv.show.s01e01.1080p.bluray.x264 --> Some Random TV Show - S01E01 - {episode name} <br/>
 
 ## Project Status
-Currently under development, pre-release is now out!
-
-### Planned features to be implemented
-- Search page for shows if file doesn't include title
-- Allow to be used on Command Line Interface
-- User specified format to rename shows to
-- Subtitle download page
-- Support for multiple themes e.g. light and dark mode
+This project is no longer being developed. It has been replaced by [RenameShows](https://github.com/c-eg/RenameShows) developed in Python.
 
 ## Usage
 ### Windows
 1. Download the latest jar from the [releases](https://github.com/c-eg/ShowRenamer/releases)
 2. Double click to run the jar
 3. If step 2. doesn't work, try running from command line using: `java -jar JAR_NAME.jar`
-
-### Linux
-Todo
-
-### Mac
-Todo
 
 ## Pictures
 ![ShowRenamer GUI](https://i.imgur.com/JQc4uRL.png)
