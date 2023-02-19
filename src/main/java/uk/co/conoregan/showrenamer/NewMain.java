@@ -17,8 +17,13 @@
 
 package uk.co.conoregan.showrenamer;
 
+/**
+ * THIS IS A TEMPORARY HACK TO GET THIS WORKING.
+ */
 public class NewMain {
     public static void main(String[] args) {
+        // TODO:
+        //  - please implement modules from this resource: https://edencoding.com/runtime-components-error/
         Main.main(args);
     }
 }

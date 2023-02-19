@@ -25,24 +25,29 @@ import javafx.stage.Stage;
 
 import java.util.Objects;
 
+/**
+ * The starting point of the ShowRenamer application.
+ */
 public class Main extends Application {
-    public static void main(String[] args) {
-        launch(args);
-    }
+    private static final int WIDTH = 1280;
+    private static final int HEIGHT = 720;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("view/rename.fxml")));
-        Scene scene = new Scene(root, 1280, 720);
+        Scene scene = new Scene(root, WIDTH, HEIGHT);
 
-        root.setId("pane");
-        primaryStage.setResizable(false);
-
+        primaryStage.setMinWidth(WIDTH);
+        primaryStage.setMinHeight(HEIGHT);
         primaryStage.setTitle("Show Renamer");
         primaryStage.setScene(scene);
 //        primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("images/icon.png")));
 
         primaryStage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 }
 
