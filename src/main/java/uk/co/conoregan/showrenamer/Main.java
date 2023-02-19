@@ -22,20 +22,44 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import uk.co.conoregan.showrenamer.controller.RenameController;
 
+import java.net.URL;
 import java.util.Objects;
 
 /**
  * The starting point of the ShowRenamer application.
  */
 public class Main extends Application {
+    /**
+     * The logger.
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+
+    /**
+     * The screen width.
+     */
     private static final int WIDTH = 1280;
+
+    /**
+     * The screen height.
+     */
     private static final int HEIGHT = 720;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("view/rename.fxml")));
-        Scene scene = new Scene(root, WIDTH, HEIGHT);
+        final String viewPath = "view/rename.fxml";
+        final URL startView = getClass().getClassLoader().getResource(viewPath);
+
+        if (startView == null) {
+            LOGGER.error(String.format("The resource: %s was not found.", viewPath));
+            System.exit(0);
+        }
+
+        final Parent root = FXMLLoader.load(startView);
+        final Scene scene = new Scene(root, WIDTH, HEIGHT);
 
         primaryStage.setMinWidth(WIDTH);
         primaryStage.setMinHeight(HEIGHT);
@@ -44,6 +68,7 @@ public class Main extends Application {
 //        primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("images/icon.png")));
 
         primaryStage.show();
+        LOGGER.info("Show Renamer successfully started.");
     }
 
     public static void main(String[] args) {

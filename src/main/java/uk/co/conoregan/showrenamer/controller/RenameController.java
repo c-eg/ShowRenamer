@@ -32,6 +32,8 @@ import javafx.scene.control.*;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.co.conoregan.showrenamer.util.ShowInfoMatcher;
 import uk.co.conoregan.showrenamer.util.ResultValidator;
 
@@ -50,8 +52,20 @@ import java.util.*;
  * Class to control the renaming of files that are about shows (movie or tv)
  */
 public class RenameController implements Initializable {
+    /**
+     * The logger.
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(RenameController.class);
+
+    /**
+     * The error message displayed if no result is found from TMDB_API.
+     */
     private static final String ERROR_MESSAGE = "<Unable to find match>";
-    private static final TmdbApi TMDBB_API;
+
+    /**
+     * The movie database api wrapper object.
+     */
+    private static final TmdbApi TMDB_API;
 
     static {
         // load properties config
@@ -76,11 +90,14 @@ public class RenameController implements Initializable {
         }
 
         // make tmdb api
-        final String tmdbApiKey = properties.getProperty("TMDB_API_KEY_V3");
+        final String tmdbApiKeyPropertyName = "TMDB_API_KEY_V3";
+        final String tmdbApiKey = properties.getProperty(tmdbApiKeyPropertyName);
         if (tmdbApiKey == null) {
+            LOGGER.error(String.format("The property: '%s' was not found in the properties file: %s.",
+                    tmdbApiKeyPropertyName, apiKeysPath));
             System.exit(0);
         }
-        TMDBB_API = new TmdbApi(tmdbApiKey);
+        TMDB_API = new TmdbApi(tmdbApiKey);
     }
 
     private final ObservableList<String> listRenameFrom = FXCollections.observableArrayList();
@@ -97,6 +114,11 @@ public class RenameController implements Initializable {
     @FXML
     private CheckBox checkboxImproveFolderNames;
 
+    /**
+     * Event to handle a drag over event.
+     *
+     * @param event the event.
+     */
     @FXML
     private void handleDragOverFileUpload(DragEvent event) {
         final Dragboard dragboard = event.getDragboard();
@@ -108,6 +130,11 @@ public class RenameController implements Initializable {
         }
     }
 
+    /**
+     * Event to handle files being dropped.
+     *
+     * @param event the event.
+     */
     @FXML
     private void handleDragDroppedFileUpload(DragEvent event) {
         final Dragboard dragboard = event.getDragboard();
@@ -126,7 +153,8 @@ public class RenameController implements Initializable {
      * Open file dialog to select files to be renamed.
      */
     @FXML
-    private void openFileDialog() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+    private void openFileDialog() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException,
+            IllegalAccessException {
         // set dialog MVC.style to windows
         UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 
@@ -175,8 +203,9 @@ public class RenameController implements Initializable {
         final String fileName = listRenameFrom.get(index);
         final String matchedTitle = ShowInfoMatcher.matchTitle(fileName);
 
-        final List<Multi> results = TMDBB_API.getSearch().searchMulti(matchedTitle, "en-US", 1).getResults();
+        final List<Multi> results = TMDB_API.getSearch().searchMulti(matchedTitle, "en-US", 1).getResults();
         if (!ResultValidator.isGenericListValid(results)) {
+            LOGGER.info(String.format("No result found for title: %s", matchedTitle));
             return RenameController.ERROR_MESSAGE;
         }
 
@@ -196,11 +225,12 @@ public class RenameController implements Initializable {
             final Integer matchedSeason = ShowInfoMatcher.matchSeason(fileName);
             final List<Integer> matchedEpisodes = ShowInfoMatcher.matchEpisodes(fileName);
             if (!ResultValidator.isIntegerValid(matchedSeason) || !ResultValidator.isIntegerListValid(matchedEpisodes)) {
+                LOGGER.info(String.format("No season or episode could be matched from the file name: %s", fileName));
                 return RenameController.ERROR_MESSAGE;
             }
 
             final TvSeries tvSeries = (TvSeries) result;
-            final TvEpisode episode = TMDBB_API.getTvEpisodes().getEpisode(
+            final TvEpisode episode = TMDB_API.getTvEpisodes().getEpisode(
                     tvSeries.getId(), matchedSeason, matchedEpisodes.get(0), "en-US");
             final String seriesName = tvSeries.getName();
             final String episodeName = episode.getName();
