@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,149 +29,69 @@ import java.util.regex.Pattern;
  * Class to match show information from the file name passed.
  */
 public class ShowInfoMatcher {
-    @Nullable
-    public static String matchTitle(final String fileName) {
+    /**
+     * Matches a show title from a file name.
+     *
+     * @param fileName the file name.
+     * @return optional title.
+     */
+    @Nonnull
+    public static Optional<String> matchTitle(final String fileName) {
         final String regex = "(.*?)(\\W| - )(directors(.?)cut|480p|720p|1080p|dvdrip|xvid|cd[0-9]|bluray|dvdscr|brrip|divx|S[0-9]{1,3}E[0-9]{1,3}|Season[\\s,0-9]{1,4}|[{(\\[]?[0-9]{4}).*";
         final Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
         final Matcher matcher = pattern.matcher(fileName);
 
         if (matcher.find()) {
-            return matcher.group(1).replace(".", " ").trim();
-        } else {
-            return null;
+            return matcher.group(1).replace(".", " ").trim().describeConstable();
         }
+
+        return Optional.empty();
     }
 
-    @Nullable
-    public static String matchYear(final String fileName) {
+    /**
+     * Matches a show year from a file name.
+     *
+     * @param fileName the file name.
+     * @return optional year.
+     */
+    @Nonnull
+    public static Optional<String> matchYear(final String fileName) {
         final String regex = "[.\\s](?!^)[1,2]\\d{3}[.\\s]";
         final Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
         final Matcher matcher = pattern.matcher(fileName);
 
         if (matcher.find()) {
-            return matcher.group(0).replace(".", "").trim();
+            return matcher.group(0).replace(".", "").trim().describeConstable();
         }
 
-        return null;
+        return Optional.empty();
     }
 
-    @Nullable
-    public static String matchResolution(final String fileName) {
-        final String regex = "\\d{3,4}p";
-        final Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-        final Matcher matcher = pattern.matcher(fileName);
-
-        if (matcher.find()) {
-            return matcher.group(0);
-        }
-
-        return null;
-    }
-
-    @Nullable
-    public static String matchSource(final String fileName) {
-        final String regex = "[.\\s](CAM|(DVD|BD)SCR|SCR|DDC|R5[.\\s]LINE|R5|(DVD|HD|BR|BD|WEB)Rip|DVDR|(HD|PD)TV|WEB-DL|WEBDL|BluRay|Blu-Ray|TS(?!C)|TELESYNC)";
-        final Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-        final Matcher matcher = pattern.matcher(fileName);
-
-        if (matcher.find()) {
-            return matcher.group(0).substring(1);
-        }
-
-        return null;
-    }
-
-    @Nullable
-    public static String matchVideoCodec(final String fileName) {
-        final String regex = "[.\\s](NTSC|PAL|[xh][.\\s]?264|[xh][.\\s]?265|H264|H265)";
-        final Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-        final Matcher matcher = pattern.matcher(fileName);
-
-        if (matcher.find()) {
-            return matcher.group(0).substring(1);
-        }
-
-        return null;
-    }
-
-    @Nullable
-    public static String matchAudio(final String fileName) {
-        final String regex = "AAC2[.\\s]0|AAC|AC3|DTS|DD5[.\\s]1";
-        final Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-        final Matcher matcher = pattern.matcher(fileName);
-
-        if (matcher.find()) {
-            return matcher.group(0);
-        }
-
-        return null;
-    }
-
-    @Nullable
-    public static String matchLanguage(final String fileName) {
-        final String regex = "[.\\s](MULTiSUBS|MULTi|NORDiC|DANiSH|SWEDiSH|NORWEGiAN|GERMAN|iTALiAN|FRENCH|SPANiSH)";
-        final Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-        final Matcher matcher = pattern.matcher(fileName);
-
-        if (matcher.find()) {
-            return matcher.group(0).substring(1);
-        }
-
-        return null;
-    }
-
-    @Nullable
-    public static String matchEdition(final String fileName) {
-        final String regex = "UNRATED|DC|(Directors|EXTENDED)[.\\s](CUT|EDITION)|EXTENDED|3D|2D|\\bNF\\b";
-        final Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-        final Matcher matcher = pattern.matcher(fileName);
-
-        if (matcher.find()) {
-            return matcher.group(0);
-        }
-
-        return null;
-    }
-
-    @Nullable
-    public static String matchTags(final String fileName) {
-        final String regex = "COMPLETE|LiMiTED|iNTERNAL";
-        final Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-        final Matcher matcher = pattern.matcher(fileName);
-
-        if (matcher.find()) {
-            return matcher.group(0);
-        }
-
-        return null;
-    }
-
-    @Nullable
-    public static String matchReleaseInfo(final String fileName) {
-        final String regex = "[.\\s](REAL[.\\s]PROPER|PROPER|REPACK|READNFO|READ[.\\s]NFO|DiRFiX|NFOFiX)";
-        final Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-        final Matcher matcher = pattern.matcher(fileName);
-
-        if (matcher.find()) {
-            return matcher.group(0).substring(1);
-        }
-
-        return null;
-    }
-
-    @Nullable
-    public static Integer matchSeason(final String fileName) {
+    /**
+     * Matches a show season from a file name.
+     *
+     * @param fileName the file name.
+     * @return optional season number.
+     */
+    @Nonnull
+    public static Optional<Integer> matchSeason(final String fileName) {
         final String regex = "s(?:eason)?\\s*(\\d{1,2})";
         final Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
         final Matcher matcher = pattern.matcher(fileName);
 
         if (matcher.find()) {
-            return Integer.parseInt(matcher.group(1));
+            return Optional.of(Integer.parseInt(matcher.group(1)));
         }
 
-        return null;
+        return Optional.empty();
     }
 
+    /**
+     * Matches show episodes from a file name.
+     *
+     * @param fileName the file name.
+     * @return list of episode numbers.
+     */
     @Nonnull
     public static List<Integer> matchEpisodes(final String fileName) {
         final String regex = "e(?:pisode\\s*)?\\s*(\\d{1,3}(?!\\d)|\\d\\d\\d??)(?:-?e?(\\d{1,3}))?(?!\\d)";
@@ -192,18 +113,5 @@ public class ShowInfoMatcher {
         }
 
         return episodes;
-    }
-
-    @Nullable
-    public static String matchReleaseGroup(final String fileName) {
-        final String regex = "- ?([^\\-. ]+)$";
-        final Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-        final Matcher matcher = pattern.matcher(fileName);
-
-        if (matcher.find()) {
-            return matcher.group(0).substring(2);
-        }
-
-        return null;
     }
 }

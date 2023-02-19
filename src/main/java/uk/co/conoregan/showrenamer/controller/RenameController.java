@@ -201,11 +201,16 @@ public class RenameController implements Initializable {
     @Nonnull
     private String getRenameSuggestion(int index) {
         final String fileName = listRenameFrom.get(index);
-        final String matchedTitle = ShowInfoMatcher.matchTitle(fileName);
+        final Optional<String> matchedTitle = ShowInfoMatcher.matchTitle(fileName);
 
-        final List<Multi> results = TMDB_API.getSearch().searchMulti(matchedTitle, "en-US", 1).getResults();
+        if (matchedTitle.isEmpty()) {
+            LOGGER.info(String.format("No title match found for file name: %s", fileName));
+            return RenameController.ERROR_MESSAGE;
+        }
+
+        final List<Multi> results = TMDB_API.getSearch().searchMulti(matchedTitle.get(), "en-US", 1).getResults();
         if (!ResultValidator.isGenericListValid(results)) {
-            LOGGER.info(String.format("No result found for title: %s", matchedTitle));
+            LOGGER.info(String.format("No result found for title: %s", matchedTitle.get()));
             return RenameController.ERROR_MESSAGE;
         }
 
@@ -222,16 +227,17 @@ public class RenameController implements Initializable {
             }
         }
         else if (mediaType == Multi.MediaType.TV_SERIES) {
-            final Integer matchedSeason = ShowInfoMatcher.matchSeason(fileName);
+            final Optional<Integer> matchedSeason = ShowInfoMatcher.matchSeason(fileName);
             final List<Integer> matchedEpisodes = ShowInfoMatcher.matchEpisodes(fileName);
-            if (!ResultValidator.isIntegerValid(matchedSeason) || !ResultValidator.isIntegerListValid(matchedEpisodes)) {
-                LOGGER.info(String.format("No season or episode could be matched from the file name: %s", fileName));
+            if (matchedSeason.isEmpty() || !ResultValidator.isIntegerValid(matchedSeason.get()) ||
+                    !ResultValidator.isIntegerListValid(matchedEpisodes)) {
+                LOGGER.info(String.format("No valid season or episode could be matched from the file name: %s", fileName));
                 return RenameController.ERROR_MESSAGE;
             }
 
             final TvSeries tvSeries = (TvSeries) result;
             final TvEpisode episode = TMDB_API.getTvEpisodes().getEpisode(
-                    tvSeries.getId(), matchedSeason, matchedEpisodes.get(0), "en-US");
+                    tvSeries.getId(), matchedSeason.get(), matchedEpisodes.get(0), "en-US");
             final String seriesName = tvSeries.getName();
             final String episodeName = episode.getName();
             final int seasonNumber = episode.getSeasonNumber();
