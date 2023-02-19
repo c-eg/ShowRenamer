@@ -15,151 +15,120 @@
  * along with ShowRenamer.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-.text {
-    -fx-font-smoothing-type: gray;
-}
-
 .root {
-    -fx-font-size: 16.0;
-    -fx-background-color: #ffffff;
+    -fx-font-size: 16px;
+    -fx-background-color: linear-gradient(to top, #d3ddeb, #f2f2f2);
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
 }
 
-.text-field {
-    -fx-background-color: #ffffff;
-    -fx-border-color: #e8e8e8;
+.text {
+    -fx-font-smoothing-type: lcd;
 }
 
-.text-field:focused {
-    -fx-border-color: #387eff;
+.section-container {
+    -fx-padding: 40px 40px 20px 40px;
+}
+
+.section {
+    -fx-background-radius: 15px;
+    -fx-background-color: #ffffff;
+    /* -fx-padding: 20px; */
+    -fx-padding: 20px 20px 0 20px;
+    -fx-border-insets: 0 0 -20px 0;
+    -fx-background-insets: 0 0 -20px 0;
+}
+
+.section-heading {
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+    -fx-text-fill: #727272;
+    -fx-padding: 0 0 20px 0;
+    -fx-border-insets: 0 0 20px 0;
+    -fx-background-insets: 0 0 20px 0;
 }
 
 .button {
+    -fx-padding: 6px 40px;
     -fx-background-radius: 20px;
-    -fx-background-color: linear-gradient(to right, #030045, #002869);
+    -fx-background-color: #3298e3;
+    -fx-font-weight: bold;
+    -fx-font-size: 18px;
     -fx-text-fill: #ffffff;
 }
 
 .button:hover {
-    -fx-background-color: linear-gradient(to right, #06008f, #0052d5);
-    -fx-text-fill: #ffffff;
+    -fx-background-color: #277ab8;
     -fx-cursor: hand;
 }
 
 .button:pressed {
-    -fx-background-color: linear-gradient(to right, #030045, #002869);
-    -fx-text-fill: #ffffff;
-}
-
-.buttonMenu {
-    -fx-background-radius: 20px;
-    -fx-background-color: linear-gradient(to right, #030045, #002869);
-    -fx-text-fill: #ffffff;
-    -fx-font-weight: normal;
-}
-
-.buttonMenuSelected {
-    -fx-background-radius: 20px;
-    -fx-background-color: linear-gradient(to right, #06008f, #0052d5);
-    -fx-text-fill: #ffffff;
-    -fx-font-weight: normal;
-}
-
-.buttonMenu:hover, .buttonMenuSelected:hover {
-    -fx-background-color: linear-gradient(to right, #06008f, #0052d5);
-    -fx-font-weight: normal;
-}
-
-.buttonMenu:pressed {
-    -fx-background-color: #0044ff;
-}
-
-.buttonMenu > .text, .buttonMenuSelected > .text {
-    -fx-font-size: 16.0;
-}
-
-.hyperlink {
-    -fx-text-fill: #0d62ff;
-}
-
-.hyperlink:pressed {
-    -fx-text-fill: #387eff;
-}
-
-.combo-box-base {
-    -fx-background-color: #ffffff;
-    -fx-border-color: #e8e8e8;
-}
-
-.combo-box-base:focused {
-    -fx-border-color: #387eff;
-}
-
-.combo-box-popup .list-cell {
-    -fx-background-color: white;
-    -fx-text-fill: black;
-}
-
-.combo-box-popup .list-cell:selected, .combo-box-popup .list-cell:hover {
-    -fx-background-color: #387eff;
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-}
-
-.text-input, .text-input:focused {
-	-fx-prompt-text-fill: derive(-fx-control-inner-background, -50%);
-}
-
-.progress-bar .bar {
-	-fx-background-color: -fx-accent;
-	-fx-background-radius: 2;
-	-fx-background-insets: 0, 1, 2;
-	-fx-padding: 0.416667em;
-}
-
-.progress-bar .track {
-    -fx-background-color: #ffffff;
-    -fx-border-color: #e8e8e8;
-}
-
-.list-view {
-    -fx-background-radius: 20px;
-    -fx-border-radius: 20px;
-}
-
-.list-cell, .list-cell:focused {
-    -fx-background-radius: 20px;
-    -fx-border-radius: 20px;
-}
-
-.list-view .list-cell:filled:selected:focused, .list-view .list-cell:filled:selected {
-    -fx-background-color: linear-gradient(to right, #030045, #002869);
-    -fx-text-fill: white;
-}
-
-.list-view > .list-cell:even {
-    -fx-background-color: #fafafa;
-}
-
-.list-view > .list-cell:odd {
-    -fx-background-color: #f5f5f5;
+    -fx-background-color: #146fb3;
 }
 
 .check-box {
-    -fx-background-radius: 20px;
-    -fx-background-color: linear-gradient(to right, #030045, #002869);
-    -fx-text-fill: #ffffff;
-    -fx-padding: 6px 10px;
+    -fx-text-fill: #727272;
+    -fx-padding: 6px 0;
 }
 
 .check-box > .box {
-    -fx-background-radius: 8px;
-    -fx-background-color: white;
-    -fx-padding: 3px;
+    -fx-border-radius: 4px;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #3298e3;
+    -fx-padding: 2px;
 }
 
 .check-box:selected > .box > .mark,
 .check-box:indeterminate > .box > .mark {
-    -fx-background-color: #030045;
+    -fx-background-color: #3298e3;
+}
+
+.list-view {
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.list-view .list-cell {
+    -fx-font-size: 14px;
+}
+
+.list-view .list-cell:even,
+.list-view .list-cell:even:focused {
+    -fx-background-color: #ffffff;
+}
+
+.list-view .list-cell:odd,
+.list-view .list-cell:odd:focused {
+    -fx-background-color: #fcfcfc;
+}
+
+.scroll-bar:vertical {
+    -fx-pref-width: 0.2em;
+}
+
+.scroll-bar:vertical > .increment-button,
+.scroll-bar:vertical > .decrement-button {
+    -fx-background-insets: 0;
+}
+
+.scroll-bar:vertical > .increment-button,
+.scroll-bar:vertical > .decrement-button,
+.scroll-bar:vertical > .decrement-button > .decrement-arrow,
+.scroll-bar:vertical > .increment-button > .increment-arrow {
+    -fx-padding: 0;
+}
+
+.scroll-bar:vertical > .track {
+    -fx-background-color: #ededed;
+}
+
+.scroll-bar:vertical > .thumb {
+    -fx-padding: 0;
+    -fx-background-insets: 1px 0;
+    -fx-background-radius: 0;
+    -fx-background-color: #3298e3;
+}
+
+#label-upload {
+    -fx-font-size: 25px;
 }
