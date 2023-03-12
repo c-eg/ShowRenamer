@@ -21,7 +21,7 @@
                      <children>
                         <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="5.0" prefWidth="210.0" styleClass="section-heading" text="Source &amp; Options" />
                         <CheckBox fx:id="checkboxIncludeSubFolder" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="37.0" prefWidth="248.0" text="Include sub-folders" />
-                        <CheckBox fx:id="checkboxImproveFolderNames" mnemonicParsing="false" prefHeight="25.0" prefWidth="228.0" text="Improve folder names" />
+                        <CheckBox fx:id="checkboxImproveFolderNames" mnemonicParsing="false" prefHeight="25.0" prefWidth="228.0" text="Improve folder names" visible="false" />
                         <VBox id="vboxFileUpload" alignment="CENTER" onDragDropped="#handleDragDroppedFileUpload" onDragOver="#handleDragOverFileUpload" prefHeight="200.0" prefWidth="100.0" spacing="10.0" VBox.vgrow="ALWAYS">
                            <children>
                               <ImageView fitHeight="75.0" fitWidth="75.0" opacity="0.15" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">

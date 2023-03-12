@@ -21,6 +21,11 @@ package uk.co.conoregan.showrenamer;
  * THIS IS A TEMPORARY HACK TO GET THIS WORKING.
  */
 public class NewMain {
+    /**
+     * Start function.
+     *
+     * @param args the args.
+     */
     public static void main(String[] args) {
         // TODO:
         //  - please implement modules from this resource: https://edencoding.com/runtime-components-error/

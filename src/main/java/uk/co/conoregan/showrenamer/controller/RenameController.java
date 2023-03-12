@@ -17,31 +17,26 @@
 
 package uk.co.conoregan.showrenamer.controller;
 
-import info.movito.themoviedbapi.TmdbApi;
-import info.movito.themoviedbapi.model.MovieDb;
-import info.movito.themoviedbapi.model.Multi;
-import info.movito.themoviedbapi.model.tv.TvEpisode;
-import info.movito.themoviedbapi.model.tv.TvSeries;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.co.conoregan.showrenamer.util.ShowInfoMatcher;
-import uk.co.conoregan.showrenamer.util.ResultValidator;
+import uk.co.conoregan.showrenamer.suggestion.ShowSuggestionProvider;
+import uk.co.conoregan.showrenamer.suggestion.TMDBSuggestionProvider;
 
 import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.io.*;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -49,7 +44,7 @@ import java.nio.file.Paths;
 import java.util.*;
 
 /**
- * Class to control the renaming of files that are about shows (movie or tv)
+ * Class to control the renaming of files that are about shows (movie or tv).
  */
 public class RenameController implements Initializable {
     /**
@@ -63,42 +58,9 @@ public class RenameController implements Initializable {
     private static final String ERROR_MESSAGE = "<Unable to find match>";
 
     /**
-     * The movie database api wrapper object.
+     * The movie database suggestion provider.
      */
-    private static final TmdbApi TMDB_API;
-
-    static {
-        // load properties config
-        final String apiKeysPath = "properties/api_keys.properties";
-        final URL res = RenameController.class.getClassLoader().getResource(apiKeysPath);
-        if (res == null) {
-            throw new UncheckedIOException(new FileNotFoundException(apiKeysPath));
-        }
-
-        final URI uri;
-        try {
-            uri = res.toURI();
-        } catch (URISyntaxException ex) {
-            throw new IllegalArgumentException(ex);
-        }
-
-        final Properties properties = new Properties();
-        try (InputStream is = Files.newInputStream(Paths.get(uri))) {
-            properties.load(is);
-        } catch (IOException e) {
-            throw new UncheckedIOException("Failed to load resource", e);
-        }
-
-        // make tmdb api
-        final String tmdbApiKeyPropertyName = "TMDB_API_KEY_V3";
-        final String tmdbApiKey = properties.getProperty(tmdbApiKeyPropertyName);
-        if (tmdbApiKey == null) {
-            LOGGER.error(String.format("The property: '%s' was not found in the properties file: %s.",
-                    tmdbApiKeyPropertyName, apiKeysPath));
-            System.exit(0);
-        }
-        TMDB_API = new TmdbApi(tmdbApiKey);
-    }
+    private static final ShowSuggestionProvider showSuggestionProvider = new TMDBSuggestionProvider();
 
     private final ObservableList<String> listRenameFrom = FXCollections.observableArrayList();
     private final ObservableList<String> listRenameTo = FXCollections.observableArrayList();
@@ -124,8 +86,7 @@ public class RenameController implements Initializable {
         final Dragboard dragboard = event.getDragboard();
         if (dragboard.hasFiles()) {
             event.acceptTransferModes(TransferMode.LINK);
-        }
-        else {
+        } else {
             event.consume();
         }
     }
@@ -201,55 +162,8 @@ public class RenameController implements Initializable {
     @Nonnull
     private String getRenameSuggestion(int index) {
         final String fileName = listRenameFrom.get(index);
-        final Optional<String> matchedTitle = ShowInfoMatcher.matchTitle(fileName);
-
-        if (matchedTitle.isEmpty()) {
-            LOGGER.info(String.format("No title match found for file name: %s", fileName));
-            return RenameController.ERROR_MESSAGE;
-        }
-
-        final List<Multi> results = TMDB_API.getSearch().searchMulti(matchedTitle.get(), "en-US", 1).getResults();
-        if (!ResultValidator.isGenericListValid(results)) {
-            LOGGER.info(String.format("No result found for title: %s", matchedTitle.get()));
-            return RenameController.ERROR_MESSAGE;
-        }
-
-        final Multi result = results.get(0);
-        final Multi.MediaType mediaType = result.getMediaType();
-
-        if (mediaType == Multi.MediaType.MOVIE) {
-            final MovieDb movie = (MovieDb) result;
-            final String title = movie.getTitle();
-            final String releaseDate = movie.getReleaseDate();
-
-            if (ResultValidator.isStringVarargsValid(title, releaseDate)) {
-                return String.format("%s (%s)", title, releaseDate);
-            }
-        }
-        else if (mediaType == Multi.MediaType.TV_SERIES) {
-            final Optional<Integer> matchedSeason = ShowInfoMatcher.matchSeason(fileName);
-            final List<Integer> matchedEpisodes = ShowInfoMatcher.matchEpisodes(fileName);
-            if (matchedSeason.isEmpty() || !ResultValidator.isIntegerValid(matchedSeason.get()) ||
-                    !ResultValidator.isIntegerListValid(matchedEpisodes)) {
-                LOGGER.info(String.format("No valid season or episode could be matched from the file name: %s", fileName));
-                return RenameController.ERROR_MESSAGE;
-            }
-
-            final TvSeries tvSeries = (TvSeries) result;
-            final TvEpisode episode = TMDB_API.getTvEpisodes().getEpisode(
-                    tvSeries.getId(), matchedSeason.get(), matchedEpisodes.get(0), "en-US");
-            final String seriesName = tvSeries.getName();
-            final String episodeName = episode.getName();
-            final int seasonNumber = episode.getSeasonNumber();
-            final int episodeNumber = episode.getEpisodeNumber();
-
-            if (ResultValidator.isIntegerVarargsValid(seasonNumber, episodeNumber)
-                    && ResultValidator.isStringVarargsValid(seriesName, episodeName)) {
-                return String.format("%s - S%02dE%02d - %s", seriesName, seasonNumber, episodeNumber, episodeName);
-            }
-        }
-
-        return RenameController.ERROR_MESSAGE;
+        final Optional<String> suggestedName = showSuggestionProvider.getSuggestion(fileName);
+        return suggestedName.orElse(RenameController.ERROR_MESSAGE);
     }
 
     /**
@@ -288,8 +202,7 @@ public class RenameController implements Initializable {
     private void addFile(@Nonnull final File item) {
         if (item.isFile()) {
             files.add(item);
-        }
-        else if (item.isDirectory() && checkboxIncludeSubFolder.isSelected()) {
+        } else if (item.isDirectory() && checkboxIncludeSubFolder.isSelected()) {
             for (final File f : Objects.requireNonNull(item.listFiles())) {
                 addFile(f);
             }
@@ -323,8 +236,7 @@ public class RenameController implements Initializable {
                     Files.move(p, p.resolveSibling(sb.toString()));
                 }
             }
-        }
-        else if (f.isDirectory()) {
+        } else if (f.isDirectory()) {
             // for each file in the directory, call the recursive function
             for (final File temp : Objects.requireNonNull(f.listFiles())) {
                 renameFile(temp);
@@ -352,10 +264,10 @@ public class RenameController implements Initializable {
     }
 
     /**
-     * Function to remove selected item from listview
+     * Function to remove selected item from listview.
      *
-     * @param list List for an item to be removed from
-     * @param <T>  Type to of object in list
+     * @param list List for an item to be removed from.
+     * @param <T>  Type to of object in list.
      */
     private <T> void removeItem(@Nonnull final ListView<T> list) {
         if (list.getItems().size() > 0) {

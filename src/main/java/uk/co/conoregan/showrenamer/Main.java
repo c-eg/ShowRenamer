@@ -24,10 +24,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.co.conoregan.showrenamer.controller.RenameController;
 
 import java.net.URL;
-import java.util.Objects;
 
 /**
  * The starting point of the ShowRenamer application.
@@ -48,6 +46,10 @@ public class Main extends Application {
      */
     private static final int HEIGHT = 720;
 
+    public static void main(String[] args) {
+        launch(args);
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         final String viewPath = "view/rename.fxml";
@@ -65,14 +67,10 @@ public class Main extends Application {
         primaryStage.setMinHeight(HEIGHT);
         primaryStage.setTitle("Show Renamer");
         primaryStage.setScene(scene);
-//        primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("images/icon.png")));
+        //  primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("images/icon.png")));
 
         primaryStage.show();
         LOGGER.info("Show Renamer successfully started.");
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }
 
