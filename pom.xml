@@ -6,7 +6,7 @@
 
     <groupId>uk.co.conoregan.show-renamer</groupId>
     <artifactId>show-renamer</artifactId>
-    <version>0.4.0-ALPHA</version>
+    <version>0.5.0-ALPHA</version>
     <name>ShowRenamer</name>
 
     <properties>
@@ -17,14 +17,14 @@
     </properties>
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+        <!-- SLF4J https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>2.0.6</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
+        <!-- SLF4J Binding Provider https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
@@ -73,28 +73,35 @@
             <version>0.4.0</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple -->
+        <!-- Google Json Simple https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple -->
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
             <version>1.1.1</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305 -->
+        <!-- Google Find Bugs https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305 -->
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
             <version>3.0.2</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.json/json -->
+        <!-- Json https://mvnrepository.com/artifact/org.json/json -->
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20200518</version>
         </dependency>
 
-        <!-- https://github.com/holgerbrandl/themoviedbapi -->
+        <!-- Caffeine Cache https://search.maven.org/artifact/com.github.ben-manes.caffeine/caffeine/3.1.5/jar?eh= -->
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+            <version>3.1.5</version>
+        </dependency>
+
+        <!-- The Movie Database API Wrapper https://github.com/holgerbrandl/themoviedbapi -->
         <dependency>
             <groupId>com.github.holgerbrandl</groupId>
             <artifactId>themoviedbapi</artifactId>
@@ -122,7 +129,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>uk.co.conoregan.showrenamer.Main</mainClass>
+                            <mainClass>uk.co.conoregan.showrenamer.NewMain</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>
