@@ -167,84 +167,6 @@ public class RenameController implements Initializable {
     }
 
     /**
-     * Rename suggestion task for threaded api calls.
-     *
-     * @param index the index
-     */
-    private void renameSuggestionTask(final int index) {
-        final Task<String> task = new Task<>() {
-            @Override
-            protected String call() {
-                return getRenameSuggestion(index);
-            }
-        };
-
-        task.setOnSucceeded(workerStateEvent -> {
-            Platform.runLater(() -> {
-                listRenameTo.set(index, task.getValue());
-            });
-        });
-
-        task.setOnFailed(workerStateEvent -> {
-            Platform.runLater(() -> {
-                listRenameTo.set(index, RenameController.ERROR_MESSAGE);
-            });
-        });
-
-        new Thread(task).start();
-    }
-
-    /**
-     * Recursive function to add files and sub folders.
-     *
-     * @param item file from selected folder in open file dialog
-     */
-    private void addFile(@Nonnull final File item) {
-        if (item.isFile()) {
-            files.add(item);
-        } else if (item.isDirectory() && checkboxIncludeSubFolder.isSelected()) {
-            for (final File f : Objects.requireNonNull(item.listFiles())) {
-                addFile(f);
-            }
-        }
-    }
-
-    /**
-     * Recursive function to rename a file passed, or if directory call function again on each file.
-     *
-     * @param f file to be renamed
-     */
-    private void renameFile(@Nonnull final File f) throws IOException {
-        if (f.isFile()) {
-            for (int i = 0; i < listRenameFrom.size(); i++) {
-                // check if current file name contains name from listRenameFrom
-                if (f.getCanonicalPath().contains(listRenameFrom.get(i))) {
-                    // get path
-                    final String path = files.get(i).getCanonicalPath();
-
-                    // get last occurrence of file to be renamed
-                    final StringBuilder sb = new StringBuilder();
-                    final int lastOccurrence = path.lastIndexOf(listRenameFrom.get(i));
-
-                    // generate new path string with replaced file name
-                    sb.append(path, 0, lastOccurrence);
-                    sb.append(listRenameTo.get(i));
-                    sb.append(path.substring(lastOccurrence + listRenameFrom.get(i).length()));
-
-                    // rename
-                    final Path p = Paths.get(path);
-                    Files.move(p, p.resolveSibling(sb.toString()));
-                }
-            }
-        } else if (f.isDirectory()) {
-            // for each file in the directory, call the recursive function
-            for (final File temp : Objects.requireNonNull(f.listFiles())) {
-                renameFile(temp);
-            }
-        }
-    }
-
-    /**
      * Function to rename all files with api updated info.
      */
     @FXML
@@ -262,26 +184,6 @@ public class RenameController implements Initializable {
     public void removeSelected() {
         removeItem(listViewRenameFrom);
     }
-
-    /**
-     * Function to remove selected item from listview.
-     *
-     * @param list List for an item to be removed from.
-     * @param <T>  Type to of object in list.
-     */
-    private <T> void removeItem(@Nonnull final ListView<T> list) {
-        if (list.getItems().size() > 0) {
-            int index = list.getSelectionModel().getSelectedIndex();
-
-            if (listRenameFrom.size() == listRenameTo.size()) {
-                listRenameTo.remove(index);
-            }
-
-            listRenameFrom.remove(index);
-            files.remove(index);
-        }
-    }
-
 
     /**
      * Function is run when object is initialized.
@@ -330,5 +232,103 @@ public class RenameController implements Initializable {
                 }
             }
         });
+    }
+
+    /**
+     * Rename suggestion task for threaded api calls.
+     *
+     * @param index the index
+     */
+    private void renameSuggestionTask(final int index) {
+        final Task<String> task = new Task<>() {
+            @Override
+            protected String call() {
+                return getRenameSuggestion(index);
+            }
+        };
+
+        task.setOnSucceeded(workerStateEvent -> {
+            Platform.runLater(() -> {
+                listRenameTo.set(index, task.getValue());
+            });
+        });
+
+        task.setOnFailed(workerStateEvent -> {
+            Platform.runLater(() -> {
+                listRenameTo.set(index, RenameController.ERROR_MESSAGE);
+            });
+        });
+
+        new Thread(task).start();
+    }
+
+    /**
+     * Recursive function to add files and sub folders.
+     *
+     * @param item file from selected folder in open file dialog
+     */
+    private void addFile(@Nonnull final File item) {
+        files.add(item);
+
+        if (item.isDirectory() && checkboxIncludeSubFolder.isSelected()) {
+            for (final File f : Objects.requireNonNull(item.listFiles())) {
+                addFile(f);
+            }
+        }
+    }
+
+    /**
+     * Recursive function to rename a file passed, or if directory call function again on each file.
+     * TODO: optimise this, it's poorly written
+     *
+     * @param f file to be renamed
+     */
+    private void renameFile(@Nonnull final File f) throws IOException {
+        if (f.isFile()) {
+            for (int i = 0; i < listRenameFrom.size(); i++) {
+                // check if current file name contains name from listRenameFrom
+                if (f.getCanonicalPath().contains(listRenameFrom.get(i))) {
+                    // get path
+                    final String path = files.get(i).getCanonicalPath();
+
+                    // get last occurrence of file to be renamed
+                    final StringBuilder sb = new StringBuilder();
+                    final int lastOccurrence = path.lastIndexOf(listRenameFrom.get(i));
+
+                    // generate new path string with replaced file name
+                    sb.append(path, 0, lastOccurrence);
+                    sb.append(listRenameTo.get(i));
+                    sb.append(path.substring(lastOccurrence + listRenameFrom.get(i).length()));
+
+                    // rename
+                    final Path p = Paths.get(path);
+                    Files.move(p, p.resolveSibling(sb.toString()));
+                }
+            }
+        } else if (f.isDirectory()) {
+            // for each file in the directory, call the recursive function
+            for (final File temp : Objects.requireNonNull(f.listFiles())) {
+                renameFile(temp);
+            }
+        }
+    }
+
+    /**
+     * Function to remove selected item from listview.
+     *
+     * @param list List for an item to be removed from.
+     * @param <T>  Type to of object in list.
+     */
+    private <T> void removeItem(@Nonnull final ListView<T> list) {
+        if (list.getItems().size() > 0) {
+            int index = list.getSelectionModel().getSelectedIndex();
+
+            if (listRenameFrom.size() == listRenameTo.size()) {
+                listRenameTo.remove(index);
+            }
+
+            listRenameFrom.remove(index);
+            files.remove(index);
+        }
     }
 }

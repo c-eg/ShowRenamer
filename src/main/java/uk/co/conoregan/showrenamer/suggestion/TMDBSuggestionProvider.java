@@ -104,6 +104,7 @@ public class TMDBSuggestionProvider implements ShowSuggestionProvider {
             return Optional.empty();
         }
 
+        // todo: check this is working as expected as it is run by a thread.
         final List<Multi> results = SHOW_RESULTS_CACHE.get(matchedTitle.get(), t ->
                 TMDB_API.getSearch().searchMulti(matchedTitle.get(), "en-US", 1).getResults());
 
