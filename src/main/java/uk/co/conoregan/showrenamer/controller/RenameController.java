@@ -128,7 +128,10 @@ public class RenameController implements Initializable {
     private void openFileDialog() {
         final Window window = checkboxIncludeSubFolder.getScene().getWindow();
         final File dir = directoryChooser.showDialog(window);
-        addFile(dir);
+
+        if (dir != null) {
+            addFile(dir);
+        }
     }
 
     /**
