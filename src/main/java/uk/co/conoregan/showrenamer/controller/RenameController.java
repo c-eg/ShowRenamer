@@ -18,8 +18,6 @@
 package uk.co.conoregan.showrenamer.controller;
 
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -29,18 +27,16 @@ import javafx.scene.control.ListView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Window;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.co.conoregan.showrenamer.suggestion.ShowSuggestionProvider;
 import uk.co.conoregan.showrenamer.suggestion.TMDBSuggestionProvider;
 
 import javax.annotation.Nonnull;
-import javax.swing.*;
-import java.io.*;
+import java.io.File;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -60,11 +56,17 @@ public class RenameController implements Initializable {
     /**
      * The movie database suggestion provider.
      */
-    private static final ShowSuggestionProvider showSuggestionProvider = new TMDBSuggestionProvider();
+    private final ShowSuggestionProvider showSuggestionProvider = new TMDBSuggestionProvider();
 
-    private final ObservableList<String> listRenameFrom = FXCollections.observableArrayList();
-    private final ObservableList<String> listRenameTo = FXCollections.observableArrayList();
-    private List<File> files;
+    /**
+     * The directory chooser.
+     */
+    private final DirectoryChooser directoryChooser = new DirectoryChooser();
+
+    /**
+     * File mapping. File --> Suggested name
+     */
+    private final Map<File, String> fileRenameMapping = new HashMap<>();
 
     @FXML
     private ListView<String> listViewRenameFrom;
@@ -84,6 +86,7 @@ public class RenameController implements Initializable {
     @FXML
     private void handleDragOverFileUpload(DragEvent event) {
         final Dragboard dragboard = event.getDragboard();
+
         if (dragboard.hasFiles()) {
             event.acceptTransferModes(TransferMode.LINK);
         } else {
@@ -100,13 +103,9 @@ public class RenameController implements Initializable {
     private void handleDragDroppedFileUpload(DragEvent event) {
         final Dragboard dragboard = event.getDragboard();
         final List<File> dragboardFiles = dragboard.getFiles();
+
         for (final File item : dragboardFiles) {
             addFile(item);
-        }
-
-        for (final File file : files) {
-            listRenameFrom.add(file.getName().substring(0, file.getName().lastIndexOf(".")));
-            listRenameTo.add("");
         }
     }
 
@@ -114,32 +113,10 @@ public class RenameController implements Initializable {
      * Open file dialog to select files to be renamed.
      */
     @FXML
-    private void openFileDialog() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException,
-            IllegalAccessException {
-        // set dialog MVC.style to windows
-        UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-
-        // open the dialog
-        final JFileChooser chooser = new JFileChooser();
-        chooser.setDialogTitle("Select a directory");
-        chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-        final int returnVal = chooser.showOpenDialog(null);
-
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            final File dir = chooser.getSelectedFile();
-            final File[] temp = dir.listFiles();
-
-            if (temp != null && temp.length > 0) {
-                for (final File item : Objects.requireNonNull(dir.listFiles())) {
-                    addFile(item);
-                }
-            }
-
-            for (final File file : files) {
-                listRenameFrom.add(file.getName().substring(0, file.getName().lastIndexOf(".")));
-                listRenameTo.add("");
-            }
-        }
+    private void openFileDialog() {
+        final Window window = checkboxIncludeSubFolder.getScene().getWindow();
+        final File dir = directoryChooser.showDialog(window);
+        addFile(dir);
     }
 
     /**
@@ -148,21 +125,20 @@ public class RenameController implements Initializable {
      */
     @FXML
     private void getSuggestions() {
-        for (int i = 0; i < listRenameFrom.size(); i++) {
-            renameSuggestionTask(i);
+        for (Map.Entry<File, String> entry : fileRenameMapping.entrySet()) {
+            renameSuggestionTask(entry);
         }
     }
 
     /**
      * Gets rename suggestion.
      *
-     * @param index the index
+     * @param entry a fileRenameMapping entry.
      * @return the renamed suggestion
      */
     @Nonnull
-    private String getRenameSuggestion(int index) {
-        final String fileName = listRenameFrom.get(index);
-        final Optional<String> suggestedName = showSuggestionProvider.getSuggestion(fileName);
+    private String getRenameSuggestion(@Nonnull final Map.Entry<File, String> entry) {
+        final Optional<String> suggestedName = showSuggestionProvider.getSuggestion(entry.getKey().getName());
         return suggestedName.orElse(RenameController.ERROR_MESSAGE);
     }
 
@@ -170,20 +146,25 @@ public class RenameController implements Initializable {
      * Function to rename all files with api updated info.
      */
     @FXML
-    public void saveAll() throws IOException {
-        if (listRenameFrom.size() == listRenameTo.size() && listRenameFrom.size() > 0) {
-            for (int i = 0; i < files.size(); i++) {
-                if (!listRenameTo.get(i).equals(RenameController.ERROR_MESSAGE)) {
-                    renameFile(files.get(i));
-                }
+    public void saveAll() {
+        for (Map.Entry<File, String> entry : fileRenameMapping.entrySet()) {
+            final File file = entry.getKey();
+            final String fileNameWithoutExtension = getFileNameWithoutExtension(file.getName());
+            final String newFileName = entry.getValue();
+
+            if (newFileName.equals(ERROR_MESSAGE)) {
+                continue;
             }
+
+            final File newName = new File(file.getAbsolutePath().replace(fileNameWithoutExtension, newFileName));
+            file.renameTo(newName);
         }
     }
 
-    @FXML
-    public void removeSelected() {
-        removeItem(listViewRenameFrom);
-    }
+//    @FXML
+//    public void removeSelected() {
+//        removeItem(listViewRenameFrom);
+//    }
 
     /**
      * Function is run when object is initialized.
@@ -197,16 +178,11 @@ public class RenameController implements Initializable {
         checkboxIncludeSubFolder.setFocusTraversable(false);
         checkboxImproveFolderNames.setFocusTraversable(false);
 
-        files = new ArrayList<>();
-
         setListViewCellFactorySettings(listViewRenameFrom);
         setListViewCellFactorySettings(listViewRenameTo);
 
         listViewRenameFrom.setFocusTraversable(false);
         listViewRenameTo.setFocusTraversable(false);
-
-        listViewRenameFrom.setItems(listRenameFrom);
-        listViewRenameTo.setItems(listRenameTo);
     }
 
     /**
@@ -237,25 +213,25 @@ public class RenameController implements Initializable {
     /**
      * Rename suggestion task for threaded api calls.
      *
-     * @param index the index
+     * @param entry a fileRenameMapping entry.
      */
-    private void renameSuggestionTask(final int index) {
+    private void renameSuggestionTask(@Nonnull final Map.Entry<File, String> entry) {
         final Task<String> task = new Task<>() {
             @Override
             protected String call() {
-                return getRenameSuggestion(index);
+                return getRenameSuggestion(entry);
             }
         };
 
         task.setOnSucceeded(workerStateEvent -> {
             Platform.runLater(() -> {
-                listRenameTo.set(index, task.getValue());
+                entry.setValue(task.getValue());
             });
         });
 
         task.setOnFailed(workerStateEvent -> {
             Platform.runLater(() -> {
-                listRenameTo.set(index, RenameController.ERROR_MESSAGE);
+                entry.setValue(RenameController.ERROR_MESSAGE);
             });
         });
 
@@ -265,70 +241,36 @@ public class RenameController implements Initializable {
     /**
      * Recursive function to add files and sub folders.
      *
-     * @param item file from selected folder in open file dialog
+     * @param file file from selected folder in open file dialog
      */
-    private void addFile(@Nonnull final File item) {
-        files.add(item);
+    private void addFile(@Nonnull final File file) {
+        fileRenameMapping.put(file, null);
 
-        if (item.isDirectory() && checkboxIncludeSubFolder.isSelected()) {
-            for (final File f : Objects.requireNonNull(item.listFiles())) {
+        if (file.isDirectory() && checkboxIncludeSubFolder.isSelected()) {
+            final File[] dirFiles = file.listFiles();
+
+            if (dirFiles == null) {
+                return;
+            }
+
+            for (final File f : dirFiles) {
                 addFile(f);
             }
         }
     }
 
     /**
-     * Recursive function to rename a file passed, or if directory call function again on each file.
-     * TODO: optimise this, it's poorly written
+     * Returns the filename without an extension. If no extension, return original file name.
      *
-     * @param f file to be renamed
+     * @param fileName the file name.
+     * @return filename without extension.
      */
-    private void renameFile(@Nonnull final File f) throws IOException {
-        if (f.isFile()) {
-            for (int i = 0; i < listRenameFrom.size(); i++) {
-                // check if current file name contains name from listRenameFrom
-                if (f.getCanonicalPath().contains(listRenameFrom.get(i))) {
-                    // get path
-                    final String path = files.get(i).getCanonicalPath();
-
-                    // get last occurrence of file to be renamed
-                    final StringBuilder sb = new StringBuilder();
-                    final int lastOccurrence = path.lastIndexOf(listRenameFrom.get(i));
-
-                    // generate new path string with replaced file name
-                    sb.append(path, 0, lastOccurrence);
-                    sb.append(listRenameTo.get(i));
-                    sb.append(path.substring(lastOccurrence + listRenameFrom.get(i).length()));
-
-                    // rename
-                    final Path p = Paths.get(path);
-                    Files.move(p, p.resolveSibling(sb.toString()));
-                }
-            }
-        } else if (f.isDirectory()) {
-            // for each file in the directory, call the recursive function
-            for (final File temp : Objects.requireNonNull(f.listFiles())) {
-                renameFile(temp);
-            }
-        }
-    }
-
-    /**
-     * Function to remove selected item from listview.
-     *
-     * @param list List for an item to be removed from.
-     * @param <T>  Type to of object in list.
-     */
-    private <T> void removeItem(@Nonnull final ListView<T> list) {
-        if (list.getItems().size() > 0) {
-            int index = list.getSelectionModel().getSelectedIndex();
-
-            if (listRenameFrom.size() == listRenameTo.size()) {
-                listRenameTo.remove(index);
-            }
-
-            listRenameFrom.remove(index);
-            files.remove(index);
+    @Nonnull
+    private String getFileNameWithoutExtension(@Nonnull final String fileName) {
+        if (fileName.indexOf(".") > 0) {
+            return fileName.substring(0, fileName.lastIndexOf("."));
+        } else {
+            return fileName;
         }
     }
 }
