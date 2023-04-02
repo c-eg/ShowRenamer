@@ -133,12 +133,12 @@ public class RenameController implements Initializable {
     /**
      * Gets rename suggestion.
      *
-     * @param entry a fileRenameMapping entry.
+     * @param fileName the fileName.
      * @return the renamed suggestion
      */
     @Nonnull
-    private String getRenameSuggestion(@Nonnull final Map.Entry<File, String> entry) {
-        final Optional<String> suggestedName = showSuggestionProvider.getSuggestion(entry.getKey().getName());
+    private String getRenameSuggestion(@Nonnull final String fileName) {
+        final Optional<String> suggestedName = showSuggestionProvider.getSuggestion(fileName);
         return suggestedName.orElse(RenameController.ERROR_MESSAGE);
     }
 
@@ -219,7 +219,7 @@ public class RenameController implements Initializable {
         final Task<String> task = new Task<>() {
             @Override
             protected String call() {
-                return getRenameSuggestion(entry);
+                return getRenameSuggestion(getFileNameWithoutExtension(entry.getKey().getName()));
             }
         };
 
