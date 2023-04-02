@@ -30,6 +30,7 @@ import uk.co.conoregan.showrenamer.controller.RenameController;
 import uk.co.conoregan.showrenamer.util.ResultValidator;
 import uk.co.conoregan.showrenamer.util.ShowInfoMatcher;
 
+import javax.annotation.Nonnull;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -96,7 +97,7 @@ public class TMDBSuggestionProvider implements ShowSuggestionProvider {
     }
 
     @Override
-    public Optional<String> getSuggestion(final String fileName) {
+    public Optional<String> getSuggestion(@Nonnull final String fileName) {
         final Optional<String> matchedTitle = ShowInfoMatcher.matchTitle(fileName);
 
         if (matchedTitle.isEmpty()) {
