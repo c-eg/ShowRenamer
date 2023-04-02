@@ -30,11 +30,11 @@ import java.net.URL;
 /**
  * The starting point of the ShowRenamer application.
  */
-public class Main extends Application {
+public class ShowRenamerApplication extends Application {
     /**
      * The logger.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ShowRenamerApplication.class);
 
     /**
      * The screen width.
