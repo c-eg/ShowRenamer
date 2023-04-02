@@ -18,6 +18,9 @@
 package uk.co.conoregan.showrenamer.controller;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.MapChangeListener;
+import javafx.collections.ObservableMap;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -64,14 +67,14 @@ public class RenameController implements Initializable {
     private final DirectoryChooser directoryChooser = new DirectoryChooser();
 
     /**
-     * File mapping. File --> Suggested name
+     * File mapping. Current name --> Suggested name.
      */
-    private final Map<File, String> fileRenameMapping = new HashMap<>();
+    private final ObservableMap<File, File> fileRenameMapping = FXCollections.observableHashMap();
 
     @FXML
-    private ListView<String> listViewRenameFrom;
+    private ListView<File> listViewRenameFrom;
     @FXML
-    private ListView<String> listViewRenameTo;
+    private ListView<File> listViewRenameTo;
 
     @FXML
     private CheckBox checkboxIncludeSubFolder;
@@ -125,21 +128,9 @@ public class RenameController implements Initializable {
      */
     @FXML
     private void getSuggestions() {
-        for (Map.Entry<File, String> entry : fileRenameMapping.entrySet()) {
+        for (Map.Entry<File, File> entry : fileRenameMapping.entrySet()) {
             renameSuggestionTask(entry);
         }
-    }
-
-    /**
-     * Gets rename suggestion.
-     *
-     * @param fileName the fileName.
-     * @return the renamed suggestion
-     */
-    @Nonnull
-    private String getRenameSuggestion(@Nonnull final String fileName) {
-        final Optional<String> suggestedName = showSuggestionProvider.getSuggestion(fileName);
-        return suggestedName.orElse(RenameController.ERROR_MESSAGE);
     }
 
     /**
@@ -147,17 +138,18 @@ public class RenameController implements Initializable {
      */
     @FXML
     public void saveAll() {
-        for (Map.Entry<File, String> entry : fileRenameMapping.entrySet()) {
-            final File file = entry.getKey();
-            final String fileNameWithoutExtension = getFileNameWithoutExtension(file.getName());
-            final String newFileName = entry.getValue();
-
-            if (newFileName.equals(ERROR_MESSAGE)) {
+        for (Map.Entry<File, File> entry : fileRenameMapping.entrySet()) {
+            if (entry.getValue() == null) {
+                LOGGER.info(String.format("Cannot rename: %s, no suggestion found.", entry.getKey().getName()));
                 continue;
             }
 
-            final File newName = new File(file.getAbsolutePath().replace(fileNameWithoutExtension, newFileName));
-            file.renameTo(newName);
+            if (entry.getValue().exists()) {
+                LOGGER.warn(String.format("Cannot rename: %s, %s already exists.", entry.getKey().getName(), entry.getValue().getName()));
+                continue;
+            }
+
+            entry.getKey().renameTo(entry.getValue());
         }
     }
 
@@ -183,6 +175,18 @@ public class RenameController implements Initializable {
 
         listViewRenameFrom.setFocusTraversable(false);
         listViewRenameTo.setFocusTraversable(false);
+
+        fileRenameMapping.addListener((MapChangeListener<File, File>) change -> {
+            listViewRenameFrom.getItems().removeAll(change.getKey());
+            if (change.wasAdded()) {
+                listViewRenameFrom.getItems().add(change.getKey());
+            }
+
+            listViewRenameTo.getItems().removeAll(change.getValueRemoved());
+            if (change.wasAdded()) {
+                listViewRenameTo.getItems().add(change.getValueAdded());
+            }
+        });
     }
 
     /**
@@ -190,10 +194,10 @@ public class RenameController implements Initializable {
      *
      * @param listView the listview.
      */
-    private void setListViewCellFactorySettings(@Nonnull final ListView<String> listView) {
+    private void setListViewCellFactorySettings(@Nonnull final ListView<File> listView) {
         listView.setCellFactory(param -> new ListCell<>() {
             @Override
-            protected void updateItem(String item, boolean empty) {
+            protected void updateItem(File item, boolean empty) {
                 super.updateItem(item, empty);
 
                 if (empty || item == null) {
@@ -204,7 +208,7 @@ public class RenameController implements Initializable {
                     setMinWidth(param.getWidth() - 20);
                     setMaxWidth(param.getWidth() - 20);
                     setPrefWidth(param.getWidth() - 20);
-                    setText(item);
+                    setText(getFileNameWithoutExtension(item.getName()));
                 }
             }
         });
@@ -215,11 +219,18 @@ public class RenameController implements Initializable {
      *
      * @param entry a fileRenameMapping entry.
      */
-    private void renameSuggestionTask(@Nonnull final Map.Entry<File, String> entry) {
-        final Task<String> task = new Task<>() {
+    private void renameSuggestionTask(@Nonnull final Map.Entry<File, File> entry) {
+        final Task<File> task = new Task<>() {
             @Override
-            protected String call() {
-                return getRenameSuggestion(getFileNameWithoutExtension(entry.getKey().getName()));
+            protected File call() {
+                final String fileNameWithoutExtension = getFileNameWithoutExtension(entry.getKey().getName());
+                final Optional<String> newFileNameWithoutExtension = showSuggestionProvider.getSuggestion(fileNameWithoutExtension);
+
+                if (newFileNameWithoutExtension.isPresent()) {
+                    return new File(entry.getKey().getAbsolutePath().replace(fileNameWithoutExtension, newFileNameWithoutExtension.get()));
+                }
+
+                return null;
             }
         };
 
@@ -231,7 +242,7 @@ public class RenameController implements Initializable {
 
         task.setOnFailed(workerStateEvent -> {
             Platform.runLater(() -> {
-                entry.setValue(RenameController.ERROR_MESSAGE);
+                entry.setValue(null);
             });
         });
 
@@ -244,9 +255,10 @@ public class RenameController implements Initializable {
      * @param file file from selected folder in open file dialog
      */
     private void addFile(@Nonnull final File file) {
-        fileRenameMapping.put(file, null);
-
-        if (file.isDirectory() && checkboxIncludeSubFolder.isSelected()) {
+        if (file.isFile()) {
+            fileRenameMapping.put(file, null);
+        }
+        else if (file.isDirectory() && checkboxIncludeSubFolder.isSelected()) {
             final File[] dirFiles = file.listFiles();
 
             if (dirFiles == null) {
