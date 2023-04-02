@@ -6,7 +6,7 @@
 
     <groupId>uk.co.conoregan.show-renamer</groupId>
     <artifactId>show-renamer</artifactId>
-    <version>0.6.0-ALPHA</version>
+    <version>0.6.1-ALPHA</version>
     <name>ShowRenamer</name>
 
     <properties>
