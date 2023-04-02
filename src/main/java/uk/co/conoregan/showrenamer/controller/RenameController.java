@@ -52,11 +52,6 @@ public class RenameController implements Initializable {
     private static final Logger LOGGER = LoggerFactory.getLogger(RenameController.class);
 
     /**
-     * The error message displayed if no result is found from TMDB_API.
-     */
-    private static final String ERROR_MESSAGE = "<Unable to find match>";
-
-    /**
      * The movie database suggestion provider.
      */
     private final ShowSuggestionProvider showSuggestionProvider = new TMDBSuggestionProvider();
