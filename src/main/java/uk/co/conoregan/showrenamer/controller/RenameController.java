@@ -66,13 +66,27 @@ public class RenameController implements Initializable {
      */
     private final ObservableMap<File, File> fileRenameMapping = FXCollections.observableHashMap();
 
+    /**
+     * List view to show original file names.
+     */
     @FXML
     private ListView<File> listViewRenameFrom;
+
+    /**
+     * List view to suggested file names.
+     */
     @FXML
     private ListView<File> listViewRenameTo;
 
+    /**
+     * Checkbox to include sub-folders.
+     */
     @FXML
     private CheckBox checkboxIncludeSubFolder;
+
+    /**
+     * Checkbox to improve folder names.
+     */
     @FXML
     private CheckBox checkboxImproveFolderNames;
 
@@ -118,8 +132,7 @@ public class RenameController implements Initializable {
     }
 
     /**
-     * Function is called by user from GUI. Gets rename suggestions for files
-     * on left list.
+     * Function is called by user from GUI. Gets rename suggestions for files on left list.
      */
     @FXML
     private void getSuggestions() {
@@ -144,14 +157,12 @@ public class RenameController implements Initializable {
                 continue;
             }
 
-            entry.getKey().renameTo(entry.getValue());
+            final boolean successfulRename = entry.getKey().renameTo(entry.getValue());
+            if (!successfulRename) {
+                LOGGER.error(String.format("Cannot rename: %s, an unexpected error occurred.", entry.getKey().getName()));
+            }
         }
     }
-
-//    @FXML
-//    public void removeSelected() {
-//        removeItem(listViewRenameFrom);
-//    }
 
     /**
      * Function is run when object is initialized.
@@ -171,6 +182,7 @@ public class RenameController implements Initializable {
         listViewRenameFrom.setFocusTraversable(false);
         listViewRenameTo.setFocusTraversable(false);
 
+        // update list views based on fileRenameMapping.
         fileRenameMapping.addListener((MapChangeListener<File, File>) change -> {
             listViewRenameFrom.getItems().removeAll(change.getKey());
             if (change.wasAdded()) {
@@ -203,6 +215,7 @@ public class RenameController implements Initializable {
                     setMinWidth(param.getWidth() - 20);
                     setMaxWidth(param.getWidth() - 20);
                     setPrefWidth(param.getWidth() - 20);
+
                     setText(getFileNameWithoutExtension(item.getName()));
                 }
             }
@@ -221,25 +234,14 @@ public class RenameController implements Initializable {
                 final String fileNameWithoutExtension = getFileNameWithoutExtension(entry.getKey().getName());
                 final Optional<String> newFileNameWithoutExtension = showSuggestionProvider.getSuggestion(fileNameWithoutExtension);
 
-                if (newFileNameWithoutExtension.isPresent()) {
-                    return new File(entry.getKey().getAbsolutePath().replace(fileNameWithoutExtension, newFileNameWithoutExtension.get()));
-                }
+                return newFileNameWithoutExtension.map(s -> new File(entry.getKey().getAbsolutePath().replace(fileNameWithoutExtension, s)))
+                        .orElse(null);
 
-                return null;
             }
         };
 
-        task.setOnSucceeded(workerStateEvent -> {
-            Platform.runLater(() -> {
-                entry.setValue(task.getValue());
-            });
-        });
-
-        task.setOnFailed(workerStateEvent -> {
-            Platform.runLater(() -> {
-                entry.setValue(null);
-            });
-        });
+        task.setOnSucceeded(workerStateEvent -> Platform.runLater(() -> entry.setValue(task.getValue())));
+        task.setOnFailed(workerStateEvent -> Platform.runLater(() -> entry.setValue(null)));
 
         new Thread(task).start();
     }
@@ -252,8 +254,7 @@ public class RenameController implements Initializable {
     private void addFile(@Nonnull final File file) {
         if (file.isFile()) {
             fileRenameMapping.put(file, null);
-        }
-        else if (file.isDirectory() && checkboxIncludeSubFolder.isSelected()) {
+        } else if (file.isDirectory() && checkboxIncludeSubFolder.isSelected()) {
             final File[] dirFiles = file.listFiles();
 
             if (dirFiles == null) {
