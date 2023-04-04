@@ -17,7 +17,7 @@
 
 package uk.co.conoregan.showrenamer.util;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 
 import java.util.ArrayList;
