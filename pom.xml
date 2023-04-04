@@ -14,6 +14,7 @@
         <maven.compiler.target>19</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.8.2</junit.version>
+        <javafx.version>19</javafx.version>
     </properties>
 
     <dependencies>
@@ -50,55 +51,12 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>19</version>
+            <version>${javafx.version}</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>19</version>
-        </dependency>
-        <dependency>
-            <groupId>org.controlsfx</groupId>
-            <artifactId>controlsfx</artifactId>
-            <version>11.1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.kordamp.ikonli</groupId>
-            <artifactId>ikonli-javafx</artifactId>
-            <version>12.3.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.kordamp.bootstrapfx</groupId>
-            <artifactId>bootstrapfx-core</artifactId>
-            <version>0.4.0</version>
-        </dependency>
-
-        <!-- Google Json Simple https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple -->
-        <dependency>
-            <groupId>com.googlecode.json-simple</groupId>
-            <artifactId>json-simple</artifactId>
-            <version>1.1.1</version>
-        </dependency>
-
-        <!-- Google Find Bugs https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305 -->
-        <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>jsr305</artifactId>
-            <version>3.0.2</version>
-        </dependency>
-
-        <!-- Json https://mvnrepository.com/artifact/org.json/json -->
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20200518</version>
-        </dependency>
-
-        <!-- Caffeine Cache https://search.maven.org/artifact/com.github.ben-manes.caffeine/caffeine/3.1.5/jar?eh= -->
-        <dependency>
-            <groupId>com.github.ben-manes.caffeine</groupId>
-            <artifactId>caffeine</artifactId>
-            <version>3.1.5</version>
+            <version>${javafx.version}</version>
         </dependency>
 
         <!-- The Movie Database API Wrapper https://github.com/holgerbrandl/themoviedbapi -->
@@ -126,7 +84,85 @@
                 <version>0.0.8</version>
                 <configuration>
                     <mainClass>uk.co.conoregan.showrenamer.ShowRenamerApplication</mainClass>
+                    <launcher>ShowRenamer</launcher>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.moditect</groupId>
+                <artifactId>moditect-maven-plugin</artifactId>
+                <version>1.0.0.RC3</version>
+                <executions>
+                    <execution>
+                        <id>add-module-infos</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>add-module-info</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/modules</outputDirectory>
+                            <overwriteExistingFiles>true</overwriteExistingFiles>
+                            <modules>
+                                <module>
+                                    <artifact>
+                                        <groupId>org.checkerframework</groupId>
+                                        <artifactId>checker-qual</artifactId>
+                                        <version>3.32.0</version>
+                                    </artifact>
+                                    <moduleInfoSource>
+                                        module org.checkerframework.checker.qual {
+                                        exports org.checkerframework.checker.builder.qual;
+                                        exports org.checkerframework.checker.calledmethods.qual;
+                                        exports org.checkerframework.checker.compilermsgs.qual;
+                                        exports org.checkerframework.checker.fenum.qual;
+                                        exports org.checkerframework.checker.formatter.qual;
+                                        exports org.checkerframework.checker.guieffect.qual;
+                                        exports org.checkerframework.checker.i18n.qual;
+                                        exports org.checkerframework.checker.i18nformatter.qual;
+                                        exports org.checkerframework.checker.index.qual;
+                                        exports org.checkerframework.checker.initialization.qual;
+                                        exports org.checkerframework.checker.interning.qual;
+                                        exports org.checkerframework.checker.lock.qual;
+                                        exports org.checkerframework.checker.mustcall.qual;
+                                        exports org.checkerframework.checker.nullness.qual;
+                                        exports org.checkerframework.checker.optional.qual;
+                                        exports org.checkerframework.checker.propkey.qual;
+                                        exports org.checkerframework.checker.regex.qual;
+                                        exports org.checkerframework.checker.signature.qual;
+                                        exports org.checkerframework.checker.signedness.qual;
+                                        exports org.checkerframework.checker.tainting.qual;
+                                        exports org.checkerframework.checker.units.qual;
+                                        exports org.checkerframework.common.aliasing.qual;
+                                        exports org.checkerframework.common.initializedfields.qual;
+                                        exports org.checkerframework.common.reflection.qual;
+                                        exports org.checkerframework.common.returnsreceiver.qual;
+                                        exports org.checkerframework.common.subtyping.qual;
+                                        exports org.checkerframework.common.util.report.qual;
+                                        exports org.checkerframework.common.value.qual;
+                                        exports org.checkerframework.dataflow.qual;
+                                        exports org.checkerframework.framework.qual;
+                                        }
+                                    </moduleInfoSource>
+                                </module>
+                                <module>
+                                    <artifact>
+                                        <groupId>com.google.errorprone</groupId>
+                                        <artifactId>error_prone_annotations</artifactId>
+                                        <version>2.18.0</version>
+                                    </artifact>
+                                    <moduleInfoSource>
+                                        module com.google.errorprone.annotations {
+                                        requires transitive java.compiler;
+
+                                        exports com.google.errorprone.annotations;
+                                        exports com.google.errorprone.annotations.concurrent;
+                                        }
+                                    </moduleInfoSource>
+                                </module>
+                            </modules>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

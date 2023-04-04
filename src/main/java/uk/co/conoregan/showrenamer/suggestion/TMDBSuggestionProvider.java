@@ -17,8 +17,6 @@
 
 package uk.co.conoregan.showrenamer.suggestion;
 
-import com.github.benmanes.caffeine.cache.Cache;
-import com.github.benmanes.caffeine.cache.Caffeine;
 import info.movito.themoviedbapi.TmdbApi;
 import info.movito.themoviedbapi.model.MovieDb;
 import info.movito.themoviedbapi.model.Multi;
@@ -30,7 +28,6 @@ import uk.co.conoregan.showrenamer.controller.RenameController;
 import uk.co.conoregan.showrenamer.util.ResultValidator;
 import uk.co.conoregan.showrenamer.util.ShowInfoMatcher;
 
-import javax.annotation.Nonnull;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -54,10 +51,6 @@ public class TMDBSuggestionProvider implements ShowSuggestionProvider {
      * The movie database api wrapper object.
      */
     private static final TmdbApi TMDB_API;
-
-    private static final Cache<String, List<Multi>> SHOW_RESULTS_CACHE;
-
-    private static final int SHOW_RESULT_CACHE_MAX_SIZE = 10_000;
 
     static {
         // load properties config
@@ -90,14 +83,10 @@ public class TMDBSuggestionProvider implements ShowSuggestionProvider {
             System.exit(0);
         }
         TMDB_API = new TmdbApi(tmdbApiKey);
-
-        SHOW_RESULTS_CACHE = Caffeine.newBuilder()
-                .maximumSize(SHOW_RESULT_CACHE_MAX_SIZE)
-                .build();
     }
 
     @Override
-    public Optional<String> getSuggestion(@Nonnull final String fileName) {
+    public Optional<String> getSuggestion(final String fileName) {
         final Optional<String> matchedTitle = ShowInfoMatcher.matchTitle(fileName);
 
         if (matchedTitle.isEmpty()) {
@@ -105,9 +94,7 @@ public class TMDBSuggestionProvider implements ShowSuggestionProvider {
             return Optional.empty();
         }
 
-        // todo: check this is working as expected as it is run by a thread.
-        final List<Multi> results = SHOW_RESULTS_CACHE.get(matchedTitle.get(), t ->
-                TMDB_API.getSearch().searchMulti(matchedTitle.get(), "en-US", 1).getResults());
+        final List<Multi> results = TMDB_API.getSearch().searchMulti(matchedTitle.get(), "en-US", 1).getResults();
 
         if (!ResultValidator.isGenericListValid(results)) {
             LOGGER.info(String.format("No result found for title: %s", matchedTitle.get()));

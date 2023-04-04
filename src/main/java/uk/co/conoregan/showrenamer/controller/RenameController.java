@@ -37,7 +37,6 @@ import org.slf4j.LoggerFactory;
 import uk.co.conoregan.showrenamer.suggestion.ShowSuggestionProvider;
 import uk.co.conoregan.showrenamer.suggestion.TMDBSuggestionProvider;
 
-import javax.annotation.Nonnull;
 import java.io.File;
 import java.net.URL;
 import java.util.*;
@@ -204,7 +203,7 @@ public class RenameController implements Initializable {
      *
      * @param listView the listview.
      */
-    private void setListViewCellFactorySettings(@Nonnull final ListView<File> listView) {
+    private void setListViewCellFactorySettings(final ListView<File> listView) {
         listView.setCellFactory(param -> new ListCell<>() {
             @Override
             protected void updateItem(File item, boolean empty) {
@@ -230,7 +229,7 @@ public class RenameController implements Initializable {
      *
      * @param entry a fileRenameMapping entry.
      */
-    private void renameSuggestionTask(@Nonnull final Map.Entry<File, File> entry) {
+    private void renameSuggestionTask(final Map.Entry<File, File> entry) {
         final Task<File> task = new Task<>() {
             @Override
             protected File call() {
@@ -254,7 +253,7 @@ public class RenameController implements Initializable {
      *
      * @param file file from selected folder in open file dialog
      */
-    private void addFile(@Nonnull final File file) {
+    private void addFile(final File file) {
         if (file.isFile()) {
             fileRenameMapping.put(file, null);
         } else if (file.isDirectory() && checkboxIncludeSubFolder.isSelected()) {
@@ -276,8 +275,7 @@ public class RenameController implements Initializable {
      * @param fileName the file name.
      * @return filename without extension.
      */
-    @Nonnull
-    private String getFileNameWithoutExtension(@Nonnull final String fileName) {
+    private String getFileNameWithoutExtension(final String fileName) {
         if (fileName.indexOf(".") > 0) {
             return fileName.substring(0, fileName.lastIndexOf("."));
         } else {

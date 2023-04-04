@@ -17,7 +17,6 @@
 
 package uk.co.conoregan.showrenamer.util;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +33,6 @@ public class ShowInfoMatcher {
      * @param fileName the file name.
      * @return optional title.
      */
-    @Nonnull
     public static Optional<String> matchTitle(final String fileName) {
         final String regex = "(.*?)(\\W| - )(directors(.?)cut|480p|720p|1080p|dvdrip|xvid|cd[0-9]|bluray|dvdscr|brrip|divx|S[0-9]{1,3}E[0-9]{1,3}|Season[\\s,0-9]{1,4}|[{(\\[]?[0-9]{4}).*";
         final Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
@@ -53,7 +51,6 @@ public class ShowInfoMatcher {
      * @param fileName the file name.
      * @return optional year.
      */
-    @Nonnull
     public static Optional<String> matchYear(final String fileName) {
         final String regex = "[.\\s](?!^)[1,2]\\d{3}[.\\s]";
         final Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
@@ -72,7 +69,6 @@ public class ShowInfoMatcher {
      * @param fileName the file name.
      * @return optional season number.
      */
-    @Nonnull
     public static Optional<Integer> matchSeason(final String fileName) {
         final String regex = "s(?:eason)?\\s*(\\d{1,2})";
         final Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
@@ -91,7 +87,6 @@ public class ShowInfoMatcher {
      * @param fileName the file name.
      * @return list of episode numbers.
      */
-    @Nonnull
     public static List<Integer> matchEpisodes(final String fileName) {
         final String regex = "e(?:pisode\\s*)?\\s*(\\d{1,3}(?!\\d)|\\d\\d\\d??)(?:-?e?(\\d{1,3}))?(?!\\d)";
         final Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
