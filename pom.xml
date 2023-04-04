@@ -159,6 +159,26 @@
                                         }
                                     </moduleInfoSource>
                                 </module>
+                                <module>
+                                    <artifact>
+                                        <groupId>com.github.holgerbrandl</groupId>
+                                        <artifactId>themoviedbapi</artifactId>
+                                        <version>1.12</version>
+                                    </artifact>
+                                    <moduleInfoSource>
+                                        module themoviedbapi {
+                                        exports info.movito.themoviedbapi;
+                                        exports info.movito.themoviedbapi.model;
+                                        exports info.movito.themoviedbapi.model.changes;
+                                        exports info.movito.themoviedbapi.model.config;
+                                        exports info.movito.themoviedbapi.model.core;
+                                        exports info.movito.themoviedbapi.model.keywords;
+                                        exports info.movito.themoviedbapi.model.people;
+                                        exports info.movito.themoviedbapi.model.tv;
+                                        exports info.movito.themoviedbapi.tools;
+                                        }
+                                    </moduleInfoSource>
+                                </module>
                             </modules>
                         </configuration>
                     </execution>
