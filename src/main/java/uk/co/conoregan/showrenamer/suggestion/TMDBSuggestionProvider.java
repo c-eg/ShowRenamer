@@ -55,24 +55,14 @@ public class TMDBSuggestionProvider implements ShowSuggestionProvider {
 
     static {
         // load properties config
-        final String apiKeysPath = "properties/api_keys.properties";
-        final URL res = RenameController.class.getClassLoader().getResource(apiKeysPath);
-        if (res == null) {
-            throw new UncheckedIOException(new FileNotFoundException(apiKeysPath));
-        }
-
-        final URI uri;
-        try {
-            uri = res.toURI();
-        } catch (URISyntaxException ex) {
-            throw new IllegalArgumentException(ex);
-        }
+        final String apiKeysPath = "/properties/api_keys.properties";
+        final InputStream res = TMDBSuggestionProvider.class.getResourceAsStream(apiKeysPath);
 
         final Properties properties = new Properties();
-        try (InputStream is = Files.newInputStream(Paths.get(uri))) {
-            properties.load(is);
+        try {
+            properties.load(res);
         } catch (IOException e) {
-            throw new UncheckedIOException("Failed to load resource", e);
+            throw new RuntimeException(e);
         }
 
         // make tmdb api

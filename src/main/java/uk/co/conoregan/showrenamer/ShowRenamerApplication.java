@@ -25,8 +25,6 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.URL;
-
 /**
  * The starting point of the ShowRenamer application.
  */
@@ -52,15 +50,7 @@ public class ShowRenamerApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        final String viewPath = "view/rename.fxml";
-        final URL startView = getClass().getClassLoader().getResource(viewPath);
-
-        if (startView == null) {
-            LOGGER.error(String.format("The resource: %s was not found.", viewPath));
-            System.exit(0);
-        }
-
-        final Parent root = FXMLLoader.load(startView);
+        final Parent root = FXMLLoader.load(getClass().getResource("/view/rename.fxml"));
         final Scene scene = new Scene(root, WIDTH, HEIGHT);
 
         primaryStage.setMinWidth(WIDTH);
