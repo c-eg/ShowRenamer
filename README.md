@@ -17,7 +17,8 @@ some.random.tv.show.s01e01.1080p.bluray.x264 --> Some Random TV Show - S01E01 - 
 2. Import maven to project
 3. Create an account for [themoviedb.org](https://www.themoviedb.org/), and get an API key
 4. Copy the file: `api_keys.default.properties` to `/src/main/resources/properties/api_keys.properties`. And update it with your api key
-5. Install using maven: `mvn install`
+5. Install using maven: `mvn clean install`
+6. Run using `mvn clean javafx:run`
 
 ## License
 GNU General Public License v3.0
