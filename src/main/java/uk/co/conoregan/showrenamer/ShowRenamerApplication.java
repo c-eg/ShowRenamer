@@ -17,18 +17,61 @@
 
 package uk.co.conoregan.showrenamer;
 
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.URL;
+
 /**
- * This is a class to call the main function from a class that doesn't extend Application. It is needed in order to run the app without
- * module-info. I don't want to add module info until all dependencies have it too, in order to generate a runtime image with jlink.
- * For now, I will create a 'fat' jar and use jpackage to generate an installer.
+ * The starting point of the ShowRenamer application.
  */
-public class ShowRenamerApplication {
+public class ShowRenamerApplication extends Application {
     /**
-     * Start function.
-     *
-     * @param args the args.
+     * The logger.
      */
+    private static final Logger LOGGER = LoggerFactory.getLogger(ShowRenamerApplication.class);
+
+    /**
+     * The screen width.
+     */
+    private static final int WIDTH = 1280;
+
+    /**
+     * The screen height.
+     */
+    private static final int HEIGHT = 720;
+
     public static void main(String[] args) {
-        JavaFxApplication.main(args);
+        launch(args);
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        final String viewPath = "view/rename.fxml";
+        final URL startView = getClass().getClassLoader().getResource(viewPath);
+
+        if (startView == null) {
+            LOGGER.error(String.format("The resource: %s was not found.", viewPath));
+            System.exit(0);
+        }
+
+        final Parent root = FXMLLoader.load(startView);
+        final Scene scene = new Scene(root, WIDTH, HEIGHT);
+
+        primaryStage.setMinWidth(WIDTH);
+        primaryStage.setMinHeight(HEIGHT);
+        primaryStage.setTitle("Show Renamer");
+        primaryStage.setScene(scene);
+        //  primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("images/icon.png")));
+
+        primaryStage.show();
+        LOGGER.info("Show Renamer successfully started.");
     }
 }
+
+
