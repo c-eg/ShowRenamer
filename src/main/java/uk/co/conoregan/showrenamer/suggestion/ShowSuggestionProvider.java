@@ -19,6 +19,9 @@ package uk.co.conoregan.showrenamer.suggestion;
 
 import java.util.Optional;
 
+/**
+ * Interface to implement for a movie/tv show api.
+ */
 public interface ShowSuggestionProvider {
     /**
      * Gets a suggested file name for a show based on the file name passed.

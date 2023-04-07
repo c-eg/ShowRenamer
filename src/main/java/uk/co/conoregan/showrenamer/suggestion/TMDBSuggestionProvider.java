@@ -24,24 +24,19 @@ import info.movito.themoviedbapi.model.tv.TvEpisode;
 import info.movito.themoviedbapi.model.tv.TvSeries;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.co.conoregan.showrenamer.controller.RenameController;
 import uk.co.conoregan.showrenamer.util.ResultValidator;
 import uk.co.conoregan.showrenamer.util.ShowInfoMatcher;
 
 import javax.annotation.Nonnull;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UncheckedIOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 
+/**
+ * The Movie Database api show provider.
+ */
 public class TMDBSuggestionProvider implements ShowSuggestionProvider {
     /**
      * The logger.
@@ -76,6 +71,9 @@ public class TMDBSuggestionProvider implements ShowSuggestionProvider {
         TMDB_API = new TmdbApi(tmdbApiKey);
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     public Optional<String> getSuggestion(@Nonnull final String fileName) {
         final Optional<String> matchedTitle = ShowInfoMatcher.matchTitle(fileName);

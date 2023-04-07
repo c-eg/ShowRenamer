@@ -44,10 +44,18 @@ public class ShowRenamerApplication extends Application {
      */
     private static final int HEIGHT = 720;
 
+    /**
+     * Main application function. Starts the JavaFX Application.
+     *
+     * @param args the ags.
+     */
     public static void main(String[] args) {
         launch(args);
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         final Parent root = FXMLLoader.load(getClass().getResource("/view/rename.fxml"));
@@ -63,5 +71,3 @@ public class ShowRenamerApplication extends Application {
         LOGGER.info("Show Renamer successfully started.");
     }
 }
-
-

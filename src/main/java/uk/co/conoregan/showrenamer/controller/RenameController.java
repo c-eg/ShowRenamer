@@ -40,10 +40,13 @@ import uk.co.conoregan.showrenamer.suggestion.TMDBSuggestionProvider;
 import javax.annotation.Nonnull;
 import java.io.File;
 import java.net.URL;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.ResourceBundle;
 
 /**
- * Class to control the renaming of files that are about shows (movie or tv).
+ * The JavaFX controller for the rename.fxml file.
  */
 public class RenameController implements Initializable {
     /**
@@ -168,10 +171,7 @@ public class RenameController implements Initializable {
     }
 
     /**
-     * Function is run when object is initialized.
-     *
-     * @param url            the url
-     * @param resourceBundle the resource bundle
+     * @inheritDoc
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
