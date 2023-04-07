@@ -45,6 +45,21 @@ public class ShowInfoMatcherTest {
 //    }
 
     @Test
+    public void testMatchTitleOnlyYear() {
+        final String testCase = "2012.2010.1080p.blueray.x264";
+        final Optional<String> title = ShowInfoMatcher.matchTitle(testCase);
+        Assertions.assertTrue(title.isPresent());
+        Assertions.assertEquals("2012", title.get());
+    }
+
+    @Test
+    public void testMatchTitleNoMatch() {
+        final String testCase = "1080p.blueray.x264";
+        final Optional<String> title = ShowInfoMatcher.matchTitle(testCase);
+        Assertions.assertFalse(title.isPresent());
+    }
+
+    @Test
     public void testMatchYear() {
         final String testCase = "some.random.movie.2010.1080p.blueray.x264";
         final Optional<String> year = ShowInfoMatcher.matchYear(testCase);
@@ -59,6 +74,21 @@ public class ShowInfoMatcherTest {
 //        Assertions.assertTrue(year.isPresent());
 //        Assertions.assertEquals("2010", year.get());
 //    }
+
+    @Test
+    public void testMatchYearOnlyYearInTitle() {
+        final String testCase = "2012.2010.1080p.blueray.x264";
+        final Optional<String> year = ShowInfoMatcher.matchYear(testCase);
+        Assertions.assertTrue(year.isPresent());
+        Assertions.assertEquals("2010", year.get());
+    }
+
+    @Test
+    public void testMatchYearNoMatch() {
+        final String testCase = "1080p.blueray.x264";
+        final Optional<String> year = ShowInfoMatcher.matchYear(testCase);
+        Assertions.assertFalse(year.isPresent());
+    }
 
     @Test
     public void testMatchSeasonS() {
@@ -90,6 +120,13 @@ public class ShowInfoMatcherTest {
         final Optional<Integer> season = ShowInfoMatcher.matchSeason(testCase);
         Assertions.assertTrue(season.isPresent());
         Assertions.assertEquals(10, season.get());
+    }
+
+    @Test
+    public void testMatchSeasonNoMatch() {
+        final String testCase = "some.random.tv.show.e01.1080p.bluray.x264";
+        final Optional<Integer> season = ShowInfoMatcher.matchSeason(testCase);
+        Assertions.assertFalse(season.isPresent());
     }
 
     @Test
@@ -157,7 +194,7 @@ public class ShowInfoMatcherTest {
     }
 
     @Test
-    public void testMatchEpisodesEDualHiphen() {
+    public void testMatchEpisodesEDualHyphen() {
         final String testCase = "some.random.tv.show.s01e01-02.1080p.bluray.x264";
         final List<Integer> episodes = ShowInfoMatcher.matchEpisodes(testCase);
         final List<Integer> expected = new ArrayList<>();
@@ -177,7 +214,7 @@ public class ShowInfoMatcherTest {
     }
 
     @Test
-    public void testMatchEpisodesEDualEHiphen() {
+    public void testMatchEpisodesEDualEHyphen() {
         final String testCase = "some.random.tv.show.s01e01-e02.1080p.bluray.x264";
         final List<Integer> episodes = ShowInfoMatcher.matchEpisodes(testCase);
         final List<Integer> expected = new ArrayList<>();
@@ -206,7 +243,7 @@ public class ShowInfoMatcherTest {
     }
 
     @Test
-    public void testMatchEpisodesEDualNoZeroPaddingHiphen() {
+    public void testMatchEpisodesEDualNoZeroPaddingHyphen() {
         final String testCase = "some.random.tv.show.s01e1-e2.1080p.bluray.x264";
         final List<Integer> episodes = ShowInfoMatcher.matchEpisodes(testCase);
         final List<Integer> expected = new ArrayList<>();
@@ -216,7 +253,7 @@ public class ShowInfoMatcherTest {
     }
 
     @Test
-    public void testMatchEpisodesEDual3DigitsHiphen() {
+    public void testMatchEpisodesEDual3DigitsHyphen() {
         final String testCase = "some.random.tv.show.s01e001-e002.1080p.bluray.x264";
         final List<Integer> episodes = ShowInfoMatcher.matchEpisodes(testCase);
         final List<Integer> expected = new ArrayList<>();
