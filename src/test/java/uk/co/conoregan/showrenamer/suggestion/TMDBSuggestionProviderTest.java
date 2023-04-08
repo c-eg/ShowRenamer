@@ -68,7 +68,6 @@ public class TMDBSuggestionProviderTest {
     }
 
     @Test
-    // todo fix this, it's failing on mvn test for some reason
     public void testGetSuggestionMovie() {
         final TmdbSearch tmdbSearch = mock(TmdbSearch.class);
         when(TMDB_API.getSearch()).thenReturn(tmdbSearch);
@@ -92,7 +91,6 @@ public class TMDBSuggestionProviderTest {
     }
 
     @Test
-    // todo fix this, it's failing on mvn test for some reason
     public void testGetSuggestionTvSeries() {
         final TmdbSearch tmdbSearch = mock(TmdbSearch.class);
         when(TMDB_API.getSearch()).thenReturn(tmdbSearch);
@@ -125,7 +123,6 @@ public class TMDBSuggestionProviderTest {
     }
 
     @Test
-    // todo fix this, it's failing on mvn test for some reason
     public void testGetSuggestionNotMovieOrTvSeries() {
         final TmdbSearch tmdbSearch = mock(TmdbSearch.class);
         when(TMDB_API.getSearch()).thenReturn(tmdbSearch);
@@ -146,7 +143,6 @@ public class TMDBSuggestionProviderTest {
     }
 
     @Test
-    // todo fix this, it's failing on mvn test for some reason
     public void testGetSuggestionNoSeason() {
         final TmdbSearch tmdbSearch = mock(TmdbSearch.class);
         when(TMDB_API.getSearch()).thenReturn(tmdbSearch);
@@ -167,7 +163,6 @@ public class TMDBSuggestionProviderTest {
     }
 
     @Test
-    // todo fix this, it's failing on mvn test for some reason
     public void testGetSuggestionNoEpisode() {
         final TmdbSearch tmdbSearch = mock(TmdbSearch.class);
         when(TMDB_API.getSearch()).thenReturn(tmdbSearch);
@@ -188,7 +183,6 @@ public class TMDBSuggestionProviderTest {
     }
 
     @Test
-    // todo fix this, it's failing on mvn test for some reason
     public void testGetSuggestionNoSeasonNoEpisode() {
         final TmdbSearch tmdbSearch = mock(TmdbSearch.class);
         when(TMDB_API.getSearch()).thenReturn(tmdbSearch);
