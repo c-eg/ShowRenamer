@@ -24,7 +24,7 @@ import info.movito.themoviedbapi.model.tv.TvEpisode;
 import info.movito.themoviedbapi.model.tv.TvSeries;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.co.conoregan.showrenamer.util.ResultValidator;
+import uk.co.conoregan.showrenamer.util.Validation;
 import uk.co.conoregan.showrenamer.util.ShowInfoMatcher;
 
 import javax.annotation.Nonnull;
@@ -85,7 +85,7 @@ public class TMDBSuggestionProvider implements ShowSuggestionProvider {
 
         final List<Multi> results = TMDB_API.getSearch().searchMulti(matchedTitle.get(), "en-US", 1).getResults();
 
-        if (!ResultValidator.isGenericListValid(results)) {
+        if (!Validation.isGenericListValid(results)) {
             LOGGER.info(String.format("No result found for title: %s", matchedTitle.get()));
             return Optional.empty();
         }
@@ -98,14 +98,14 @@ public class TMDBSuggestionProvider implements ShowSuggestionProvider {
             final String title = movie.getTitle();
             final String releaseDate = movie.getReleaseDate();
 
-            if (ResultValidator.isStringVarargsValid(title, releaseDate)) {
+            if (Validation.isStringVarargsValid(title, releaseDate)) {
                 return String.format("%s (%s)", title, releaseDate).describeConstable();
             }
         } else if (mediaType == Multi.MediaType.TV_SERIES) {
             final Optional<Integer> matchedSeason = ShowInfoMatcher.matchSeason(fileName);
             final List<Integer> matchedEpisodes = ShowInfoMatcher.matchEpisodes(fileName);
-            if (matchedSeason.isEmpty() || !ResultValidator.isIntegerValid(matchedSeason.get())
-                    || !ResultValidator.isIntegerListValid(matchedEpisodes)) {
+            if (matchedSeason.isEmpty() || !Validation.isIntegerValid(matchedSeason.get())
+                    || !Validation.isIntegerListValid(matchedEpisodes)) {
                 LOGGER.info(String.format("No valid season or episode could be matched from the file name: %s", fileName));
                 return Optional.empty();
             }
@@ -118,8 +118,8 @@ public class TMDBSuggestionProvider implements ShowSuggestionProvider {
             final int seasonNumber = episode.getSeasonNumber();
             final int episodeNumber = episode.getEpisodeNumber();
 
-            if (ResultValidator.isIntegerVarargsValid(seasonNumber, episodeNumber)
-                    && ResultValidator.isStringVarargsValid(seriesName, episodeName)) {
+            if (Validation.isIntegerVarargsValid(seasonNumber, episodeNumber)
+                    && Validation.isStringVarargsValid(seriesName, episodeName)) {
                 return String.format("%s - S%02dE%02d - %s", seriesName, seasonNumber, episodeNumber, episodeName).describeConstable();
             }
         }

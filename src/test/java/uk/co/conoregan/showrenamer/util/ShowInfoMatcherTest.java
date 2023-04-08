@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Tests for ShowInfoMatcher.
+ * Tests for {@link ShowInfoMatcher}.
  */
 public class ShowInfoMatcherTest {
     @Test

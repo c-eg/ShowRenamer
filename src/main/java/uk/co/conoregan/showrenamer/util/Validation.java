@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Class for validation.
  */
-public class ResultValidator {
+public class Validation {
     /**
      * Checks if a string is valid: not null & not blank.
      *
@@ -29,6 +29,26 @@ public class ResultValidator {
 
         for (final String string : strings) {
             if (!isStringValid(string)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Checks if a list of strings are valid: not null & not empty.
+     *
+     * @param strings the strings to check.
+     * @return true if valid, false if not.
+     */
+    public static boolean isStringListValid(final List<String> strings) {
+        if (strings == null || strings.isEmpty()) {
+            return false;
+        }
+
+        for (final String integer : strings) {
+            if (!isStringValid(integer)) {
                 return false;
             }
         }
