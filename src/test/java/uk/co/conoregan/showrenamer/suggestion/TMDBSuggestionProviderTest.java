@@ -18,8 +18,11 @@ package uk.co.conoregan.showrenamer.suggestion;
 
 import info.movito.themoviedbapi.TmdbApi;
 import info.movito.themoviedbapi.TmdbSearch;
+import info.movito.themoviedbapi.TmdbTvEpisodes;
 import info.movito.themoviedbapi.model.MovieDb;
 import info.movito.themoviedbapi.model.Multi;
+import info.movito.themoviedbapi.model.tv.TvEpisode;
+import info.movito.themoviedbapi.model.tv.TvSeries;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -29,8 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -66,6 +68,7 @@ public class TMDBSuggestionProviderTest {
     }
 
     @Test
+    // todo fix this, it's failing on mvn test for some reason
     public void testGetSuggestionMovie() {
         final TmdbSearch tmdbSearch = mock(TmdbSearch.class);
         when(TMDB_API.getSearch()).thenReturn(tmdbSearch);
@@ -86,5 +89,122 @@ public class TMDBSuggestionProviderTest {
         final Optional<String> suggestion = SHOW_SUGGESTION_PROVIDER.getSuggestion(fileName);
         Assertions.assertTrue(suggestion.isPresent());
         Assertions.assertEquals(suggestion.get(), "Movie Title (2010)");
+    }
+
+    @Test
+    // todo fix this, it's failing on mvn test for some reason
+    public void testGetSuggestionTvSeries() {
+        final TmdbSearch tmdbSearch = mock(TmdbSearch.class);
+        when(TMDB_API.getSearch()).thenReturn(tmdbSearch);
+
+        final TmdbSearch.MultiListResultsPage multiListResultsPage = mock(TmdbSearch.MultiListResultsPage.class);
+        when(tmdbSearch.searchMulti(anyString(), eq("en-US"), eq(1))).thenReturn(multiListResultsPage);
+
+        final List<Multi> results = new ArrayList<>();
+        when(multiListResultsPage.getResults()).thenReturn(results);
+
+        final TvSeries result = mock(TvSeries.class);
+        results.add(result);
+        when(result.getMediaType()).thenReturn(Multi.MediaType.TV_SERIES);
+        when(result.getId()).thenReturn(1);
+        when(result.getName()).thenReturn("Tv Series Title");
+
+        final TmdbTvEpisodes tvEpisodes = mock(TmdbTvEpisodes.class);
+        final TvEpisode tvEpisode = mock(TvEpisode.class);
+        when(TMDB_API.getTvEpisodes()).thenReturn(tvEpisodes);
+        when(tvEpisodes.getEpisode(anyInt(), anyInt(), anyInt(), eq("en-US"))).thenReturn(tvEpisode);
+
+        when(tvEpisode.getName()).thenReturn("Episode Name");
+        when(tvEpisode.getSeasonNumber()).thenReturn(1);
+        when(tvEpisode.getEpisodeNumber()).thenReturn(1);
+
+        final String fileName = "tv.series.title.2010.s01.e01.1080p.bluray";
+        final Optional<String> suggestion = SHOW_SUGGESTION_PROVIDER.getSuggestion(fileName);
+        Assertions.assertTrue(suggestion.isPresent());
+        Assertions.assertEquals(suggestion.get(), "Tv Series Title - S01E01 - Episode Name");
+    }
+
+    @Test
+    // todo fix this, it's failing on mvn test for some reason
+    public void testGetSuggestionNotMovieOrTvSeries() {
+        final TmdbSearch tmdbSearch = mock(TmdbSearch.class);
+        when(TMDB_API.getSearch()).thenReturn(tmdbSearch);
+
+        final TmdbSearch.MultiListResultsPage multiListResultsPage = mock(TmdbSearch.MultiListResultsPage.class);
+        when(tmdbSearch.searchMulti(anyString(), eq("en-US"), eq(1))).thenReturn(multiListResultsPage);
+
+        final List<Multi> results = new ArrayList<>();
+        when(multiListResultsPage.getResults()).thenReturn(results);
+
+        final Multi result = mock(Multi.class);
+        results.add(result);
+        when(result.getMediaType()).thenReturn(Multi.MediaType.PERSON);
+
+        final String fileName = "tv.series.title.2010.s01.e01.1080p.bluray";
+        final Optional<String> suggestion = SHOW_SUGGESTION_PROVIDER.getSuggestion(fileName);
+        Assertions.assertFalse(suggestion.isPresent());
+    }
+
+    @Test
+    // todo fix this, it's failing on mvn test for some reason
+    public void testGetSuggestionNoSeason() {
+        final TmdbSearch tmdbSearch = mock(TmdbSearch.class);
+        when(TMDB_API.getSearch()).thenReturn(tmdbSearch);
+
+        final TmdbSearch.MultiListResultsPage multiListResultsPage = mock(TmdbSearch.MultiListResultsPage.class);
+        when(tmdbSearch.searchMulti(anyString(), eq("en-US"), eq(1))).thenReturn(multiListResultsPage);
+
+        final List<Multi> results = new ArrayList<>();
+        when(multiListResultsPage.getResults()).thenReturn(results);
+
+        final TvSeries result = mock(TvSeries.class);
+        results.add(result);
+        when(result.getMediaType()).thenReturn(Multi.MediaType.TV_SERIES);
+
+        final String fileName = "tv.series.title.2010.e01.1080p.bluray";
+        final Optional<String> suggestion = SHOW_SUGGESTION_PROVIDER.getSuggestion(fileName);
+        Assertions.assertFalse(suggestion.isPresent());
+    }
+
+    @Test
+    // todo fix this, it's failing on mvn test for some reason
+    public void testGetSuggestionNoEpisode() {
+        final TmdbSearch tmdbSearch = mock(TmdbSearch.class);
+        when(TMDB_API.getSearch()).thenReturn(tmdbSearch);
+
+        final TmdbSearch.MultiListResultsPage multiListResultsPage = mock(TmdbSearch.MultiListResultsPage.class);
+        when(tmdbSearch.searchMulti(anyString(), eq("en-US"), eq(1))).thenReturn(multiListResultsPage);
+
+        final List<Multi> results = new ArrayList<>();
+        when(multiListResultsPage.getResults()).thenReturn(results);
+
+        final TvSeries result = mock(TvSeries.class);
+        results.add(result);
+        when(result.getMediaType()).thenReturn(Multi.MediaType.TV_SERIES);
+
+        final String fileName = "tv.series.title.2010.s01.1080p.bluray";
+        final Optional<String> suggestion = SHOW_SUGGESTION_PROVIDER.getSuggestion(fileName);
+        Assertions.assertFalse(suggestion.isPresent());
+    }
+
+    @Test
+    // todo fix this, it's failing on mvn test for some reason
+    public void testGetSuggestionNoSeasonNoEpisode() {
+        final TmdbSearch tmdbSearch = mock(TmdbSearch.class);
+        when(TMDB_API.getSearch()).thenReturn(tmdbSearch);
+
+        final TmdbSearch.MultiListResultsPage multiListResultsPage = mock(TmdbSearch.MultiListResultsPage.class);
+        when(tmdbSearch.searchMulti(anyString(), eq("en-US"), eq(1))).thenReturn(multiListResultsPage);
+
+        final List<Multi> results = new ArrayList<>();
+        when(multiListResultsPage.getResults()).thenReturn(results);
+
+        final TvSeries result = mock(TvSeries.class);
+        results.add(result);
+        when(result.getMediaType()).thenReturn(Multi.MediaType.TV_SERIES);
+
+        final String fileName = "tv.series.title.2010.1080p.bluray";
+        final Optional<String> suggestion = SHOW_SUGGESTION_PROVIDER.getSuggestion(fileName);
+        Assertions.assertFalse(suggestion.isPresent());
     }
 }
