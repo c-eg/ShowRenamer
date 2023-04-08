@@ -46,9 +46,12 @@ public class TMDBSuggestionProvider implements ShowSuggestionProvider {
     /**
      * The movie database api wrapper object.
      */
-    private static final TmdbApi TMDB_API;
+    private final TmdbApi tmdbApi;
 
-    static {
+    /**
+     * Constructor.
+     */
+    public TMDBSuggestionProvider() {
         // load properties config
         final String apiKeysPath = "/properties/api_keys.properties";
         final InputStream res = TMDBSuggestionProvider.class.getResourceAsStream(apiKeysPath);
@@ -68,7 +71,7 @@ public class TMDBSuggestionProvider implements ShowSuggestionProvider {
                     tmdbApiKeyPropertyName, apiKeysPath));
             System.exit(0);
         }
-        TMDB_API = new TmdbApi(tmdbApiKey);
+        tmdbApi = new TmdbApi(tmdbApiKey);
     }
 
     /**
@@ -83,7 +86,7 @@ public class TMDBSuggestionProvider implements ShowSuggestionProvider {
             return Optional.empty();
         }
 
-        final List<Multi> results = TMDB_API.getSearch().searchMulti(matchedTitle.get(), "en-US", 1).getResults();
+        final List<Multi> results = tmdbApi.getSearch().searchMulti(matchedTitle.get(), "en-US", 1).getResults();
 
         if (!Validation.isGenericListValid(results)) {
             LOGGER.info(String.format("No result found for title: %s", matchedTitle.get()));
@@ -111,7 +114,7 @@ public class TMDBSuggestionProvider implements ShowSuggestionProvider {
             }
 
             final TvSeries tvSeries = (TvSeries) result;
-            final TvEpisode episode = TMDB_API.getTvEpisodes().getEpisode(
+            final TvEpisode episode = tmdbApi.getTvEpisodes().getEpisode(
                     tvSeries.getId(), matchedSeason.get(), matchedEpisodes.get(0), "en-US");
             final String seriesName = tvSeries.getName();
             final String episodeName = episode.getName();
