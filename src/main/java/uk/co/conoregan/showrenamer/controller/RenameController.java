@@ -74,13 +74,13 @@ public class RenameController implements Initializable {
      * List view to show original file names.
      */
     @FXML
-    private ListView<File> listViewRenameFrom;
+    private ListView<File> listViewCurrentTitles;
 
     /**
      * List view to suggested file names.
      */
     @FXML
-    private ListView<File> listViewRenameTo;
+    private ListView<File> listViewSuggestedTitles;
 
     /**
      * Checkbox to include sub-folders.
@@ -194,24 +194,24 @@ public class RenameController implements Initializable {
         checkboxIncludeSubFolder.setFocusTraversable(false);
         checkboxImproveFolderNames.setFocusTraversable(false);
 
-        setListViewCellFactorySettings(listViewRenameFrom);
-        setListViewCellFactorySettings(listViewRenameTo);
+        setListViewCellFactorySettings(listViewCurrentTitles);
+        setListViewCellFactorySettings(listViewSuggestedTitles);
 
-        listViewRenameFrom.setFocusTraversable(false);
-        listViewRenameTo.setFocusTraversable(false);
+        listViewCurrentTitles.setFocusTraversable(false);
+        listViewSuggestedTitles.setFocusTraversable(false);
 
         // update list views based on fileRenameMapping.
         fileRenameMapping.addListener((MapChangeListener<File, File>) change -> {
             buttonClearAll.setDisable(fileRenameMapping.size() == 0);
 
-            listViewRenameFrom.getItems().removeAll(change.getKey());
+            listViewCurrentTitles.getItems().removeAll(change.getKey());
             if (change.wasAdded()) {
-                listViewRenameFrom.getItems().add(change.getKey());
+                listViewCurrentTitles.getItems().add(change.getKey());
             }
 
-            listViewRenameTo.getItems().removeAll(change.getValueRemoved());
+            listViewSuggestedTitles.getItems().removeAll(change.getValueRemoved());
             if (change.wasAdded()) {
-                listViewRenameTo.getItems().add(change.getValueAdded());
+                listViewSuggestedTitles.getItems().add(change.getValueAdded());
             }
         });
     }
