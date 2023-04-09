@@ -19,7 +19,7 @@
                <children>
                   <VBox alignment="TOP_CENTER" prefHeight="482.0" prefWidth="250.0" styleClass="section" VBox.vgrow="ALWAYS">
                      <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="5.0" prefWidth="210.0" styleClass="section-heading" text="Source &amp; Options" />
+                        <Label contentDisplay="CENTER" prefHeight="5.0" prefWidth="210.0" styleClass="section-heading" text="Source &amp; Options" />
                         <CheckBox fx:id="checkboxIncludeSubFolder" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="37.0" prefWidth="248.0" text="Include sub-folders" />
                         <CheckBox fx:id="checkboxImproveFolderNames" mnemonicParsing="false" prefHeight="25.0" prefWidth="228.0" text="Improve folder names" visible="false" />
                         <VBox id="vboxFileUpload" alignment="CENTER" onDragDropped="#handleDragDroppedFileUpload" onDragOver="#handleDragOverFileUpload" prefHeight="200.0" prefWidth="100.0" spacing="10.0" VBox.vgrow="ALWAYS">
@@ -34,14 +34,19 @@
                         </VBox>
                      </children>
                   </VBox>
-                  <Button fx:id="buttonAddFolders" mnemonicParsing="false" onAction="#openFileDialog" text="Add Folder" textAlignment="CENTER" />
+                  <Button fx:id="buttonAddFolders" mnemonicParsing="false" onAction="#openFileDialog" styleClass="button-primary" text="Add Folder" textAlignment="CENTER" />
                </children>
             </VBox>
             <VBox alignment="TOP_CENTER" HBox.hgrow="SOMETIMES">
                <children>
                   <VBox alignment="TOP_CENTER" styleClass="section" VBox.vgrow="ALWAYS">
                      <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="0.0" prefWidth="410.0" styleClass="section-heading" text="Movies &amp; Shows" />
+                        <HBox prefWidth="400.0">
+                           <children>
+                              <Label fx:id="labelCurrentTitles" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" minWidth="-Infinity" styleClass="section-heading" text="Current Titles" HBox.hgrow="ALWAYS" />
+                              <Button fx:id="buttonClearAll" disable="true" mnemonicParsing="false" onAction="#clearAll" styleClass="button-secondary" text="Clear All" textAlignment="CENTER" HBox.hgrow="NEVER" />
+                           </children>
+                        </HBox>
                         <ListView fx:id="listViewRenameFrom" prefHeight="547.0" prefWidth="419.0" VBox.vgrow="ALWAYS">
                            <VBox.margin>
                               <Insets bottom="15.0" />
@@ -49,14 +54,14 @@
                         </ListView>
                      </children>
                   </VBox>
-                  <Button fx:id="buttonGetSuggestions" mnemonicParsing="false" onAction="#getSuggestions" text="Get Suggestions" textAlignment="CENTER" />
+                  <Button fx:id="buttonGetSuggestions" mnemonicParsing="false" onAction="#getSuggestions" styleClass="button-primary" text="Get Suggestions" textAlignment="CENTER" />
                </children>
             </VBox>
             <VBox alignment="TOP_CENTER" HBox.hgrow="SOMETIMES">
                <children>
                   <VBox alignment="TOP_CENTER" styleClass="section" VBox.vgrow="ALWAYS">
                      <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="0.0" prefWidth="410.0" styleClass="section-heading" text="Renamed Titles" textAlignment="CENTER" />
+                        <Label contentDisplay="CENTER" prefWidth="400.0" styleClass="section-heading" text="Suggested Titles" textAlignment="CENTER" />
                         <ListView fx:id="listViewRenameTo" prefHeight="515.0" prefWidth="227.0" VBox.vgrow="ALWAYS">
                            <VBox.margin>
                               <Insets bottom="15.0" />
@@ -64,7 +69,7 @@
                         </ListView>
                      </children>
                   </VBox>
-                  <Button fx:id="buttonSaveAll" mnemonicParsing="false" onAction="#saveAll" text="Save All" textAlignment="CENTER" />
+                  <Button fx:id="buttonSaveAll" mnemonicParsing="false" onAction="#saveAll" styleClass="button-primary" text="Save All" textAlignment="CENTER" />
                </children>
             </VBox>
          </children>
