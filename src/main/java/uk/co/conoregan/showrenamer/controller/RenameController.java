@@ -24,6 +24,7 @@ import javafx.collections.ObservableMap;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -94,6 +95,12 @@ public class RenameController implements Initializable {
     private CheckBox checkboxImproveFolderNames;
 
     /**
+     * Button to clear all items from list view.
+     */
+    @FXML
+    private Button buttonClearAll;
+
+    /**
      * Event to handle a drag over event.
      *
      * @param event the event.
@@ -148,6 +155,14 @@ public class RenameController implements Initializable {
     }
 
     /**
+     * Clears all the items from the fileRenameMapping, removing the items from the list views as a result.
+     */
+    @FXML
+    private void clearAll() {
+        fileRenameMapping.clear();
+    }
+
+    /**
      * Function to rename all files with api updated info.
      */
     @FXML
@@ -187,6 +202,8 @@ public class RenameController implements Initializable {
 
         // update list views based on fileRenameMapping.
         fileRenameMapping.addListener((MapChangeListener<File, File>) change -> {
+            buttonClearAll.setDisable(fileRenameMapping.size() == 0);
+
             listViewRenameFrom.getItems().removeAll(change.getKey());
             if (change.wasAdded()) {
                 listViewRenameFrom.getItems().add(change.getKey());

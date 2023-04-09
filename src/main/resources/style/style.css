@@ -41,14 +41,14 @@
 
 .section-heading {
     -fx-font-weight: bold;
-    -fx-font-size: 20px;
+    -fx-font-size: 24px;
     -fx-text-fill: #727272;
     -fx-padding: 0 0 20px 0;
     -fx-border-insets: 0 0 20px 0;
     -fx-background-insets: 0 0 20px 0;
 }
 
-.button {
+.button-primary {
     -fx-padding: 6px 40px;
     -fx-background-radius: 20px;
     -fx-background-color: #3298e3;
@@ -57,13 +57,31 @@
     -fx-text-fill: #ffffff;
 }
 
-.button:hover {
+.button-primary:hover {
     -fx-background-color: #277ab8;
     -fx-cursor: hand;
 }
 
-.button:pressed {
+.button-primary:pressed {
     -fx-background-color: #146fb3;
+}
+
+.button-secondary {
+    -fx-padding: 4px 10px;
+    -fx-background-radius: 20px;
+    -fx-background-color: #b8b8b8;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-text-fill: #ffffff;
+}
+
+.button-secondary:hover {
+    -fx-background-color: #969696;
+    -fx-cursor: hand;
+}
+
+.button-secondary:pressed {
+    -fx-background-color: #858383;
 }
 
 .check-box {
