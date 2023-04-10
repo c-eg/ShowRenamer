@@ -24,6 +24,7 @@ import javafx.collections.ObservableMap;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -102,6 +103,18 @@ public class RenameController implements Initializable {
     private CheckBox checkboxImproveFolderNames;
 
     /**
+     * Button to get suggested file names.
+     */
+    @FXML
+    private Button buttonGetSuggestions;
+
+    /**
+     * Button to save suggested file names.
+     */
+    @FXML
+    private Button buttonSaveAll;
+
+    /**
      * VBox parent node for current titles section.
      */
     @FXML
@@ -165,6 +178,8 @@ public class RenameController implements Initializable {
         for (Map.Entry<File, File> entry : fileRenameMapping.entrySet()) {
             renameSuggestionTask(entry);
         }
+
+        buttonGetSuggestions.setDisable(true);
     }
 
     /**
@@ -173,6 +188,9 @@ public class RenameController implements Initializable {
     @FXML
     private void clearAll() {
         fileRenameMapping.clear();
+
+        buttonGetSuggestions.setDisable(false);
+        buttonSaveAll.setDisable(false);
     }
 
     /**
@@ -196,6 +214,8 @@ public class RenameController implements Initializable {
                 LOGGER.error(String.format("Cannot rename: %s, an unexpected error occurred.", entry.getKey().getName()));
             }
         }
+
+        buttonSaveAll.setDisable(true);
     }
 
     /**
