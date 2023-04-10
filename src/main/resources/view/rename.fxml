@@ -37,14 +37,14 @@
                   <Button fx:id="buttonAddFolders" mnemonicParsing="false" onAction="#openFileDialog" styleClass="button-primary" text="Add Folder" textAlignment="CENTER" />
                </children>
             </VBox>
-            <VBox alignment="TOP_CENTER" HBox.hgrow="SOMETIMES">
+            <VBox fx:id="vboxCurrentTitles" alignment="TOP_CENTER" disable="true" HBox.hgrow="SOMETIMES">
                <children>
                   <VBox alignment="TOP_CENTER" styleClass="section" VBox.vgrow="ALWAYS">
                      <children>
                         <HBox prefWidth="400.0">
                            <children>
                               <Label fx:id="labelCurrentTitles" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" minWidth="-Infinity" styleClass="section-heading" text="Current Titles" HBox.hgrow="ALWAYS" />
-                              <Button fx:id="buttonClearAll" disable="true" mnemonicParsing="false" onAction="#clearAll" styleClass="button-secondary" text="Clear All" textAlignment="CENTER" HBox.hgrow="NEVER" />
+                              <Button fx:id="buttonClearAll" mnemonicParsing="false" onAction="#clearAll" styleClass="button-secondary" text="Clear All" textAlignment="CENTER" HBox.hgrow="NEVER" />
                            </children>
                         </HBox>
                         <ListView fx:id="listViewCurrentTitles" prefHeight="547.0" prefWidth="419.0" VBox.vgrow="ALWAYS">
@@ -57,7 +57,7 @@
                   <Button fx:id="buttonGetSuggestions" mnemonicParsing="false" onAction="#getSuggestions" styleClass="button-primary" text="Get Suggestions" textAlignment="CENTER" />
                </children>
             </VBox>
-            <VBox alignment="TOP_CENTER" HBox.hgrow="SOMETIMES">
+            <VBox fx:id="vboxSuggestedTitles" alignment="TOP_CENTER" disable="true" HBox.hgrow="SOMETIMES">
                <children>
                   <VBox alignment="TOP_CENTER" styleClass="section" VBox.vgrow="ALWAYS">
                      <children>

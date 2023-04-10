@@ -24,13 +24,13 @@ import javafx.collections.ObservableMap;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Window;
 import org.slf4j.Logger;
@@ -41,10 +41,7 @@ import uk.co.conoregan.showrenamer.suggestion.TMDBSuggestionProvider;
 import javax.annotation.Nonnull;
 import java.io.File;
 import java.net.URL;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * The JavaFX controller for the rename.fxml file.
@@ -71,6 +68,16 @@ public class RenameController implements Initializable {
     private final ObservableMap<File, File> fileRenameMapping = FXCollections.observableHashMap();
 
     /**
+     * Whether to enable the current titles section.
+     */
+    private boolean enableSectionCurrentTitles = false;
+
+    /**
+     * Whether to enable the suggested titles section.
+     */
+    private boolean enableSectionSuggestedTitles = false;
+
+    /**
      * List view to show original file names.
      */
     @FXML
@@ -95,10 +102,16 @@ public class RenameController implements Initializable {
     private CheckBox checkboxImproveFolderNames;
 
     /**
-     * Button to clear all items from list view.
+     * VBox parent node for current titles section.
      */
     @FXML
-    private Button buttonClearAll;
+    private VBox vboxCurrentTitles;
+
+    /**
+     * VBox parent node for suggested titles section.
+     */
+    @FXML
+    private VBox vboxSuggestedTitles;
 
     /**
      * Event to handle a drag over event.
@@ -202,7 +215,11 @@ public class RenameController implements Initializable {
 
         // update list views based on fileRenameMapping.
         fileRenameMapping.addListener((MapChangeListener<File, File>) change -> {
-            buttonClearAll.setDisable(fileRenameMapping.size() == 0);
+            enableSectionCurrentTitles = !fileRenameMapping.keySet().isEmpty();
+            enableSectionSuggestedTitles = !fileRenameMapping.values().isEmpty() && !fileRenameMapping.values().stream().allMatch(Objects::isNull);
+
+            vboxCurrentTitles.setDisable(!enableSectionCurrentTitles);
+            vboxSuggestedTitles.setDisable(!enableSectionSuggestedTitles);
 
             listViewCurrentTitles.getItems().removeAll(change.getKey());
             if (change.wasAdded()) {
