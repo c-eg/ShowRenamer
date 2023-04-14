@@ -17,7 +17,8 @@ Uses JDK 20
 1. Fork this repository, and clone it using "git clone"
 2. Create an account for [themoviedb.org](https://www.themoviedb.org/), and get an API key
 3. Copy the file: `api_keys.default.properties` to `/src/main/resources/properties/api_keys.properties`. And update it with your api key
-4. Install & run using maven: `mvn clean install javafx:run`
+4. Install using maven: `mvn clean install`
+5. Run using the `uk.co.conoregan.showrenamer.ShowRenamerLauncher.main` function.
 
 ## License
 GNU General Public License v3.0
