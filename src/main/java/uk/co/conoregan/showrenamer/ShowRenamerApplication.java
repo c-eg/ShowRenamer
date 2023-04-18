@@ -21,9 +21,12 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.InputStream;
 
 /**
  * The starting point of the ShowRenamer application.
@@ -65,7 +68,9 @@ public class ShowRenamerApplication extends Application {
         primaryStage.setMinHeight(HEIGHT);
         primaryStage.setTitle("Show Renamer");
         primaryStage.setScene(scene);
-        //  primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("images/icon.png")));
+
+        final Image appIcon = new Image(ShowRenamerApplication.class.getResourceAsStream("/images/show-renamer-icon.png"));
+        primaryStage.getIcons().add(appIcon);
 
         primaryStage.show();
         LOGGER.info("Show Renamer successfully started.");
