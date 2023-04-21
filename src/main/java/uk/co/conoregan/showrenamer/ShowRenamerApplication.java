@@ -59,7 +59,7 @@ public class ShowRenamerApplication extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
-        final Parent root = FXMLLoader.load(getClass().getResource("/view/rename.fxml"));
+        final Parent root = FXMLLoader.load(ShowRenamerApplication.class.getResource("/view/rename.fxml"));
         final Scene scene = new Scene(root, WIDTH, HEIGHT);
 
         primaryStage.setMinWidth(WIDTH);
