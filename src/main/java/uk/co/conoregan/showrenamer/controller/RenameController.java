@@ -41,6 +41,8 @@ import uk.co.conoregan.showrenamer.suggestion.TMDBSuggestionProvider;
 
 import javax.annotation.Nonnull;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.*;
 
@@ -56,7 +58,7 @@ public class RenameController implements Initializable {
     /**
      * The movie database suggestion provider.
      */
-    private final ShowSuggestionProvider showSuggestionProvider = new TMDBSuggestionProvider();
+    private ShowSuggestionProvider showSuggestionProvider;
 
     /**
      * The directory chooser.
@@ -223,6 +225,8 @@ public class RenameController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        initializeConstructor();
+
         // stops checkbox box resizing when clicking on and off other controls
         checkboxIncludeSubFolder.setFocusTraversable(false);
         checkboxImproveFolderNames.setFocusTraversable(false);
@@ -251,6 +255,33 @@ public class RenameController implements Initializable {
                 listViewSuggestedTitles.getItems().add(change.getValueAdded());
             }
         });
+    }
+
+    /**
+     * This function is treated as constructor for non-javafx related things.
+     */
+    private void initializeConstructor() {
+        // load properties config
+        final String apiKeysPath = "/properties/api_keys.properties";
+        final InputStream res = TMDBSuggestionProvider.class.getResourceAsStream(apiKeysPath);
+
+        final Properties properties = new Properties();
+        try {
+            properties.load(res);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        // make tmdb api
+        final String tmdbApiKeyPropertyName = "TMDB_API_KEY_V3";
+        final String tmdbApiKey = properties.getProperty(tmdbApiKeyPropertyName);
+        if (tmdbApiKey == null) {
+            LOGGER.error(String.format("The property: '%s' was not found in the properties file: %s.",
+                    tmdbApiKeyPropertyName, apiKeysPath));
+            System.exit(0);
+        }
+
+        showSuggestionProvider = new TMDBSuggestionProvider(tmdbApiKey);
     }
 
     /**

@@ -23,7 +23,6 @@ import info.movito.themoviedbapi.model.MovieDb;
 import info.movito.themoviedbapi.model.Multi;
 import info.movito.themoviedbapi.model.tv.TvEpisode;
 import info.movito.themoviedbapi.model.tv.TvSeries;
-import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -40,12 +39,19 @@ import static org.mockito.Mockito.when;
  * Tests for {@link TMDBSuggestionProvider}.
  */
 public class TMDBSuggestionProviderTest {
-    private static final ShowSuggestionProvider SHOW_SUGGESTION_PROVIDER = new TMDBSuggestionProvider();
+    /**
+     * The movie database api.
+     */
     private static final TmdbApi TMDB_API = mock(TmdbApi.class);
 
+    /**
+     * The movie database api suggestion provider.
+     */
+    private static ShowSuggestionProvider SHOW_SUGGESTION_PROVIDER;
+
     @BeforeAll
-    public static void setup() throws IllegalAccessException {
-        FieldUtils.writeField(SHOW_SUGGESTION_PROVIDER, "tmdbApi", TMDB_API, true);
+    public static void setup() {
+        SHOW_SUGGESTION_PROVIDER = new TMDBSuggestionProvider(TMDB_API);
     }
 
     @Test

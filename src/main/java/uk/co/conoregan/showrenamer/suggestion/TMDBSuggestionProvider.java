@@ -28,11 +28,8 @@ import uk.co.conoregan.showrenamer.util.Validation;
 import uk.co.conoregan.showrenamer.util.ShowInfoMatcher;
 
 import javax.annotation.Nonnull;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
-import java.util.Properties;
 
 /**
  * The Movie Database api show provider.
@@ -49,29 +46,17 @@ public class TMDBSuggestionProvider implements ShowSuggestionProvider {
     private final TmdbApi tmdbApi;
 
     /**
+     * Should not use, only for testing.
+     */
+    protected TMDBSuggestionProvider(@Nonnull final TmdbApi tmdbApi) {
+        this.tmdbApi = tmdbApi;
+    }
+
+    /**
      * Constructor.
      */
-    public TMDBSuggestionProvider() {
-        // load properties config
-        final String apiKeysPath = "/properties/api_keys.properties";
-        final InputStream res = TMDBSuggestionProvider.class.getResourceAsStream(apiKeysPath);
-
-        final Properties properties = new Properties();
-        try {
-            properties.load(res);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        // make tmdb api
-        final String tmdbApiKeyPropertyName = "TMDB_API_KEY_V3";
-        final String tmdbApiKey = properties.getProperty(tmdbApiKeyPropertyName);
-        if (tmdbApiKey == null) {
-            LOGGER.error(String.format("The property: '%s' was not found in the properties file: %s.",
-                    tmdbApiKeyPropertyName, apiKeysPath));
-            System.exit(0);
-        }
-        tmdbApi = new TmdbApi(tmdbApiKey);
+    public TMDBSuggestionProvider(@Nonnull final String apikey) {
+        tmdbApi = new TmdbApi(apikey);
     }
 
     /**
