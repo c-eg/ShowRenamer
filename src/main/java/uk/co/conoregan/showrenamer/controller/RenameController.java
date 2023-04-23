@@ -21,7 +21,6 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableMap;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -45,6 +44,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * The JavaFX controller for the rename.fxml file.
@@ -178,7 +178,18 @@ public class RenameController implements Initializable {
     @FXML
     private void getSuggestions() {
         for (Map.Entry<File, File> entry : fileRenameMapping.entrySet()) {
-            renameSuggestionTask(entry);
+            final String fileNameWithoutExtension = getFileNameWithoutExtension(entry.getKey().getName());
+
+            /*
+            1. Get suggestion from movie database api
+            2. Map suggestion to string, or null if no suggestion is present
+            3. Update hashmap with suggestion (must use Platform.runLater to update UI for JavaFX
+             */
+            CompletableFuture.supplyAsync(() -> showSuggestionProvider.getSuggestion(fileNameWithoutExtension))
+                    .thenApply(suggestion ->
+                            suggestion.map(s ->
+                                    new File(entry.getKey().getAbsolutePath().replace(fileNameWithoutExtension, s))).orElse(null))
+                    .thenAccept(suggestion -> Platform.runLater(() -> entry.setValue(suggestion)));
         }
 
         buttonGetSuggestions.setDisable(true);
@@ -308,30 +319,6 @@ public class RenameController implements Initializable {
                 }
             }
         });
-    }
-
-    /**
-     * Rename suggestion task for threaded api calls.
-     *
-     * @param entry a fileRenameMapping entry.
-     */
-    private void renameSuggestionTask(@Nonnull final Map.Entry<File, File> entry) {
-        final Task<File> task = new Task<>() {
-            @Override
-            protected File call() {
-                final String fileNameWithoutExtension = getFileNameWithoutExtension(entry.getKey().getName());
-                final Optional<String> newFileNameWithoutExtension = showSuggestionProvider.getSuggestion(fileNameWithoutExtension);
-
-                return newFileNameWithoutExtension.map(s -> new File(entry.getKey().getAbsolutePath().replace(fileNameWithoutExtension, s)))
-                        .orElse(null);
-
-            }
-        };
-
-        task.setOnSucceeded(workerStateEvent -> Platform.runLater(() -> entry.setValue(task.getValue())));
-        task.setOnFailed(workerStateEvent -> Platform.runLater(() -> entry.setValue(null)));
-
-        new Thread(task).start();
     }
 
     /**
