@@ -26,13 +26,30 @@
     -fx-font-smoothing-type: lcd;
 }
 
+.card {
+    -fx-background-radius: 15px;
+    -fx-background-color: #ffffff;
+}
+
+.heading {
+    -fx-font-weight: bold;
+    -fx-font-size: 24px;
+    -fx-text-fill: #919191;
+}
+
 .section-container {
+    -fx-padding: 40px 40px 40px 40px;
+}
+
+.section-container-buttons {
     -fx-padding: 40px 40px 20px 40px;
 }
 
 .section {
-    -fx-background-radius: 15px;
-    -fx-background-color: #ffffff;
+    -fx-padding: 20px;
+}
+
+.button-padding {
     /* -fx-padding: 20px; */
     -fx-padding: 20px 20px 0 20px;
     -fx-border-insets: 0 0 -20px 0;
@@ -40,9 +57,6 @@
 }
 
 .section-heading {
-    -fx-font-weight: bold;
-    -fx-font-size: 24px;
-    -fx-text-fill: #919191;
     -fx-padding: 0 0 20px 0;
     -fx-border-insets: 0 0 20px 0;
     -fx-background-insets: 0 0 20px 0;
