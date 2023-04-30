@@ -129,12 +129,12 @@ public class RenameController implements Initializable {
     private VBox vboxSuggestedTitles;
 
     /**
-     * Event to handle a drag over event.
+     * Event to handle a files drag over event.
      *
      * @param event the event.
      */
     @FXML
-    private void handleDragOverFileUpload(DragEvent event) {
+    private void handleDragOverFileUpload(final DragEvent event) {
         final Dragboard dragboard = event.getDragboard();
 
         if (dragboard.hasFiles()) {
@@ -150,7 +150,7 @@ public class RenameController implements Initializable {
      * @param event the event.
      */
     @FXML
-    private void handleDragDroppedFileUpload(DragEvent event) {
+    private void handleDragDroppedFileUpload(final DragEvent event) {
         final Dragboard dragboard = event.getDragboard();
         final List<File> dragboardFiles = dragboard.getFiles();
 
@@ -173,7 +173,7 @@ public class RenameController implements Initializable {
     }
 
     /**
-     * Function is called by user from GUI. Gets rename suggestions for files on left list.
+     * Gets rename suggestions for files on left list.
      */
     @FXML
     private void getSuggestions() {
