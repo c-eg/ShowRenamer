@@ -7,7 +7,7 @@
     <name>ShowRenamer</name>
     <groupId>uk.co.conoregan.show-renamer</groupId>
     <artifactId>show-renamer</artifactId>
-    <version>0.8.0-ALPHA</version>
+    <version>0.9.0-ALPHA</version>
 
     <properties>
         <maven.compiler.java.version>17</maven.compiler.java.version>
