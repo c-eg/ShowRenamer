@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uk.co.conoregan.showrenamer.controller.SettingsController">
+   <children>
+      <VBox layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <HBox alignment="CENTER_LEFT" spacing="20.0" styleClass="section-nav">
+               <children>
+                  <Button fx:id="buttonNavRename" mnemonicParsing="false" onAction="#navigateToRenamePage" styleClass="button-nav" text="Rename" />
+                  <Button fx:id="buttonNavSettings" mnemonicParsing="false" onAction="#navigateToSettingsPage" text="Settings">
+                     <styleClass>
+                        <String fx:value="button-nav" />
+                        <String fx:value="button-nav-active" />
+                     </styleClass>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" spacing="20.0" styleClass="section-container" VBox.vgrow="ALWAYS">
+               <children>
+                  <VBox fx:id="vboxNavItems" alignment="TOP_CENTER" spacing="20.0" HBox.hgrow="NEVER">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" onMouseClicked="#handleSettingsNavClick">
+                           <children>
+                              <Button fx:id="buttonSettingsNavRenameFormat" alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleSettingsNavClick" text="Rename Format" HBox.hgrow="ALWAYS">
+                                 <styleClass>
+                                    <String fx:value="heading" />
+                                    <String fx:value="button-settings-nav" />
+                                    <String fx:value="card" />
+                                 </styleClass>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" onMouseClicked="#handleSettingsNavClick">
+                           <children>
+                              <Button fx:id="buttonSettingsNavAbout" alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleSettingsNavClick" text="About" HBox.hgrow="ALWAYS">
+                                 <styleClass>
+                                    <String fx:value="heading" />
+                                    <String fx:value="button-settings-nav" />
+                                    <String fx:value="card" />
+                                 </styleClass>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </VBox>
+                  <StackPane fx:id="stackPaneSettings" HBox.hgrow="SOMETIMES">
+                     <children>
+                        <VBox fx:id="vboxAbout" spacing="20.0">
+                           <children>
+                              <VBox fx:id="vboxCurrentTitles" alignment="TOP_CENTER">
+                                 <children>
+                                    <VBox alignment="TOP_CENTER">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                       <children>
+                                          <Label contentDisplay="CENTER" maxWidth="1.7976931348623157E308" styleClass="heading" text="About">
+                                             <VBox.margin>
+                                                <Insets bottom="10.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                          <Label contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="Information regarding Show Renamer." />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                                 <styleClass>
+                                    <String fx:value="section" />
+                                    <String fx:value="card" />
+                                 </styleClass>
+                              </VBox>
+                              <VBox alignment="TOP_CENTER">
+                                 <children>
+                                    <VBox alignment="TOP_CENTER">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                       <children>
+                                          <Label contentDisplay="CENTER" maxWidth="1.7976931348623157E308" styleClass="sub-heading" text="Author">
+                                             <VBox.margin>
+                                                <Insets bottom="10.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                          <Label contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="Conor Egan (c-eg)" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                                 <styleClass>
+                                    <String fx:value="section" />
+                                    <String fx:value="card" />
+                                 </styleClass>
+                              </VBox>
+                           </children>
+                        </VBox>
+                        <VBox fx:id="vboxRenameFormat" spacing="20.0">
+                           <children>
+                              <VBox alignment="TOP_CENTER">
+                                 <children>
+                                    <VBox alignment="TOP_CENTER">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                       <children>
+                                          <Label contentDisplay="CENTER" maxWidth="1.7976931348623157E308" styleClass="heading" text="Rename Format">
+                                             <VBox.margin>
+                                                <Insets bottom="10.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                          <Label contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="Change the format used to rename movies &amp; tv shows." />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                                 <styleClass>
+                                    <String fx:value="section" />
+                                    <String fx:value="card" />
+                                 </styleClass>
+                              </VBox>
+                              <VBox fx:id="vboxCurrentTitles11" alignment="TOP_CENTER">
+                                 <children>
+                                    <VBox alignment="TOP_CENTER">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                       <children>
+                                          <Label contentDisplay="CENTER" maxWidth="1.7976931348623157E308" styleClass="sub-heading" text="Movies">
+                                             <VBox.margin>
+                                                <Insets bottom="10.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                          <HBox spacing="20.0">
+                                             <children>
+                                                <TextField text="{title} ({year})" HBox.hgrow="ALWAYS" />
+                                                <VBox alignment="CENTER">
+                                                   <children>
+                                                      <Button mnemonicParsing="false" styleClass="button-secondary" text="Reset" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets bottom="40.0" />
+                                             </VBox.margin>
+                                          </HBox>
+                                          <Label contentDisplay="CENTER" maxWidth="1.7976931348623157E308" styleClass="sub-heading" text="TV Shows">
+                                             <VBox.margin>
+                                                <Insets bottom="10.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                          <HBox spacing="20.0">
+                                             <children>
+                                                <TextField text="{title} - S{season}E{episode} - {episodeName}" HBox.hgrow="ALWAYS" />
+                                                <VBox alignment="CENTER">
+                                                   <children>
+                                                      <Button mnemonicParsing="false" styleClass="button-secondary" text="Reset" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets />
+                                             </VBox.margin>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                                 <styleClass>
+                                    <String fx:value="section" />
+                                    <String fx:value="card" />
+                                 </styleClass>
+                              </VBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </StackPane>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
