@@ -28,7 +28,7 @@ public class ShowRenamerLauncher {
      *
      * @param args the args.
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         ShowRenamerApplication.main(args);
     }
 }
