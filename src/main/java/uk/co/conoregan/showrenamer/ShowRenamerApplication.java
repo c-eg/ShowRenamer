@@ -50,7 +50,7 @@ public class ShowRenamerApplication extends Application {
      *
      * @param args the ags.
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         launch(args);
     }
 
@@ -58,13 +58,13 @@ public class ShowRenamerApplication extends Application {
      * @inheritDoc
      */
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        final Parent root = FXMLLoader.load(ShowRenamerApplication.class.getResource("/view/rename.fxml"));
-        final Scene scene = new Scene(root, WIDTH, HEIGHT);
-
+    public void start(final Stage primaryStage) throws Exception {
         primaryStage.setMinWidth(WIDTH);
         primaryStage.setMinHeight(HEIGHT);
         primaryStage.setTitle("Show Renamer");
+
+        final Parent root = FXMLLoader.load(ShowRenamerApplication.class.getResource("/view/rename.fxml"));
+        final Scene scene = new Scene(root);
         primaryStage.setScene(scene);
 
         final Image appIcon = new Image(ShowRenamerApplication.class.getResourceAsStream("/images/show-renamer-icon.png"));

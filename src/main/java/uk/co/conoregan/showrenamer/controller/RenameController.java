@@ -21,8 +21,10 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableMap;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListCell;
@@ -32,6 +34,7 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +52,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * The JavaFX controller for the rename.fxml file.
  */
-public class RenameController implements Initializable {
+public class RenameController extends NavigationController implements Initializable {
     /**
      * The logger.
      */
@@ -99,12 +102,6 @@ public class RenameController implements Initializable {
     private CheckBox checkboxIncludeSubFolder;
 
     /**
-     * Checkbox to improve folder names.
-     */
-    @FXML
-    private CheckBox checkboxImproveFolderNames;
-
-    /**
      * Button to get suggested file names.
      */
     @FXML
@@ -127,6 +124,18 @@ public class RenameController implements Initializable {
      */
     @FXML
     private VBox vboxSuggestedTitles;
+
+    @FXML
+    private void navigateToRenamePage(final ActionEvent event) throws IOException {
+        final Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        changeScene("rename", stage);
+    }
+
+    @FXML
+    private void navigateToSettingsPage(final ActionEvent event) throws IOException {
+        final Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        changeScene("settings", stage);
+    }
 
     /**
      * Event to handle a files drag over event.
@@ -151,8 +160,7 @@ public class RenameController implements Initializable {
      */
     @FXML
     private void handleDragDroppedFileUpload(final DragEvent event) {
-        final Dragboard dragboard = event.getDragboard();
-        final List<File> dragboardFiles = dragboard.getFiles();
+        final List<File> dragboardFiles = event.getDragboard().getFiles();
 
         for (final File item : dragboardFiles) {
             addFile(item);
@@ -163,8 +171,8 @@ public class RenameController implements Initializable {
      * Open file dialog to select files to be renamed.
      */
     @FXML
-    private void openFileDialog() {
-        final Window window = checkboxIncludeSubFolder.getScene().getWindow();
+    private void openFileDialog(final ActionEvent event) {
+        final Window window = ((Button) event.getSource()).getScene().getWindow();
         final File dir = directoryChooser.showDialog(window);
 
         if (dir != null) {
@@ -177,7 +185,7 @@ public class RenameController implements Initializable {
      */
     @FXML
     private void getSuggestions() {
-        for (Map.Entry<File, File> entry : fileRenameMapping.entrySet()) {
+        for (final Map.Entry<File, File> entry : fileRenameMapping.entrySet()) {
             final String fileNameWithoutExtension = getFileNameWithoutExtension(entry.getKey().getName());
 
             /*
@@ -211,7 +219,7 @@ public class RenameController implements Initializable {
      */
     @FXML
     public void saveAll() {
-        for (Map.Entry<File, File> entry : fileRenameMapping.entrySet()) {
+        for (final Map.Entry<File, File> entry : fileRenameMapping.entrySet()) {
             if (entry.getValue() == null) {
                 LOGGER.info(String.format("Cannot rename: %s, no suggestion found.", entry.getKey().getName()));
                 continue;
@@ -235,12 +243,11 @@ public class RenameController implements Initializable {
      * @inheritDoc
      */
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize(final URL url, final ResourceBundle resourceBundle) {
         initializeConstructor();
 
         // stops checkbox box resizing when clicking on and off other controls
         checkboxIncludeSubFolder.setFocusTraversable(false);
-        checkboxImproveFolderNames.setFocusTraversable(false);
 
         setListViewCellFactorySettings(listViewCurrentTitles);
         setListViewCellFactorySettings(listViewSuggestedTitles);
@@ -251,7 +258,8 @@ public class RenameController implements Initializable {
         // update list views based on fileRenameMapping.
         fileRenameMapping.addListener((MapChangeListener<File, File>) change -> {
             enableSectionCurrentTitles = !fileRenameMapping.keySet().isEmpty();
-            enableSectionSuggestedTitles = !fileRenameMapping.values().isEmpty() && !fileRenameMapping.values().stream().allMatch(Objects::isNull);
+            enableSectionSuggestedTitles = !fileRenameMapping.values().isEmpty() &&
+                    !fileRenameMapping.values().stream().allMatch(Objects::isNull);
 
             vboxCurrentTitles.setDisable(!enableSectionCurrentTitles);
             vboxSuggestedTitles.setDisable(!enableSectionSuggestedTitles);
