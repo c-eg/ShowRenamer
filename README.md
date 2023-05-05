@@ -5,7 +5,7 @@ some.random.movie.2010.1080p.blueray.x264 --> Some Random Movie (2010) <br/>
 some.random.tv.show.s01e01.1080p.bluray.x264 --> Some Random TV Show - S01E01 - {episode name} <br/>
 
 ## Showcase
-![ShowRenamer GUI](https://i.imgur.com/ApsynPZ.png)
+![ShowRenamer GUI](https://i.imgur.com/2YcWYcD.png)
 
 ## Usage
 1. Download the latest jar from the [releases](https://github.com/c-eg/ShowRenamer/releases)
