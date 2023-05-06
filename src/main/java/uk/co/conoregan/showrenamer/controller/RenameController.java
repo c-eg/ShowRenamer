@@ -125,12 +125,22 @@ public class RenameController extends NavigationController implements Initializa
     @FXML
     private VBox vboxSuggestedTitles;
 
+    /**
+     * Navigate to rename page.
+     * @param event the button event.
+     * @throws IOException if fxml file not found.
+     */
     @FXML
     private void navigateToRenamePage(final ActionEvent event) throws IOException {
         final Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         changeScene("rename", stage);
     }
 
+    /**
+     * Navigate to settings page.
+     * @param event the button event.
+     * @throws IOException if fxml file not found.
+     */
     @FXML
     private void navigateToSettingsPage(final ActionEvent event) throws IOException {
         final Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

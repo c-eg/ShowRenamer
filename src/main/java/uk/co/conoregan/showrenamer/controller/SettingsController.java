@@ -44,28 +44,56 @@ public class SettingsController extends NavigationController implements Initiali
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(SettingsController.class);
 
+    /**
+     * The style to make the settings navigation buttons active.
+     */
     private static final String SETTINGS_NAV_ACTIVE_CSS = "-fx-border-color: #3298e3;";
 
+    /**
+     * VBox node containing the settings navigation button for rename format.
+     */
     @FXML
     private VBox vboxRenameFormat;
 
+    /**
+     * VBox node containing the settings navigation button for about.
+     */
     @FXML
     private VBox vboxAbout;
 
+    /**
+     * Button for settings navigation to change to rename format section.
+     */
     @FXML
     private Button buttonSettingsNavRenameFormat;
 
+    /**
+     * Button for settings navigation to change to about section.
+     */
     @FXML
     private Button buttonSettingsNavAbout;
 
+    /**
+     * The settings navigation button currently active.
+     */
     private Button buttonActiveSettingsNav;
 
+    /**
+     * Navigate to rename page.
+     * @param event the button event.
+     * @throws IOException if fxml file not found.
+     */
     @FXML
     private void navigateToRenamePage(final ActionEvent event) throws IOException {
         final Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         changeScene("rename", stage);
     }
 
+    /**
+     * Navigate to settings page.
+     * @param event the button event.
+     * @throws IOException if fxml file not found.
+     */
     @FXML
     private void navigateToSettingsPage(final ActionEvent event) throws IOException {
         final Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -81,6 +109,10 @@ public class SettingsController extends NavigationController implements Initiali
         buttonActiveSettingsNav = buttonSettingsNavRenameFormat;
     }
 
+    /**
+     * Handles the event when a settings navigation button is clicked.
+     * @param event the button event.
+     */
     @FXML
     private void handleSettingsNavClick(final ActionEvent event) {
         buttonActiveSettingsNav.setStyle(null);
