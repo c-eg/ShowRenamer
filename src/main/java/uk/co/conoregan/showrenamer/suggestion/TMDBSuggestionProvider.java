@@ -87,7 +87,7 @@ public class TMDBSuggestionProvider implements ShowSuggestionProvider {
             final String releaseDate = movie.getReleaseDate();
 
             if (Validation.isStringVarargsValid(title, releaseDate)) {
-                return String.format("%s (%s)", title, releaseDate).describeConstable();
+                return String.format("%s (%s)", title, releaseDate.substring(0, 4)).describeConstable();
             }
         } else if (mediaType == Multi.MediaType.TV_SERIES) {
             final Optional<Integer> matchedSeason = ShowInfoMatcher.matchSeason(fileName);

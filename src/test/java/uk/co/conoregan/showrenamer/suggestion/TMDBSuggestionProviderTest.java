@@ -88,7 +88,7 @@ public class TMDBSuggestionProviderTest {
         results.add(result);
         when(result.getMediaType()).thenReturn(Multi.MediaType.MOVIE);
         when(result.getTitle()).thenReturn("Movie Title");
-        when(result.getReleaseDate()).thenReturn("2010");
+        when(result.getReleaseDate()).thenReturn("2010-02-25");
 
         final String fileName = "movie.title.2010.1080p.bluray";
         final Optional<String> suggestion = SHOW_SUGGESTION_PROVIDER.getSuggestion(fileName);
