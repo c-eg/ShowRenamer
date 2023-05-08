@@ -40,6 +40,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.co.conoregan.showrenamer.suggestion.ShowSuggestionProvider;
 import uk.co.conoregan.showrenamer.suggestion.TMDBSuggestionProvider;
+import uk.co.conoregan.showrenamer.util.StringUtils;
 
 import javax.annotation.Nonnull;
 import java.io.File;
@@ -195,22 +196,22 @@ public class RenameController extends NavigationController implements Initializa
      */
     @FXML
     private void getSuggestions() {
-        for (final Map.Entry<File, File> entry : fileRenameMapping.entrySet()) {
-            final String fileNameWithoutExtension = getFileNameWithoutExtension(entry.getKey().getName());
+        Platform.runLater(() -> buttonGetSuggestions.setDisable(true));
 
-            /*
-            1. Get suggestion from movie database api
-            2. Map suggestion to string, or null if no suggestion is present
-            3. Update hashmap with suggestion (must use Platform.runLater to update UI for JavaFX
-             */
-            CompletableFuture.supplyAsync(() -> showSuggestionProvider.getSuggestion(fileNameWithoutExtension))
-                    .thenApply(suggestion ->
-                            suggestion.map(s ->
-                                    new File(entry.getKey().getAbsolutePath().replace(fileNameWithoutExtension, s))).orElse(null))
-                    .thenAccept(suggestion -> Platform.runLater(() -> entry.setValue(suggestion)));
-        }
-
-        buttonGetSuggestions.setDisable(true);
+        CompletableFuture.allOf(
+                // stream map keys
+                // get suggestion from file name without extension
+                // create new file object with new name from suggestion
+                // replace the null entry in map value with new file object, or null if no suggestion was found
+                fileRenameMapping.keySet().stream().map(file -> CompletableFuture.supplyAsync(() ->
+                                showSuggestionProvider.getSuggestion(getFileNameWithoutExtension(file.getName())))
+                        .thenApply(suggestion ->
+                                suggestion.map(replacement -> new File(StringUtils.replaceLastOccurrence(
+                                                file.getAbsolutePath(), getFileNameWithoutExtension(file.getName()), replacement)))
+                                        .orElse(null))
+                        .thenAccept(suggestion -> Platform.runLater(() -> fileRenameMapping.replace(file, suggestion)))
+                ).toArray(CompletableFuture[]::new)
+        );
     }
 
     /**
