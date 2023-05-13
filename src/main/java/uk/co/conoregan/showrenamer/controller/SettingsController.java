@@ -19,17 +19,15 @@ package uk.co.conoregan.showrenamer.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.co.conoregan.showrenamer.ShowRenamerPreferences;
 
 import java.io.IOException;
 import java.net.URL;
@@ -79,7 +77,20 @@ public class SettingsController extends NavigationController implements Initiali
     private Button buttonActiveSettingsNav;
 
     /**
+     * Text field for movie rename format
+     */
+    @FXML
+    private TextField textFieldMovieRenameFormat;
+
+    /**
+     * Text field for tv show rename format.
+     */
+    @FXML
+    private TextField textFieldTvShowRenameFormat;
+
+    /**
      * Navigate to rename page.
+     *
      * @param event the button event.
      * @throws IOException if fxml file not found.
      */
@@ -90,27 +101,8 @@ public class SettingsController extends NavigationController implements Initiali
     }
 
     /**
-     * Navigate to settings page.
-     * @param event the button event.
-     * @throws IOException if fxml file not found.
-     */
-    @FXML
-    private void navigateToSettingsPage(final ActionEvent event) throws IOException {
-        final Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        changeScene("settings", stage);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void initialize(final URL location, final ResourceBundle resources) {
-        buttonSettingsNavRenameFormat.setStyle(SETTINGS_NAV_ACTIVE_CSS);
-        buttonActiveSettingsNav = buttonSettingsNavRenameFormat;
-    }
-
-    /**
      * Handles the event when a settings navigation button is clicked.
+     *
      * @param event the button event.
      */
     @FXML
@@ -129,5 +121,44 @@ public class SettingsController extends NavigationController implements Initiali
             vboxAbout.setVisible(true);
             vboxRenameFormat.setVisible(false);
         }
+    }
+
+    /**
+     * Resets the movie rename format to default.
+     */
+    @FXML
+    private void resetMovieRenameFormat() {
+        textFieldMovieRenameFormat.setText(ShowRenamerPreferences.DEFAULT_MOVIE_RENAME_FORMAT);
+        ShowRenamerPreferences.clearMovieRenameFormat();
+    }
+
+    /**
+     * Resets the tv show rename format to default.
+     */
+    @FXML
+    private void resetTvShowRenameFormat() {
+        textFieldTvShowRenameFormat.setText(ShowRenamerPreferences.DEFAULT_TV_SHOW_RENAME_FORMAT);
+        ShowRenamerPreferences.clearTvShowRenameFormat();
+    }
+
+    /**
+     * Saves all rename formats.
+     */
+    @FXML
+    private void saveRenameFormats() {
+        ShowRenamerPreferences.setMovieRenameFormat(textFieldMovieRenameFormat.getText());
+        ShowRenamerPreferences.setTvShowRenameFormat(textFieldTvShowRenameFormat.getText());
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void initialize(final URL location, final ResourceBundle resources) {
+        buttonSettingsNavRenameFormat.setStyle(SETTINGS_NAV_ACTIVE_CSS);
+        buttonActiveSettingsNav = buttonSettingsNavRenameFormat;
+
+        textFieldMovieRenameFormat.setText(ShowRenamerPreferences.getMovieRenameFormat());
+        textFieldTvShowRenameFormat.setText(ShowRenamerPreferences.getTvShowRenameFormat());
     }
 }

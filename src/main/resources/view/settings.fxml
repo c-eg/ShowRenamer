@@ -17,7 +17,7 @@
             <HBox alignment="CENTER_LEFT" spacing="20.0" styleClass="section-nav">
                <children>
                   <Button fx:id="buttonNavRename" mnemonicParsing="false" onAction="#navigateToRenamePage" styleClass="button-nav" text="Rename" />
-                  <Button fx:id="buttonNavSettings" mnemonicParsing="false" onAction="#navigateToSettingsPage" text="Settings">
+                  <Button fx:id="buttonNavSettings" mnemonicParsing="false" text="Settings">
                      <styleClass>
                         <String fx:value="button-nav" />
                         <String fx:value="button-nav-active" />
@@ -141,10 +141,10 @@
                                           </Label>
                                           <HBox spacing="20.0">
                                              <children>
-                                                <TextField text="{title} ({year})" HBox.hgrow="ALWAYS" />
+                                                <TextField fx:id="textFieldMovieRenameFormat" text="{title} ({year})" HBox.hgrow="ALWAYS" />
                                                 <VBox alignment="CENTER">
                                                    <children>
-                                                      <Button mnemonicParsing="false" styleClass="button-secondary" text="Reset" />
+                                                      <Button mnemonicParsing="false" onAction="#resetMovieRenameFormat" styleClass="button-secondary" text="Reset" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -159,24 +159,29 @@
                                           </Label>
                                           <HBox spacing="20.0">
                                              <children>
-                                                <TextField text="{title} - S{season}E{episode} - {episodeName}" HBox.hgrow="ALWAYS" />
+                                                <TextField fx:id="textFieldTvShowRenameFormat" text="{title} - S{season}E{episode} - {episodeName}" HBox.hgrow="ALWAYS" />
                                                 <VBox alignment="CENTER">
                                                    <children>
-                                                      <Button mnemonicParsing="false" styleClass="button-secondary" text="Reset" />
+                                                      <Button mnemonicParsing="false" onAction="#resetTvShowRenameFormat" styleClass="button-secondary" text="Reset" />
                                                    </children>
+                                                   <HBox.margin>
+                                                      <Insets />
+                                                   </HBox.margin>
                                                 </VBox>
                                              </children>
                                              <VBox.margin>
-                                                <Insets />
+                                                <Insets bottom="15.0" />
                                              </VBox.margin>
                                           </HBox>
                                        </children>
+                                       <styleClass>
+                                          <String fx:value="section" />
+                                          <String fx:value="button-padding" />
+                                          <String fx:value="card" />
+                                       </styleClass>
                                     </VBox>
+                                    <Button fx:id="buttonSaveRenameFormat" mnemonicParsing="false" onAction="#saveRenameFormats" styleClass="button-primary" text="Save" textAlignment="CENTER" />
                                  </children>
-                                 <styleClass>
-                                    <String fx:value="section" />
-                                    <String fx:value="card" />
-                                 </styleClass>
                               </VBox>
                            </children>
                         </VBox>

@@ -18,12 +18,12 @@
          <children>
             <HBox alignment="CENTER_LEFT" spacing="20.0" styleClass="section-nav">
                <children>
-                  <Button fx:id="buttonNavRename" mnemonicParsing="false" onAction="#navigateToRenamePage" text="Rename">
+                  <Button fx:id="buttonNavRename" mnemonicParsing="false" text="Rename">
                      <styleClass>
                         <String fx:value="button-nav-active" />
                         <String fx:value="button-nav" />
                      </styleClass></Button>
-                  <Button fx:id="buttonNavSettings" disable="true" mnemonicParsing="false" onAction="#navigateToSettingsPage" styleClass="button-nav" text="Settings" />
+                  <Button fx:id="buttonNavSettings" mnemonicParsing="false" onAction="#navigateToSettingsPage" styleClass="button-nav" text="Settings" />
                </children>
                <VBox.margin>
                   <Insets />

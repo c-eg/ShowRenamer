@@ -24,6 +24,7 @@ import info.movito.themoviedbapi.model.tv.TvEpisode;
 import info.movito.themoviedbapi.model.tv.TvSeries;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.co.conoregan.showrenamer.ShowRenamerPreferences;
 import uk.co.conoregan.showrenamer.util.Validation;
 import uk.co.conoregan.showrenamer.util.ShowInfoMatcher;
 
@@ -81,34 +82,53 @@ public class TMDBSuggestionProvider implements ShowSuggestionProvider {
         final Multi result = results.get(0);
         final Multi.MediaType mediaType = result.getMediaType();
 
-        if (mediaType == Multi.MediaType.MOVIE) {
-            final MovieDb movie = (MovieDb) result;
-            final String title = movie.getTitle();
-            final String releaseDate = movie.getReleaseDate();
+        switch (mediaType) {
+            case MOVIE -> {
+                final MovieDb movie = (MovieDb) result;
+                final String title = movie.getTitle();
+                final String releaseDate = movie.getReleaseDate();
+                final String releaseDateYear = releaseDate.substring(0, 4);
 
-            if (Validation.isStringVarargsValid(title, releaseDate)) {
-                return String.format("%s (%s)", title, releaseDate.substring(0, 4)).describeConstable();
+                if (Validation.isStringVarargsValid(title, releaseDate)) {
+                    String movieRenameFormat = ShowRenamerPreferences.getMovieRenameFormat();
+
+                    movieRenameFormat = movieRenameFormat
+                            .replace("{title}", title)
+                            .replace("{releaseDate}", releaseDate)
+                            .replace("{year}", releaseDateYear);
+
+                    return Optional.of(movieRenameFormat);
+                }
             }
-        } else if (mediaType == Multi.MediaType.TV_SERIES) {
-            final Optional<Integer> matchedSeason = ShowInfoMatcher.matchSeason(fileName);
-            final List<Integer> matchedEpisodes = ShowInfoMatcher.matchEpisodes(fileName);
-            if (matchedSeason.isEmpty() || !Validation.isIntegerValid(matchedSeason.get())
-                    || !Validation.isIntegerListValid(matchedEpisodes)) {
-                LOGGER.info(String.format("No valid season or episode could be matched from the file name: %s", fileName));
-                return Optional.empty();
-            }
+            case TV_SERIES -> {
+                final Optional<Integer> matchedSeason = ShowInfoMatcher.matchSeason(fileName);
+                final List<Integer> matchedEpisodes = ShowInfoMatcher.matchEpisodes(fileName);
+                if (matchedSeason.isEmpty() || !Validation.isIntegerValid(matchedSeason.get())
+                        || !Validation.isIntegerListValid(matchedEpisodes)) {
+                    LOGGER.info(String.format("No valid season or episode could be matched from the file name: %s", fileName));
+                    return Optional.empty();
+                }
 
-            final TvSeries tvSeries = (TvSeries) result;
-            final TvEpisode episode = tmdbApi.getTvEpisodes().getEpisode(
-                    tvSeries.getId(), matchedSeason.get(), matchedEpisodes.get(0), "en-US");
-            final String seriesName = tvSeries.getName();
-            final String episodeName = episode.getName();
-            final int seasonNumber = episode.getSeasonNumber();
-            final int episodeNumber = episode.getEpisodeNumber();
+                final TvSeries tvSeries = (TvSeries) result;
+                final TvEpisode episode = tmdbApi.getTvEpisodes().getEpisode(
+                        tvSeries.getId(), matchedSeason.get(), matchedEpisodes.get(0), "en-US");
+                final String seriesName = tvSeries.getName();
+                final String episodeName = episode.getName();
+                final int seasonNumber = episode.getSeasonNumber();
+                final int episodeNumber = episode.getEpisodeNumber();
 
-            if (Validation.isIntegerVarargsValid(seasonNumber, episodeNumber)
-                    && Validation.isStringVarargsValid(seriesName, episodeName)) {
-                return String.format("%s - S%02dE%02d - %s", seriesName, seasonNumber, episodeNumber, episodeName).describeConstable();
+                if (Validation.isIntegerVarargsValid(seasonNumber, episodeNumber)
+                        && Validation.isStringVarargsValid(seriesName, episodeName)) {
+                    String tvShowRenameFormat = ShowRenamerPreferences.getTvShowRenameFormat();
+
+                    tvShowRenameFormat = tvShowRenameFormat
+                            .replace("{title}", seriesName)
+                            .replace("{season}", String.format("%02d", seasonNumber))
+                            .replace("{episode}", String.format("%02d", episodeNumber))
+                            .replace("{episodeName}", episodeName);
+
+                    return Optional.of(tvShowRenameFormat);
+                }
             }
         }
 
