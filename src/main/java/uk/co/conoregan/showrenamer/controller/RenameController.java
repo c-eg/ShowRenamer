@@ -18,9 +18,6 @@
 package uk.co.conoregan.showrenamer.controller;
 
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.MapChangeListener;
-import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -72,17 +69,7 @@ public class RenameController extends NavigationController implements Initializa
     /**
      * File mapping. Current name --> Suggested name.
      */
-    private final ObservableMap<File, File> fileRenameMapping = FXCollections.observableHashMap();
-
-    /**
-     * Whether to enable the current titles section.
-     */
-    private boolean enableSectionCurrentTitles = false;
-
-    /**
-     * Whether to enable the suggested titles section.
-     */
-    private boolean enableSectionSuggestedTitles = false;
+    private final TreeMap<File, File> fileRenameMapping = new TreeMap<>(Comparator.comparing(File::getName));
 
     /**
      * List view to show original file names.
@@ -162,6 +149,8 @@ public class RenameController extends NavigationController implements Initializa
         } else {
             event.consume();
         }
+
+        updateUserInterface();
     }
 
     /**
@@ -176,6 +165,8 @@ public class RenameController extends NavigationController implements Initializa
         for (final File item : dragboardFiles) {
             addFile(item);
         }
+
+        updateUserInterface();
     }
 
     /**
@@ -189,6 +180,8 @@ public class RenameController extends NavigationController implements Initializa
         if (dir != null) {
             addFile(dir);
         }
+
+        updateUserInterface();
     }
 
     /**
@@ -196,7 +189,7 @@ public class RenameController extends NavigationController implements Initializa
      */
     @FXML
     private void getSuggestions() {
-        Platform.runLater(() -> buttonGetSuggestions.setDisable(true));
+        updateButtonsUserInterface();
 
         CompletableFuture.allOf(
                 // stream map keys
@@ -209,9 +202,9 @@ public class RenameController extends NavigationController implements Initializa
                                 suggestion.map(replacement -> new File(StringUtils.replaceLastOccurrence(
                                                 file.getAbsolutePath(), getFileNameWithoutExtension(file.getName()), replacement)))
                                         .orElse(null))
-                        .thenAccept(suggestion -> Platform.runLater(() -> fileRenameMapping.replace(file, suggestion)))
+                        .thenAccept(suggestion -> fileRenameMapping.replace(file, suggestion))
                 ).toArray(CompletableFuture[]::new)
-        );
+        ).thenAccept(unused -> updateUserInterface());
     }
 
     /**
@@ -221,8 +214,7 @@ public class RenameController extends NavigationController implements Initializa
     private void clearAll() {
         fileRenameMapping.clear();
 
-        buttonGetSuggestions.setDisable(false);
-        buttonSaveAll.setDisable(false);
+        updateUserInterface();
     }
 
     /**
@@ -231,23 +223,26 @@ public class RenameController extends NavigationController implements Initializa
     @FXML
     public void saveAll() {
         for (final Map.Entry<File, File> entry : fileRenameMapping.entrySet()) {
-            if (entry.getValue() == null) {
-                LOGGER.info(String.format("Cannot rename: %s, no suggestion found.", entry.getKey().getName()));
+            final File sourceFile = entry.getKey();
+            final File destinationFile = entry.getValue();
+
+            if (destinationFile == null) {
+                LOGGER.info(String.format("Cannot rename: %s, no suggestion found.", sourceFile.getName()));
                 continue;
             }
 
-            if (entry.getValue().exists()) {
-                LOGGER.warn(String.format("Cannot rename: %s, %s already exists.", entry.getKey().getName(), entry.getValue().getName()));
+            if (destinationFile.exists()) {
+                LOGGER.warn(String.format("Cannot rename: %s, %s already exists.", sourceFile.getName(), destinationFile.getName()));
                 continue;
             }
 
-            final boolean successfulRename = entry.getKey().renameTo(entry.getValue());
+            final boolean successfulRename = sourceFile.renameTo(destinationFile);
             if (!successfulRename) {
-                LOGGER.error(String.format("Cannot rename: %s, an unexpected error occurred.", entry.getKey().getName()));
+                LOGGER.error(String.format("Cannot rename: %s, an unexpected error occurred.", sourceFile.getName()));
             }
         }
 
-        buttonSaveAll.setDisable(true);
+        clearAll();
     }
 
     /**
@@ -265,26 +260,6 @@ public class RenameController extends NavigationController implements Initializa
 
         listViewCurrentTitles.setFocusTraversable(false);
         listViewSuggestedTitles.setFocusTraversable(false);
-
-        // update list views based on fileRenameMapping.
-        fileRenameMapping.addListener((MapChangeListener<File, File>) change -> {
-            enableSectionCurrentTitles = !fileRenameMapping.keySet().isEmpty();
-            enableSectionSuggestedTitles = !fileRenameMapping.values().isEmpty() &&
-                    !fileRenameMapping.values().stream().allMatch(Objects::isNull);
-
-            vboxCurrentTitles.setDisable(!enableSectionCurrentTitles);
-            vboxSuggestedTitles.setDisable(!enableSectionSuggestedTitles);
-
-            listViewCurrentTitles.getItems().removeAll(change.getKey());
-            if (change.wasAdded()) {
-                listViewCurrentTitles.getItems().add(change.getKey());
-            }
-
-            listViewSuggestedTitles.getItems().removeAll(change.getValueRemoved());
-            if (change.wasAdded()) {
-                listViewSuggestedTitles.getItems().add(change.getValueAdded());
-            }
-        });
     }
 
     /**
@@ -312,6 +287,45 @@ public class RenameController extends NavigationController implements Initializa
         }
 
         showSuggestionProvider = new TMDBSuggestionProvider(tmdbApiKey);
+    }
+
+    /**
+     * Update all nodes present on the UI depending on the state of the application.
+     */
+    private void updateUserInterface() {
+        updateButtonsUserInterface();
+        updateListViewsUserInterface();
+        updateVboxUserInterface();
+    }
+
+    /**
+     * Update the buttons depending on the state of the application.
+     */
+    private void updateButtonsUserInterface() {
+        Platform.runLater(() -> {
+            buttonGetSuggestions.setDisable(fileRenameMapping.keySet().isEmpty() || !fileRenameMapping.values().stream().allMatch(Objects::isNull));
+            buttonSaveAll.setDisable(fileRenameMapping.values().isEmpty() || fileRenameMapping.values().stream().allMatch(Objects::isNull));
+        });
+    }
+
+    /**
+     * Update the list views depending on the state of the application.
+     */
+    private void updateListViewsUserInterface() {
+        Platform.runLater(() -> {
+            listViewCurrentTitles.getItems().setAll(fileRenameMapping.keySet());
+            listViewSuggestedTitles.getItems().setAll(fileRenameMapping.values());
+        });
+    }
+
+    /**
+     * Update the vbox depending on the state of the application.
+     */
+    private void updateVboxUserInterface() {
+        Platform.runLater(() -> {
+            vboxCurrentTitles.setDisable(fileRenameMapping.keySet().isEmpty());
+            vboxSuggestedTitles.setDisable(fileRenameMapping.values().isEmpty() || fileRenameMapping.values().stream().allMatch(Objects::isNull));
+        });
     }
 
     /**
