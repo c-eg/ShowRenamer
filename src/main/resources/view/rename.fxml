@@ -16,14 +16,28 @@
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="CENTER_LEFT" spacing="20.0" styleClass="section-nav">
+            <HBox alignment="CENTER_LEFT" spacing="30.0" styleClass="section-nav">
                <children>
-                  <Button fx:id="buttonNavRename" mnemonicParsing="false" text="Rename">
+                  <Button fx:id="buttonNavRename" graphicTextGap="10.0" mnemonicParsing="false" text="Rename">
+                     <graphic>
+                        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" styleClass="nav-icon">
+                           <image>
+                              <Image url="@../images/rename-icon.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
                      <styleClass>
-                        <String fx:value="button-nav-active" />
                         <String fx:value="button-nav" />
+                        <String fx:value="button-nav-active" />
                      </styleClass></Button>
-                  <Button fx:id="buttonNavSettings" mnemonicParsing="false" onAction="#navigateToSettingsPage" styleClass="button-nav" text="Settings" />
+                  <Button fx:id="buttonNavSettings" graphicTextGap="10.0" mnemonicParsing="false" onAction="#navigateToSettingsPage" styleClass="button-nav" text="Settings">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="nav-icon">
+                           <image>
+                              <Image url="@../images/setting-icon.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></Button>
                </children>
                <VBox.margin>
                   <Insets />
