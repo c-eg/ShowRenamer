@@ -72,6 +72,7 @@ public class ShowRenamerPreferences {
      *
      * @return the movie rename format
      */
+    @Nonnull
     public static String getMovieRenameFormat() {
         return userPreferences.get(MOVIE_RENAME_FORMAT_PREFERENCE_NAME, DEFAULT_MOVIE_RENAME_FORMAT);
     }
@@ -99,6 +100,7 @@ public class ShowRenamerPreferences {
      *
      * @return the tv show rename format
      */
+    @Nonnull
     public static String getTvShowRenameFormat() {
         return userPreferences.get(TV_SHOW_FORMAT_PREFERENCE_NAME, DEFAULT_TV_SHOW_RENAME_FORMAT);
     }
