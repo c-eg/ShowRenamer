@@ -2,8 +2,13 @@
 Renames movie and tv show file names to a much nicer format.
 
 ## Example
-some.random.movie.2010.1080p.blueray.x264 --> Some Random Movie (2010) <br/>
-some.random.tv.show.s01e01.1080p.bluray.x264 --> Some Random TV Show - S01E01 - Episode Name <br/>
+|         | Before                                       | After                                       |
+|   ---   | -------------------------------------------- | ------------------------------------------- |
+| Movie   | some.random.movie.2010.1080p.blueray.x264    | Some Random Movie (2010)                    |
+| TV Show | some.random.tv.show.s01e01.1080p.bluray.x264 | Some Random TV Show - S01E01 - Episode Name |
+
+## Showcase
+![ShowRenamer GUI](https://i.imgur.com/TrHCzfF.png)
 
 ## Features
 - Renames movie & tv show files
@@ -13,9 +18,6 @@ some.random.tv.show.s01e01.1080p.bluray.x264 --> Some Random TV Show - S01E01 - 
 1. Download the latest jar from the [releases](https://github.com/c-eg/ShowRenamer/releases)
 2. Double click to run the jar
 3. If step 2. doesn't work, try running from command line using: `java -jar JAR_NAME.jar`
-
-## Showcase
-![ShowRenamer GUI](https://i.imgur.com/TrHCzfF.png)
 
 ## Local Development
 ### Prerequisites
