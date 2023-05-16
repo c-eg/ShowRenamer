@@ -33,7 +33,7 @@ public class StringUtils {
      */
     @Nonnull
     public static String replaceLastOccurrence(@Nonnull final String original, @Nonnull final String toReplace,
-                                                @Nonnull final String replacement) {
+                                               @Nonnull final String replacement) {
         final int start = original.lastIndexOf(toReplace);
 
         if (start > -1) {

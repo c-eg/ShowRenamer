@@ -28,6 +28,16 @@ import java.util.prefs.Preferences;
  */
 public class ShowRenamerPreferences {
     /**
+     * The default movie rename format.
+     */
+    public static final String DEFAULT_MOVIE_RENAME_FORMAT = "{title} ({year})";
+
+    /**
+     * The default tv show rename format.
+     */
+    public static final String DEFAULT_TV_SHOW_RENAME_FORMAT = "{title} - S{season}E{episode} - {episodeName}";
+
+    /**
      * The logger.
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(ShowRenamerPreferences.class);
@@ -41,31 +51,11 @@ public class ShowRenamerPreferences {
      * The movie rename format preference name.
      */
     private static final String MOVIE_RENAME_FORMAT_PREFERENCE_NAME = "RENAME_FORMAT_MOVIE";
-
+    
     /**
      * The tv show rename format preference name.
      */
     private static final String TV_SHOW_FORMAT_PREFERENCE_NAME = "RENAME_FORMAT_TV_SHOW";
-
-    /**
-     * The default movie rename format.
-     */
-    public static final String DEFAULT_MOVIE_RENAME_FORMAT = "{title} ({year})";
-
-    /**
-     * The default tv show rename format.
-     */
-    public static final String DEFAULT_TV_SHOW_RENAME_FORMAT = "{title} - S{season}E{episode} - {episodeName}";
-
-    /**
-     * Sets the movie rename format preference.
-     *
-     * @param format the movie rename format.
-     */
-    public static void setMovieRenameFormat(@Nonnull final String format) {
-        userPreferences.put(MOVIE_RENAME_FORMAT_PREFERENCE_NAME, format);
-        LOGGER.info(String.format("Rename format for movies set: '%s'", format));
-    }
 
     /**
      * Gets the movie rename format preference.
@@ -78,21 +68,21 @@ public class ShowRenamerPreferences {
     }
 
     /**
+     * Sets the movie rename format preference.
+     *
+     * @param format the movie rename format.
+     */
+    public static void setMovieRenameFormat(@Nonnull final String format) {
+        userPreferences.put(MOVIE_RENAME_FORMAT_PREFERENCE_NAME, format);
+        LOGGER.info(String.format("Rename format for movies set: '%s'", format));
+    }
+
+    /**
      * Clears the movie rename format preference.
      */
     public static void clearMovieRenameFormat() {
         userPreferences.remove(MOVIE_RENAME_FORMAT_PREFERENCE_NAME);
         LOGGER.info("Rename format for movies reset");
-    }
-
-    /**
-     * Sets the tv show rename format preference.
-     *
-     * @param format the tv show rename format.
-     */
-    public static void setTvShowRenameFormat(@Nonnull final String format) {
-        userPreferences.put(TV_SHOW_FORMAT_PREFERENCE_NAME, format);
-        LOGGER.info(String.format("Rename format for tv shows set: '%s'", format));
     }
 
     /**
@@ -103,6 +93,16 @@ public class ShowRenamerPreferences {
     @Nonnull
     public static String getTvShowRenameFormat() {
         return userPreferences.get(TV_SHOW_FORMAT_PREFERENCE_NAME, DEFAULT_TV_SHOW_RENAME_FORMAT);
+    }
+
+    /**
+     * Sets the tv show rename format preference.
+     *
+     * @param format the tv show rename format.
+     */
+    public static void setTvShowRenameFormat(@Nonnull final String format) {
+        userPreferences.put(TV_SHOW_FORMAT_PREFERENCE_NAME, format);
+        LOGGER.info(String.format("Rename format for tv shows set: '%s'", format));
     }
 
     /**

@@ -56,22 +56,18 @@ public class RenameController extends NavigationController implements Initializa
      * The logger.
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(RenameController.class);
-
-    /**
-     * The movie database suggestion provider.
-     */
-    private ShowSuggestionProvider showSuggestionProvider;
-
     /**
      * The directory chooser.
      */
     private final DirectoryChooser directoryChooser = new DirectoryChooser();
-
     /**
      * File mapping. Current name --> Suggested name.
      */
     private final TreeMap<File, File> fileRenameMapping = new TreeMap<>(Comparator.comparing(File::getName));
-
+    /**
+     * The movie database suggestion provider.
+     */
+    private ShowSuggestionProvider showSuggestionProvider;
     /**
      * List view to show original file names.
      */
@@ -116,6 +112,7 @@ public class RenameController extends NavigationController implements Initializa
 
     /**
      * Navigate to settings page.
+     *
      * @param event the button event.
      * @throws IOException if fxml file not found.
      */
