@@ -33,6 +33,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.co.conoregan.showrenamer.suggestion.ShowSuggestionProvider;
@@ -186,10 +187,10 @@ public class RenameController extends NavigationController implements Initializa
                 // create new file object with new name from suggestion
                 // replace the null entry in map value with new file object, or null if no suggestion was found
                 fileRenameMapping.keySet().stream().map(file -> CompletableFuture.supplyAsync(() ->
-                                showSuggestionProvider.getSuggestion(getFileNameWithoutExtension(file.getName())))
+                                showSuggestionProvider.getSuggestion(FilenameUtils.removeExtension(file.getName())))
                         .thenApply(suggestion ->
                                 suggestion.map(replacement -> new File(StringUtils.replaceLastOccurrence(
-                                                file.getAbsolutePath(), getFileNameWithoutExtension(file.getName()), replacement)))
+                                                file.getAbsolutePath(), FilenameUtils.removeExtension(file.getName()), replacement)))
                                         .orElse(null))
                         .thenAccept(suggestion -> fileRenameMapping.replace(file, suggestion))
                 ).toArray(CompletableFuture[]::new)
@@ -337,7 +338,7 @@ public class RenameController extends NavigationController implements Initializa
                     setMaxWidth(param.getWidth() - 20);
                     setPrefWidth(param.getWidth() - 20);
 
-                    setText(getFileNameWithoutExtension(item.getName()));
+                    setText(FilenameUtils.removeExtension(item.getName()));
                 }
             }
         });
@@ -361,21 +362,6 @@ public class RenameController extends NavigationController implements Initializa
             for (final File f : dirFiles) {
                 addFile(f);
             }
-        }
-    }
-
-    /**
-     * Returns the filename without an extension. If no extension, return original file name.
-     *
-     * @param fileName the file name.
-     * @return filename without extension.
-     */
-    @Nonnull
-    private String getFileNameWithoutExtension(@Nonnull final String fileName) {
-        if (fileName.indexOf(".") > 0) {
-            return fileName.substring(0, fileName.lastIndexOf("."));
-        } else {
-            return fileName;
         }
     }
 }
