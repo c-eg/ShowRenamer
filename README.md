@@ -8,7 +8,7 @@ Renames movie and tv show file names to a much nicer format.
 | TV Show | some.random.tv.show.s01e01.1080p.bluray.x264 | Some Random TV Show - S01E01 - Episode Name |
 
 ## Showcase
-![ShowRenamer GUI](https://i.imgur.com/TrHCzfF.png)
+![ShowRenamer GUI](https://i.imgur.com/5XG8YWJ.png)
 
 ## Features
 - Renames movie & tv show files
