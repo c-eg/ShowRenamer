@@ -56,18 +56,22 @@ public class RenameController extends NavigationController implements Initializa
      * The logger.
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(RenameController.class);
+
     /**
      * The directory chooser.
      */
     private final DirectoryChooser directoryChooser = new DirectoryChooser();
+
     /**
      * File mapping. Current name --> Suggested name.
      */
     private final TreeMap<File, File> fileRenameMapping = new TreeMap<>(Comparator.comparing(File::getName));
+
     /**
      * The movie database suggestion provider.
      */
     private ShowSuggestionProvider showSuggestionProvider;
+
     /**
      * List view to show original file names.
      */
