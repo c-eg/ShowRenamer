@@ -43,9 +43,9 @@ public class SettingsController extends NavigationController implements Initiali
     private static final Logger LOGGER = LoggerFactory.getLogger(SettingsController.class);
 
     /**
-     * The style to make the settings navigation buttons active.
+     * The class to mark the card as active.
      */
-    private static final String SETTINGS_NAV_ACTIVE_CSS = "-fx-border-color: #3298e3;";
+    private static final String CSS_CLASS_CARD_ACTIVE = "card-active";
 
     /**
      * VBox node containing the settings navigation button for rename format.
@@ -107,10 +107,11 @@ public class SettingsController extends NavigationController implements Initiali
      */
     @FXML
     private void handleSettingsNavClick(final ActionEvent event) {
-        buttonActiveSettingsNav.setStyle(null);
+        buttonActiveSettingsNav.getStyleClass().remove(CSS_CLASS_CARD_ACTIVE);
 
         buttonActiveSettingsNav = (Button) event.getSource();
-        buttonActiveSettingsNav.setStyle(SETTINGS_NAV_ACTIVE_CSS);
+//        buttonActiveSettingsNav.setStyle(SETTINGS_NAV_ACTIVE_CSS);
+        buttonActiveSettingsNav.getStyleClass().add(CSS_CLASS_CARD_ACTIVE);
 
         if (buttonActiveSettingsNav.equals(buttonSettingsNavRenameFormat)) {
             vboxRenameFormat.toFront();
@@ -155,7 +156,6 @@ public class SettingsController extends NavigationController implements Initiali
      */
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
-        buttonSettingsNavRenameFormat.setStyle(SETTINGS_NAV_ACTIVE_CSS);
         buttonActiveSettingsNav = buttonSettingsNavRenameFormat;
 
         textFieldMovieRenameFormat.setText(ShowRenamerPreferences.getMovieRenameFormat());

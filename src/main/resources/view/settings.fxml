@@ -47,11 +47,12 @@
                      <children>
                         <HBox alignment="CENTER_LEFT" onMouseClicked="#handleSettingsNavClick">
                            <children>
-                              <Button fx:id="buttonSettingsNavRenameFormat" alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleSettingsNavClick" text="Rename Format" HBox.hgrow="ALWAYS">
+                              <Button fx:id="buttonSettingsNavRenameFormat" alignment="TOP_LEFT" graphicTextGap="0.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleSettingsNavClick" text="Rename Format">
                                  <styleClass>
                                     <String fx:value="heading" />
                                     <String fx:value="button-settings-nav" />
                                     <String fx:value="card" />
+                                    <String fx:value="card-active" />
                                  </styleClass>
                               </Button>
                            </children>
@@ -74,7 +75,7 @@
                   </VBox>
                   <StackPane fx:id="stackPaneSettings" HBox.hgrow="SOMETIMES">
                      <children>
-                        <VBox fx:id="vboxAbout" spacing="20.0">
+                        <VBox fx:id="vboxAbout" spacing="20.0" visible="false">
                            <children>
                               <VBox fx:id="vboxCurrentTitles" alignment="TOP_CENTER">
                                  <children>
