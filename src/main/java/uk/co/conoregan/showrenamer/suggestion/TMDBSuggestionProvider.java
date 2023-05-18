@@ -24,7 +24,7 @@ import info.movito.themoviedbapi.model.tv.TvEpisode;
 import info.movito.themoviedbapi.model.tv.TvSeries;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.co.conoregan.showrenamer.ShowRenamerPreferences;
+import uk.co.conoregan.showrenamer.config.ShowRenamerPreference;
 import uk.co.conoregan.showrenamer.util.Validation;
 import uk.co.conoregan.showrenamer.util.ShowInfoMatcher;
 
@@ -90,7 +90,7 @@ public class TMDBSuggestionProvider implements ShowSuggestionProvider {
                 final String releaseDateYear = releaseDate.substring(0, 4);
 
                 if (Validation.isStringVarargsValid(title, releaseDate)) {
-                    String movieRenameFormat = ShowRenamerPreferences.getMovieRenameFormat();
+                    String movieRenameFormat = ShowRenamerPreference.RENAME_FORMAT_MOVIE.getPreference();
 
                     movieRenameFormat = movieRenameFormat
                             .replace("{title}", title)
@@ -119,7 +119,7 @@ public class TMDBSuggestionProvider implements ShowSuggestionProvider {
 
                 if (Validation.isIntegerVarargsValid(seasonNumber, episodeNumber)
                         && Validation.isStringVarargsValid(seriesName, episodeName)) {
-                    String tvShowRenameFormat = ShowRenamerPreferences.getTvShowRenameFormat();
+                    String tvShowRenameFormat = ShowRenamerPreference.RENAME_FORMAT_TV_SHOW.getPreference();
 
                     tvShowRenameFormat = tvShowRenameFormat
                             .replace("{title}", seriesName)

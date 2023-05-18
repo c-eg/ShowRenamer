@@ -27,8 +27,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.co.conoregan.showrenamer.ShowRenamerPreferences;
+import uk.co.conoregan.showrenamer.config.ShowRenamerPreference;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -129,8 +130,7 @@ public class SettingsController extends NavigationController implements Initiali
      */
     @FXML
     private void resetMovieRenameFormat() {
-        textFieldMovieRenameFormat.setText(ShowRenamerPreferences.DEFAULT_MOVIE_RENAME_FORMAT);
-        ShowRenamerPreferences.clearMovieRenameFormat();
+        resetFormat(ShowRenamerPreference.RENAME_FORMAT_MOVIE, textFieldMovieRenameFormat);
     }
 
     /**
@@ -138,8 +138,18 @@ public class SettingsController extends NavigationController implements Initiali
      */
     @FXML
     private void resetTvShowRenameFormat() {
-        textFieldTvShowRenameFormat.setText(ShowRenamerPreferences.DEFAULT_TV_SHOW_RENAME_FORMAT);
-        ShowRenamerPreferences.clearTvShowRenameFormat();
+        resetFormat(ShowRenamerPreference.RENAME_FORMAT_TV_SHOW, textFieldTvShowRenameFormat);
+    }
+
+    /**
+     * Resets rename format.
+     *
+     * @param renameFormat the rename format to reset.
+     * @param textField the text field to change back to default.
+     */
+    private void resetFormat(@Nonnull final ShowRenamerPreference renameFormat, @Nonnull final TextField textField) {
+        renameFormat.removePreference();
+        textField.setText(renameFormat.getDefaultValue());
     }
 
     /**
@@ -147,8 +157,8 @@ public class SettingsController extends NavigationController implements Initiali
      */
     @FXML
     private void saveRenameFormats() {
-        ShowRenamerPreferences.setMovieRenameFormat(textFieldMovieRenameFormat.getText());
-        ShowRenamerPreferences.setTvShowRenameFormat(textFieldTvShowRenameFormat.getText());
+        ShowRenamerPreference.RENAME_FORMAT_MOVIE.setPreference(textFieldMovieRenameFormat.getText());
+        ShowRenamerPreference.RENAME_FORMAT_TV_SHOW.setPreference(textFieldTvShowRenameFormat.getText());
     }
 
     /**
@@ -158,7 +168,7 @@ public class SettingsController extends NavigationController implements Initiali
     public void initialize(final URL location, final ResourceBundle resources) {
         buttonActiveSettingsNav = buttonSettingsNavRenameFormat;
 
-        textFieldMovieRenameFormat.setText(ShowRenamerPreferences.getMovieRenameFormat());
-        textFieldTvShowRenameFormat.setText(ShowRenamerPreferences.getTvShowRenameFormat());
+        textFieldMovieRenameFormat.setText(ShowRenamerPreference.RENAME_FORMAT_MOVIE.getPreference());
+        textFieldTvShowRenameFormat.setText(ShowRenamerPreference.RENAME_FORMAT_TV_SHOW.getPreference());
     }
 }
