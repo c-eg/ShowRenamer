@@ -25,8 +25,8 @@ Renames movie and tv show file names to a much nicer format.
 
 ### Setup
 1. Fork this repository, and clone it using "git clone"
-2. Create an account for [themoviedb.org](https://www.themoviedb.org/), and get an API key
-3. Copy the file: `api_keys.default.properties` to `/src/main/resources/properties/api_keys.properties`. And update it with your api key
+2. Create an account for [themoviedb.org](https://www.themoviedb.org/), and get an API key (currently version 3)
+3. Go to the properties file `/src/main/resources/properties/show-renamer.properties`, and update it with your api key
 4. Install using maven: `mvn clean install`
 5. Run using `uk.co.conoregan.showrenamer.ShowRenamerLauncher.main`
 
