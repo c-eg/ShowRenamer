@@ -111,7 +111,6 @@ public class SettingsController extends NavigationController implements Initiali
         buttonActiveSettingsNav.getStyleClass().remove(CSS_CLASS_CARD_ACTIVE);
 
         buttonActiveSettingsNav = (Button) event.getSource();
-//        buttonActiveSettingsNav.setStyle(SETTINGS_NAV_ACTIVE_CSS);
         buttonActiveSettingsNav.getStyleClass().add(CSS_CLASS_CARD_ACTIVE);
 
         if (buttonActiveSettingsNav.equals(buttonSettingsNavRenameFormat)) {
