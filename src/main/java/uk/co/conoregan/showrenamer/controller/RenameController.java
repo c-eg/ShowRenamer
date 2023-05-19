@@ -36,6 +36,8 @@ import javafx.stage.Window;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.co.conoregan.showrenamer.config.property.PropertyService;
+import uk.co.conoregan.showrenamer.config.property.ShowRenamerProperty;
 import uk.co.conoregan.showrenamer.suggestion.ShowSuggestionProvider;
 import uk.co.conoregan.showrenamer.suggestion.TMDBSuggestionProvider;
 import uk.co.conoregan.showrenamer.util.StringUtils;
@@ -43,7 +45,6 @@ import uk.co.conoregan.showrenamer.util.StringUtils;
 import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -56,6 +57,11 @@ public class RenameController extends NavigationController implements Initializa
      * The logger.
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(RenameController.class);
+
+    /**
+     * The Properties service.
+     */
+    private static final PropertyService propertyService = new PropertyService();
 
     /**
      * The directory chooser.
@@ -257,27 +263,7 @@ public class RenameController extends NavigationController implements Initializa
      * This function is treated as constructor for non-javafx related things.
      */
     private void initializeConstructor() {
-        // load properties config
-        final String apiKeysPath = "/properties/api_keys.properties";
-        final InputStream res = TMDBSuggestionProvider.class.getResourceAsStream(apiKeysPath);
-
-        final Properties properties = new Properties();
-        try {
-            properties.load(res);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        // make tmdb api
-        final String tmdbApiKeyPropertyName = "TMDB_API_KEY_V3";
-        final String tmdbApiKey = properties.getProperty(tmdbApiKeyPropertyName);
-        if (tmdbApiKey == null) {
-            LOGGER.error(String.format("The property: '%s' was not found in the properties file: %s.",
-                    tmdbApiKeyPropertyName, apiKeysPath));
-            System.exit(0);
-        }
-
-        showSuggestionProvider = new TMDBSuggestionProvider(tmdbApiKey);
+       showSuggestionProvider = new TMDBSuggestionProvider(propertyService.getProperty(ShowRenamerProperty.TMDB_API_KEY.getName()));
     }
 
     /**
