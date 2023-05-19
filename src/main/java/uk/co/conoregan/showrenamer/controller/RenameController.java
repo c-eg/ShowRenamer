@@ -258,7 +258,7 @@ public class RenameController extends NavigationController implements Initializa
      */
     private void initializeConstructor() {
         // load properties config
-        final String apiKeysPath = "/properties/api_keys.properties";
+        final String apiKeysPath = "/properties/show-renamer.properties";
         final InputStream res = TMDBSuggestionProvider.class.getResourceAsStream(apiKeysPath);
 
         final Properties properties = new Properties();
