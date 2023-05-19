@@ -24,6 +24,7 @@ import info.movito.themoviedbapi.model.tv.TvEpisode;
 import info.movito.themoviedbapi.model.tv.TvSeries;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.co.conoregan.showrenamer.config.preference.PreferenceService;
 import uk.co.conoregan.showrenamer.config.preference.ShowRenamerPreference;
 import uk.co.conoregan.showrenamer.util.Validation;
 import uk.co.conoregan.showrenamer.util.ShowInfoMatcher;
@@ -45,6 +46,11 @@ public class TMDBSuggestionProvider implements ShowSuggestionProvider {
      * The movie database api wrapper object.
      */
     private final TmdbApi tmdbApi;
+
+    /**
+     * The preference service.
+     */
+    private static final PreferenceService PREFERENCE_SERVICE = new PreferenceService();
 
     /**
      * Should not use, only for testing.
@@ -90,7 +96,7 @@ public class TMDBSuggestionProvider implements ShowSuggestionProvider {
                 final String releaseDateYear = releaseDate.substring(0, 4);
 
                 if (Validation.isStringVarargsValid(title, releaseDate)) {
-                    String movieRenameFormat = ShowRenamerPreference.RENAME_FORMAT_MOVIE.getPreference();
+                    String movieRenameFormat = PREFERENCE_SERVICE.getPreference(ShowRenamerPreference.RENAME_FORMAT_MOVIE);
 
                     movieRenameFormat = movieRenameFormat
                             .replace("{title}", title)
@@ -119,7 +125,7 @@ public class TMDBSuggestionProvider implements ShowSuggestionProvider {
 
                 if (Validation.isIntegerVarargsValid(seasonNumber, episodeNumber)
                         && Validation.isStringVarargsValid(seriesName, episodeName)) {
-                    String tvShowRenameFormat = ShowRenamerPreference.RENAME_FORMAT_TV_SHOW.getPreference();
+                    String tvShowRenameFormat = PREFERENCE_SERVICE.getPreference(ShowRenamerPreference.RENAME_FORMAT_TV_SHOW);
 
                     tvShowRenameFormat = tvShowRenameFormat
                             .replace("{title}", seriesName)

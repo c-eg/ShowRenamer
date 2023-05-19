@@ -17,28 +17,14 @@
 
 package uk.co.conoregan.showrenamer.config.preference;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javax.annotation.Nonnull;
-import java.util.prefs.Preferences;
 
 /**
  * Wrapper class for the Preferences API, for Show Renamer preferences.
  */
 public enum ShowRenamerPreference {
-    RENAME_FORMAT_MOVIE("RENAME_FORMAT_MOVIE", "{title} ({year})"),
-    RENAME_FORMAT_TV_SHOW("RENAME_FORMAT_TV_SHOW", "{title} - S{season}E{episode} - {episodeName}");
-
-    /**
-     * The logger.
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(ShowRenamerPreference.class);
-
-    /**
-     * The user preferences.
-     */
-    private static final Preferences userPreferences = Preferences.userNodeForPackage(ShowRenamerPreference.class);
+    RENAME_FORMAT_MOVIE("rename.format.movie", "{title} ({year})"),
+    RENAME_FORMAT_TV_SHOW("rename.format.tv.show", "{title} - S{season}E{episode} - {episodeName}");
 
     /**
      * Preference name.
@@ -48,7 +34,7 @@ public enum ShowRenamerPreference {
     /**
      * Preference default value;
      */
-    private final String defaultValue; //todo try to make generic
+    private final String defaultValue;
 
     /**
      * Constructor.
@@ -59,33 +45,6 @@ public enum ShowRenamerPreference {
     ShowRenamerPreference(@Nonnull final String preference, @Nonnull final String defaultValue) {
         this.name = preference;
         this.defaultValue = defaultValue;
-    }
-
-    /**
-     * Gets the preference if set, or the default value.
-     *
-     * @return the preference.
-     */
-    @Nonnull
-    public String getPreference() {
-        return userPreferences.get(getName(), getDefaultValue());
-    }
-
-    /**
-     * Sets a preference.
-     *
-     * @param value the value.
-     */
-    public void setPreference(@Nonnull final String value) {
-        userPreferences.put(getName(), value);
-        LOGGER.info(String.format("Preference %s, set to: '%s'", getName(), value));
-    }
-
-    /**
-     * Removes the preference stored in the user preferences.
-     */
-    public void removePreference() {
-        userPreferences.remove(getName());
     }
 
     /**
@@ -106,16 +65,5 @@ public enum ShowRenamerPreference {
     @Nonnull
     public String getDefaultValue() {
         return defaultValue;
-    }
-
-    /**
-     * Returns the preference name.
-     *
-     * @return to string.
-     */
-    @Nonnull
-    @Override
-    public String toString() {
-        return name;
     }
 }

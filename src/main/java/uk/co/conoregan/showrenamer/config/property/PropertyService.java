@@ -28,6 +28,7 @@ import java.util.Properties;
 
 /**
  * Wrapper class for the Property API, for Show Renamer properties.
+ * This class should be used for settings that should not be modified while the application is running.
  */
 public class PropertyService {
     /**
@@ -36,16 +37,27 @@ public class PropertyService {
     private static final String PROPERTIES_PATH = "/properties/show-renamer.properties";
 
     /**
-     * Properties cache to load properties once.
+     * Cache for properties.
      */
     private static final Cache<String, String> PROPERTY_CACHE;
 
     static {
         PROPERTY_CACHE = Caffeine.newBuilder()
-                .maximumSize(1_000)
+                .maximumSize(100)
                 .expireAfterWrite(Duration.ofMinutes(10))
                 .build();
 
+    }
+
+    /**
+     * Gets a property.
+     *
+     * @param property the property.
+     * @return the value.
+     */
+    @Nonnull
+    public String getProperty(@Nonnull final ShowRenamerProperty property) {
+        return getProperty(property.getName());
     }
 
     /**

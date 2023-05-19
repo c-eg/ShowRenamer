@@ -61,12 +61,12 @@ public class RenameController extends NavigationController implements Initializa
     /**
      * The Properties service.
      */
-    private static final PropertyService propertyService = new PropertyService();
+    private static final PropertyService PROPERTY_SERVICE = new PropertyService();
 
     /**
      * The directory chooser.
      */
-    private final DirectoryChooser directoryChooser = new DirectoryChooser();
+    private static final DirectoryChooser DIRECTORY_CHOOSER = new DirectoryChooser();
 
     /**
      * File mapping. Current name --> Suggested name.
@@ -172,7 +172,7 @@ public class RenameController extends NavigationController implements Initializa
     @FXML
     private void openFileDialog(final ActionEvent event) {
         final Window window = ((Button) event.getSource()).getScene().getWindow();
-        final File dir = directoryChooser.showDialog(window);
+        final File dir = DIRECTORY_CHOOSER.showDialog(window);
 
         if (dir != null) {
             addFile(dir);
@@ -263,7 +263,7 @@ public class RenameController extends NavigationController implements Initializa
      * This function is treated as constructor for non-javafx related things.
      */
     private void initializeConstructor() {
-       showSuggestionProvider = new TMDBSuggestionProvider(propertyService.getProperty(ShowRenamerProperty.TMDB_API_KEY.getName()));
+       showSuggestionProvider = new TMDBSuggestionProvider(PROPERTY_SERVICE.getProperty(ShowRenamerProperty.TMDB_API_KEY));
     }
 
     /**

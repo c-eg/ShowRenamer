@@ -15,34 +15,30 @@
  * along with ShowRenamer.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package uk.co.conoregan.showrenamer.config.property;
+package uk.co.conoregan.showrenamer.config.preference;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests for {@link PropertyService}.
+ * Tests for {@link ShowRenamerPreference}.
  */
-public class PropertyServiceTest {
+public class ShowRenamerPreferenceTest {
     /**
-     * The property service.
-     */
-    private static final PropertyService PROPERTY_SERVICE = new PropertyService();
-
-    /**
-     * Tests {@link PropertyService#getProperty(String)} when the property exists.
+     * Tests {@link ShowRenamerPreference#getName()}.
      */
     @Test
-    public void testGetProperty() {
-        final String value = PROPERTY_SERVICE.getProperty("test");
-        Assertions.assertEquals("value", value);
+    public void testGetName() {
+        final ShowRenamerPreference preference = ShowRenamerPreference.RENAME_FORMAT_MOVIE;
+        Assertions.assertEquals("rename.format.movie", preference.getName());
     }
 
     /**
-     * Tests {@link PropertyService#getProperty(String)} when the property does not exist.
+     * Tests {@link ShowRenamerPreference#getDefaultValue()}.
      */
     @Test
-    public void testGetPropertyNotExist() {
-        Assertions.assertThrows(RuntimeException.class, () -> PROPERTY_SERVICE.getProperty("does.not.exist"));
+    public void testGetDefaultValue() {
+        final ShowRenamerPreference preference = ShowRenamerPreference.RENAME_FORMAT_MOVIE;
+        Assertions.assertEquals("{title} ({year})", preference.getDefaultValue());
     }
 }
