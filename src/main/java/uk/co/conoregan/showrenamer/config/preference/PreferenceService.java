@@ -99,10 +99,20 @@ public class PreferenceService {
         LOGGER.info(String.format("Preference %s, set to: '%s'", preference, value));
     }
 
+    /**
+     * Remove a preference.
+     *
+     * @param preference the preference.
+     */
     public void removePreference(@Nonnull final ShowRenamerPreference preference) {
         removePreference(preference.getName());
     }
 
+    /**
+     * Remove a preference.
+     *
+     * @param preference the preference.
+     */
     public void removePreference(@Nonnull final String preference) {
         USER_PREFERENCES.remove(preference);
         PREFERENCE_CACHE.invalidate(preference);
