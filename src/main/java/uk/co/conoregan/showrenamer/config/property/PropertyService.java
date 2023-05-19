@@ -38,7 +38,7 @@ public class PropertyService {
     /**
      * Properties cache to load properties once.
      */
-    private static final Cache<ShowRenamerProperty, String> PROPERTY_CACHE;
+    private static final Cache<String, String> PROPERTY_CACHE;
 
     static {
         PROPERTY_CACHE = Caffeine.newBuilder()
@@ -51,22 +51,22 @@ public class PropertyService {
     /**
      * Gets a property.
      *
-     * @param showRenamerProperty the property
+     * @param property the property.
      * @return the value.
      */
     @Nonnull
-    public String getProperty(@Nonnull final ShowRenamerProperty showRenamerProperty) {
-        return PROPERTY_CACHE.get(showRenamerProperty, this::loadProperty);
+    public String getProperty(@Nonnull final String property) {
+        return PROPERTY_CACHE.get(property, this::loadProperty);
     }
 
     /**
      * Loads a property from the properties file.
      *
-     * @param showRenamerProperty the property.
+     * @param property the property.
      * @return the value.
      */
     @Nonnull
-    private String loadProperty(@Nonnull final ShowRenamerProperty showRenamerProperty) {
+    private String loadProperty(@Nonnull final String property) {
         final InputStream res = getClass().getResourceAsStream(PROPERTIES_PATH);
         final Properties properties = new Properties();
 
@@ -77,14 +77,14 @@ public class PropertyService {
             throw new RuntimeException(e);
         }
 
-        final String property = properties.getProperty(showRenamerProperty.getName());
+        final String value = properties.getProperty(property);
 
-        if (property == null) {
+        if (value == null) {
             // property does not exist
             throw new RuntimeException(String.format("The property: '%s' was not found in the properties file: '%s'",
-                    showRenamerProperty.getName(), PROPERTIES_PATH));
+                    property, PROPERTIES_PATH));
         }
 
-        return property;
+        return value;
     }
 }

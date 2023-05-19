@@ -263,7 +263,7 @@ public class RenameController extends NavigationController implements Initializa
      * This function is treated as constructor for non-javafx related things.
      */
     private void initializeConstructor() {
-       showSuggestionProvider = new TMDBSuggestionProvider(propertyService.getProperty(ShowRenamerProperty.TMDB_API_KEY));
+       showSuggestionProvider = new TMDBSuggestionProvider(propertyService.getProperty(ShowRenamerProperty.TMDB_API_KEY.getName()));
     }
 
     /**
