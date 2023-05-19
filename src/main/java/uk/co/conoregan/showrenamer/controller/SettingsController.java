@@ -27,7 +27,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.co.conoregan.showrenamer.config.ShowRenamerPreference;
+import uk.co.conoregan.showrenamer.config.preference.ShowRenamerPreference;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;

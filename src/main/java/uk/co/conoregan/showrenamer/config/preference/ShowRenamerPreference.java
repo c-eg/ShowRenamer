@@ -15,7 +15,7 @@
  * along with ShowRenamer.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package uk.co.conoregan.showrenamer.config;
+package uk.co.conoregan.showrenamer.config.preference;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

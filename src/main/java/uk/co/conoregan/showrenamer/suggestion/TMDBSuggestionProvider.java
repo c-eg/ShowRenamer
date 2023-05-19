@@ -24,7 +24,7 @@ import info.movito.themoviedbapi.model.tv.TvEpisode;
 import info.movito.themoviedbapi.model.tv.TvSeries;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.co.conoregan.showrenamer.config.ShowRenamerPreference;
+import uk.co.conoregan.showrenamer.config.preference.ShowRenamerPreference;
 import uk.co.conoregan.showrenamer.util.Validation;
 import uk.co.conoregan.showrenamer.util.ShowInfoMatcher;
 
