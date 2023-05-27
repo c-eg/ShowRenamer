@@ -11,7 +11,8 @@ Renames movie and tv show file names to a much nicer format.
 ![ShowRenamer GUI](https://i.imgur.com/5XG8YWJ.png)
 
 ## Features
-- Renames movie & tv show files
+- Renames movies, tv shows and tv show episodes
+- Works with files and directories
 - Allows custom rename format
 
 ## Usage
