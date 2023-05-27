@@ -24,7 +24,8 @@ import javax.annotation.Nonnull;
  */
 public enum ShowRenamerPreference {
     RENAME_FORMAT_MOVIE("rename.format.movie", "{title} ({year})"),
-    RENAME_FORMAT_TV_SHOW("rename.format.tv.show", "{title} - S{season}E{episode} - {episodeName}");
+    RENAME_FORMAT_TV_SHOW("rename.format.tv.show", "{title} ({year})"),
+    RENAME_FORMAT_TV_SHOW_EPISODE("rename.format.tv.show.episode", "{title} ({year}) - S{season}E{episode} - {episodeName}");
 
     /**
      * Preference name.

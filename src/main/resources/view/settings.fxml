@@ -151,9 +151,9 @@
                                           <Insets />
                                        </VBox.margin>
                                        <children>
-                                          <Label contentDisplay="CENTER" maxWidth="1.7976931348623157E308" styleClass="sub-heading" text="Movies">
+                                          <Label contentDisplay="CENTER" maxWidth="1.7976931348623157E308" styleClass="sub-heading" text="Movie">
                                              <VBox.margin>
-                                                <Insets bottom="10.0" />
+                                                <Insets bottom="5.0" />
                                              </VBox.margin>
                                           </Label>
                                           <HBox spacing="20.0">
@@ -166,20 +166,38 @@
                                                 </VBox>
                                              </children>
                                              <VBox.margin>
-                                                <Insets bottom="40.0" />
+                                                <Insets bottom="30.0" />
                                              </VBox.margin>
                                           </HBox>
-                                          <Label contentDisplay="CENTER" maxWidth="1.7976931348623157E308" styleClass="sub-heading" text="TV Shows">
+                                          <Label contentDisplay="CENTER" maxWidth="1.7976931348623157E308" styleClass="sub-heading" text="TV Show">
                                              <VBox.margin>
-                                                <Insets bottom="10.0" />
+                                                <Insets bottom="5.0" />
                                              </VBox.margin>
                                           </Label>
                                           <HBox spacing="20.0">
                                              <children>
-                                                <TextField fx:id="textFieldTvShowRenameFormat" text="{title} - S{season}E{episode} - {episodeName}" HBox.hgrow="ALWAYS" />
+                                                <TextField fx:id="textFieldTvShowRenameFormat" text="{title} ({year})" HBox.hgrow="ALWAYS" />
                                                 <VBox alignment="CENTER">
                                                    <children>
                                                       <Button mnemonicParsing="false" onAction="#resetTvShowRenameFormat" styleClass="button-secondary" text="Reset" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets bottom="30.0" />
+                                             </VBox.margin>
+                                          </HBox>
+                                          <Label contentDisplay="CENTER" maxWidth="1.7976931348623157E308" styleClass="sub-heading" text="TV Show Episode">
+                                             <VBox.margin>
+                                                <Insets bottom="5.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                          <HBox spacing="20.0">
+                                             <children>
+                                                <TextField fx:id="textFieldTvShowEpisodeRenameFormat" text="{title} ({year}) - S{season}E{episode} - {episodeName}" HBox.hgrow="ALWAYS" />
+                                                <VBox alignment="CENTER">
+                                                   <children>
+                                                      <Button mnemonicParsing="false" onAction="#resetTvShowEpisodeRenameFormat" styleClass="button-secondary" text="Reset" />
                                                    </children>
                                                    <HBox.margin>
                                                       <Insets />

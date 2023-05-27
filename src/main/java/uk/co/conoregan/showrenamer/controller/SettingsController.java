@@ -89,6 +89,12 @@ public class SettingsController extends NavigationController implements Initiali
     private TextField textFieldTvShowRenameFormat;
 
     /**
+     * Text field for tv show episode rename format.
+     */
+    @FXML
+    private TextField textFieldTvShowEpisodeRenameFormat;
+
+    /**
      * Navigate to rename page.
      *
      * @param event the button event.
@@ -140,6 +146,14 @@ public class SettingsController extends NavigationController implements Initiali
     }
 
     /**
+     * Resets the tv show episode rename format to default.
+     */
+    @FXML
+    private void resetTvShowEpisodeRenameFormat() {
+        resetFormat(ShowRenamerPreference.RENAME_FORMAT_TV_SHOW_EPISODE, textFieldTvShowEpisodeRenameFormat);
+    }
+
+    /**
      * Resets rename format.
      *
      * @param renameFormat the rename format to reset.
@@ -156,6 +170,7 @@ public class SettingsController extends NavigationController implements Initiali
     private void saveRenameFormats() {
         PREFERENCE_SERVICE.setPreference(ShowRenamerPreference.RENAME_FORMAT_MOVIE, textFieldMovieRenameFormat.getText());
         PREFERENCE_SERVICE.setPreference(ShowRenamerPreference.RENAME_FORMAT_TV_SHOW, textFieldTvShowRenameFormat.getText());
+        PREFERENCE_SERVICE.setPreference(ShowRenamerPreference.RENAME_FORMAT_TV_SHOW_EPISODE, textFieldTvShowEpisodeRenameFormat.getText());
     }
 
     /**
@@ -167,5 +182,6 @@ public class SettingsController extends NavigationController implements Initiali
 
         textFieldMovieRenameFormat.setText(PREFERENCE_SERVICE.getPreference(ShowRenamerPreference.RENAME_FORMAT_MOVIE));
         textFieldTvShowRenameFormat.setText(PREFERENCE_SERVICE.getPreference(ShowRenamerPreference.RENAME_FORMAT_TV_SHOW));
+        textFieldTvShowEpisodeRenameFormat.setText(PREFERENCE_SERVICE.getPreference(ShowRenamerPreference.RENAME_FORMAT_TV_SHOW_EPISODE));
     }
 }

@@ -38,9 +38,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.co.conoregan.showrenamer.config.property.PropertyService;
 import uk.co.conoregan.showrenamer.config.property.ShowRenamerProperty;
-import uk.co.conoregan.showrenamer.suggestion.ShowSuggestionProvider;
-import uk.co.conoregan.showrenamer.suggestion.TMDBSuggestionProvider;
-import uk.co.conoregan.showrenamer.util.StringUtils;
+import uk.co.conoregan.showrenamer.api.TMDBResultProvider;
+import uk.co.conoregan.showrenamer.suggestion.FileSuggestionProvider;
 
 import javax.annotation.Nonnull;
 import java.io.File;
@@ -48,6 +47,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.regex.Pattern;
 
 /**
  * The JavaFX controller for the rename.fxml file.
@@ -74,9 +74,9 @@ public class RenameController extends NavigationController implements Initializa
     private final TreeMap<File, File> fileRenameMapping = new TreeMap<>(Comparator.comparing(File::getName));
 
     /**
-     * The movie database suggestion provider.
+     * The file renamer.
      */
-    private ShowSuggestionProvider showSuggestionProvider;
+    private FileSuggestionProvider fileSuggestionProvider;
 
     /**
      * List view to show original file names.
@@ -189,16 +189,10 @@ public class RenameController extends NavigationController implements Initializa
         updateButtonsUserInterface();
 
         CompletableFuture.allOf(
-                // stream map keys
-                // get suggestion from file name without extension
-                // create new file object with new name from suggestion
-                // replace the null entry in map value with new file object, or null if no suggestion was found
-                fileRenameMapping.keySet().stream().map(file -> CompletableFuture.supplyAsync(() ->
-                                showSuggestionProvider.getSuggestion(FilenameUtils.removeExtension(file.getName())))
-                        .thenApply(suggestion ->
-                                suggestion.map(replacement -> new File(StringUtils.replaceLastOccurrence(
-                                                file.getAbsolutePath(), FilenameUtils.removeExtension(file.getName()), replacement)))
-                                        .orElse(null))
+                fileRenameMapping.keySet()
+                        .stream()
+                        .map(file -> CompletableFuture.supplyAsync(() -> fileSuggestionProvider.getImprovedName(file))
+                        .thenApply(suggestion -> suggestion.orElse(null))
                         .thenAccept(suggestion -> fileRenameMapping.replace(file, suggestion))
                 ).toArray(CompletableFuture[]::new)
         ).thenAccept(unused -> updateUserInterface());
@@ -215,29 +209,34 @@ public class RenameController extends NavigationController implements Initializa
     }
 
     /**
-     * Function to rename all files with api updated info.
+     * Function to rename all files with suggested replacements.
      */
     @FXML
     public void saveAll() {
-        for (final Map.Entry<File, File> entry : fileRenameMapping.entrySet()) {
-            final File sourceFile = entry.getKey();
-            final File destinationFile = entry.getValue();
+        fileRenameMapping
+                .entrySet()
+                .stream()
+                .filter(entry -> entry.getValue() != null)
+                .sorted((entry1, entry2) -> Integer.compare(getDepth(entry2.getKey()), getDepth(entry1.getKey())))
+                .forEach(entry -> {
+                    final File sourceFile = entry.getKey();
+                    final File destinationFile = entry.getValue();
 
-            if (destinationFile == null) {
-                LOGGER.info(String.format("Cannot rename: %s, no suggestion found.", sourceFile.getName()));
-                continue;
-            }
+                    final String originalName = sourceFile.getName();
+                    final String newName = destinationFile.getName();
 
-            if (destinationFile.exists()) {
-                LOGGER.warn(String.format("Cannot rename: %s, %s already exists.", sourceFile.getName(), destinationFile.getName()));
-                continue;
-            }
+                    if (destinationFile.exists()) {
+                        LOGGER.warn(String.format("Cannot rename: %s, the file already exists.", sourceFile.getName()));
+                        return;
+                    }
 
-            final boolean successfulRename = sourceFile.renameTo(destinationFile);
-            if (!successfulRename) {
-                LOGGER.error(String.format("Cannot rename: %s, an unexpected error occurred.", sourceFile.getName()));
-            }
-        }
+                    final boolean successfulRename = sourceFile.renameTo(destinationFile);
+                    if (successfulRename) {
+                        LOGGER.info(String.format("Successfully renamed: %s --> %s", originalName, newName));
+                    } else {
+                        LOGGER.error(String.format("Cannot rename: %s, an unexpected error occurred.", sourceFile.getName()));
+                    }
+                });
 
         clearAll();
     }
@@ -263,7 +262,7 @@ public class RenameController extends NavigationController implements Initializa
      * This function is treated as constructor for non-javafx related things.
      */
     private void initializeConstructor() {
-       showSuggestionProvider = new TMDBSuggestionProvider(PROPERTY_SERVICE.getProperty(ShowRenamerProperty.TMDB_API_KEY));
+       fileSuggestionProvider = new FileSuggestionProvider(new TMDBResultProvider(PROPERTY_SERVICE.getProperty(ShowRenamerProperty.TMDB_API_KEY)));
     }
 
     /**
@@ -325,7 +324,11 @@ public class RenameController extends NavigationController implements Initializa
                     setMaxWidth(param.getWidth() - 20);
                     setPrefWidth(param.getWidth() - 20);
 
-                    setText(FilenameUtils.removeExtension(item.getName()));
+                    if (item.isDirectory()) {
+                        setText(item.getName());
+                    } else {
+                        setText(FilenameUtils.removeExtension(item.getName()));
+                    }
                 }
             }
         });
@@ -337,9 +340,9 @@ public class RenameController extends NavigationController implements Initializa
      * @param file file from selected folder in open file dialog
      */
     private void addFile(@Nonnull final File file) {
-        if (file.isFile()) {
-            fileRenameMapping.put(file, null);
-        } else if (file.isDirectory() && checkboxIncludeSubFolder.isSelected()) {
+        fileRenameMapping.put(file, null);
+
+        if (file.isDirectory() && checkboxIncludeSubFolder.isSelected()) {
             final File[] dirFiles = file.listFiles();
 
             if (dirFiles == null) {
@@ -350,5 +353,16 @@ public class RenameController extends NavigationController implements Initializa
                 addFile(f);
             }
         }
+    }
+
+    /**
+     * Gets the depth of a file.
+     *
+     * @param file the file.
+     * @return the depth.
+     */
+    private int getDepth(@Nonnull final File file) {
+        final String fileSeparator = String.valueOf(File.separatorChar);
+        return file.getAbsolutePath().split(Pattern.quote(fileSeparator)).length;
     }
 }
