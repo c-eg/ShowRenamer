@@ -16,6 +16,7 @@ Renames movie and tv show file names to a much nicer format.
 - Allows custom rename format
 
 ## Usage
+1. Currently requires downloading [Amazon Corretto JDK 17](https://docs.aws.amazon.com/corretto/latest/corretto-17-ug/downloads-list.html). This is a [planned fix](https://github.com/c-eg/ShowRenamer/issues/75) for the future.
 1. Download the latest jar from the [releases](https://github.com/c-eg/ShowRenamer/releases)
 2. Double click to run the jar
 3. If step 2. doesn't work, try running from command line using: `java -jar JAR_NAME.jar`
