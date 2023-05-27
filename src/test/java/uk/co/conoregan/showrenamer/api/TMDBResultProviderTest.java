@@ -136,7 +136,7 @@ public class TMDBResultProviderTest {
         when(TMDB_API.getSearch()).thenReturn(tmdbSearch);
 
         final TvResultsPage tvResultsPage = mock(TvResultsPage.class);
-        when(tmdbSearch.searchTv(anyString(), any(), anyString(), anyBoolean(), eq(1))).thenReturn(tvResultsPage);
+        when(tmdbSearch.searchTv(anyString(), any(), any(), anyBoolean(), anyInt())).thenReturn(tvResultsPage);
 
         final Optional<ShowResultProvider.TvEpisodeResult> suggestion = SHOW_RESULT_PROVIDER.getTvEpisodeResult("Tv series title", 1, 1, null, null);
         Assertions.assertTrue(suggestion.isEmpty());
@@ -151,7 +151,7 @@ public class TMDBResultProviderTest {
         when(TMDB_API.getSearch()).thenReturn(tmdbSearch);
 
         final TvResultsPage tvResultsPage = mock(TvResultsPage.class);
-        when(tmdbSearch.searchTv(anyString(), any(), anyString(), anyBoolean(), eq(1))).thenReturn(tvResultsPage);
+        when(tmdbSearch.searchTv(anyString(), any(), any(), anyBoolean(), anyInt())).thenReturn(tvResultsPage);
 
         // tv show
         final List<TvSeries> results = new ArrayList<>();
