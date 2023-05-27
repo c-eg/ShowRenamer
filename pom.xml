@@ -113,7 +113,7 @@
         <dependency>
             <groupId>com.github.holgerbrandl</groupId>
             <artifactId>themoviedbapi</artifactId>
-            <version>1.12</version>
+            <version>1.14</version>
         </dependency>
 
         <!-- ben-manes/caffeine High performance cache -->
