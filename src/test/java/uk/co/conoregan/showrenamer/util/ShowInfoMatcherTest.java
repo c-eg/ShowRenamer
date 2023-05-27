@@ -62,31 +62,54 @@ public class ShowInfoMatcherTest {
     @Test
     public void testMatchYear() {
         final String testCase = "some.random.movie.2010.1080p.bluray.x264";
-        final Optional<String> year = ShowInfoMatcher.matchYear(testCase);
+        final Optional<Integer> year = ShowInfoMatcher.matchYear(testCase);
         Assertions.assertTrue(year.isPresent());
-        Assertions.assertEquals("2010", year.get());
+        Assertions.assertEquals(2010, year.get());
     }
 
-//    @Test
-//    public void testMatchYearContainingYearInTitle() {
-//        final String testCase = "some.random.movie.2012.2010.1080p.bluray.x264";
-//        final Optional<String> year = ShowInfoMatcher.matchYear(testCase);
-//        Assertions.assertTrue(year.isPresent());
-//        Assertions.assertEquals("2010", year.get());
-//    }
+    @Test
+    public void testMatchYearInBrackets() {
+        final String testCase = "some.random.movie (2010) 1080p.bluray.x264";
+        final Optional<Integer> year = ShowInfoMatcher.matchYear(testCase);
+        Assertions.assertTrue(year.isPresent());
+        Assertions.assertEquals(2010, year.get());
+    }
+
+    @Test
+    public void testMatchYearContainingYearInTitle() {
+        final String testCase = "some.random.movie.2012.2010.1080p.bluray.x264";
+        final Optional<Integer> year = ShowInfoMatcher.matchYear(testCase);
+        Assertions.assertTrue(year.isPresent());
+        Assertions.assertEquals(2010, year.get());
+    }
 
     @Test
     public void testMatchYearOnlyYearInTitle() {
         final String testCase = "2012.2010.1080p.bluray.x264";
-        final Optional<String> year = ShowInfoMatcher.matchYear(testCase);
+        final Optional<Integer> year = ShowInfoMatcher.matchYear(testCase);
         Assertions.assertTrue(year.isPresent());
-        Assertions.assertEquals("2010", year.get());
+        Assertions.assertEquals(2010, year.get());
+    }
+
+    @Test
+    public void testMatchYearWithResolution() {
+        final String testCase = "movie.title.2010.1080p.bluray.x264";
+        final Optional<Integer> year = ShowInfoMatcher.matchYear(testCase);
+        Assertions.assertTrue(year.isPresent());
+        Assertions.assertEquals(2010, year.get());
+    }
+
+    @Test
+    public void testMatchYearNoMatchWithResolution() {
+        final String testCase = "movie.title.1080p.bluray.x264";
+        final Optional<Integer> year = ShowInfoMatcher.matchYear(testCase);
+        Assertions.assertFalse(year.isPresent());
     }
 
     @Test
     public void testMatchYearNoMatch() {
         final String testCase = "1080p.bluray.x264";
-        final Optional<String> year = ShowInfoMatcher.matchYear(testCase);
+        final Optional<Integer> year = ShowInfoMatcher.matchYear(testCase);
         Assertions.assertFalse(year.isPresent());
     }
 

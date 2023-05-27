@@ -49,21 +49,24 @@ public class ShowInfoMatcher {
 
     /**
      * Matches a show year from a file name.
+     * The year must be in the range: 1900 <= year <= 2199.
      *
      * @param fileName the file name.
      * @return optional year.
      */
     @Nonnull
-    public static Optional<String> matchYear(final String fileName) {
-        final String regex = "[.\\s](?!^)[1,2]\\d{3}[.\\s]";
+    public static Optional<Integer> matchYear(final String fileName) {
+        final String regex = "\\b(19|20|21)\\d{2}\\b";
         final Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
         final Matcher matcher = pattern.matcher(fileName);
 
-        if (matcher.find()) {
-            return matcher.group(0).replace(".", "").trim().describeConstable();
+        Integer year = null;
+
+        while (matcher.find()) {
+            year = Integer.parseInt(matcher.group(0));
         }
 
-        return Optional.empty();
+        return Optional.ofNullable(year);
     }
 
     /**
