@@ -13,7 +13,8 @@ Renames movie and tv show file names to a much nicer format.
 ## Features
 - Renames movies, tv shows and tv show episodes
 - Works with files and directories
-- Allows custom rename format
+- Custom rename formats
+- File type filtering
 
 ## Usage
 1. Currently requires downloading [Amazon Corretto JDK 17](https://docs.aws.amazon.com/corretto/latest/corretto-17-ug/downloads-list.html). This is a [planned fix](https://github.com/c-eg/ShowRenamer/issues/75) for the future.
