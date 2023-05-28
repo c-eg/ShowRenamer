@@ -23,9 +23,35 @@ import javax.annotation.Nonnull;
  * Wrapper class for the Preferences API, for Show Renamer preferences.
  */
 public enum ShowRenamerPreference {
+    /**
+     * Rename format for movies.
+     */
     RENAME_FORMAT_MOVIE("rename.format.movie", "{title} ({year})"),
+
+    /**
+     * Rename format for tv shows.
+     */
     RENAME_FORMAT_TV_SHOW("rename.format.tv.show", "{title} ({year})"),
-    RENAME_FORMAT_TV_SHOW_EPISODE("rename.format.tv.show.episode", "{title} ({year}) - S{season}E{episode} - {episodeName}");
+
+    /**
+     * Rename format for tv show episodes.
+     */
+    RENAME_FORMAT_TV_SHOW_EPISODE("rename.format.tv.show.episode", "{title} ({year}) - S{season}E{episode} - {episodeName}"),
+
+    /**
+     * Allowed file types.
+     */
+    ALLOWED_FILE_TYPES("allowed.file.types", "mp4,mkv"),
+
+    /**
+     * Whether include sub-folders should be checked.
+     */
+    CHECKBOX_CHECKED_INCLUDE_SUB_FOLDERS("checkbox.checked.include.sub.folders", "false"),
+
+    /**
+     * Whether filter file types should be checked.
+     */
+    CHECKBOX_CHECKED_FILTER_FILE_TYPES("checkbox.checked.filter.file.types", "false");
 
     /**
      * Preference name.

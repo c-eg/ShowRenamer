@@ -41,7 +41,7 @@
 
 .card-active {
     -fx-border-color: rgba(50, 152, 227, 0.25);
-    -fx-effect: dropshadow(gaussian , rgba(50, 152, 227, 1.0), 15, 0.1, 0, 0);
+    -fx-effect: dropshadow(gaussian , rgba(50, 152, 227, 1.0), 17, 0.2, 0, 0);
 }
 
 .heading {
@@ -95,7 +95,6 @@
     -fx-border-color: rgba(0, 0, 0, 0.2);
     -fx-border-radius: 20px;
     -fx-effect: dropshadow(gaussian , rgba(0, 0, 0, 0.2), 15, 0.5, 0, 0);
-
 }
 
 .button-primary:hover {
@@ -233,9 +232,32 @@
 }
 
 .button-settings-nav {
-    -fx-padding: 20px 50px 20px 20px;
+    -fx-padding: 20px 20px 20px 20px;
 }
 
 .button-settings-nav:hover {
     -fx-cursor: hand;
+}
+
+.file-type {
+    -fx-padding: 4px 5px 4px 10px;
+    -fx-background-radius: 20px;
+    -fx-background-color: #3298e3;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-text-fill: #ffffff;
+}
+
+.button-close {
+    -fx-cursor: hand;
+    -fx-padding: 0px;
+    -fx-background-insets: 0px;
+    -fx-background-radius: 5em;
+    -fx-min-width: 20px;
+    -fx-min-height: 20px;
+    -fx-max-width: 20px;
+    -fx-max-height: 20px;
+    -fx-background-color: #ffffff;
+    -fx-font-size: 13px;
+    -fx-font-weight: 700;
 }

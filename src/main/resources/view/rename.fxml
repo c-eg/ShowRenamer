@@ -45,16 +45,17 @@
             </HBox>
             <HBox alignment="CENTER" spacing="20.0" styleClass="section-container-buttons" VBox.vgrow="ALWAYS">
                <children>
-                  <VBox alignment="TOP_CENTER" HBox.hgrow="NEVER">
+                  <VBox alignment="TOP_CENTER" prefWidth="275.0" HBox.hgrow="NEVER">
                      <children>
-                        <VBox alignment="TOP_CENTER" prefHeight="482.0" prefWidth="250.0" VBox.vgrow="ALWAYS">
+                        <VBox alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
                            <children>
-                              <Label contentDisplay="CENTER" prefHeight="5.0" prefWidth="210.0" text="Source &amp; Options">
+                              <Label contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="Source &amp; Options">
                                  <styleClass>
                                     <String fx:value="heading" />
                                     <String fx:value="section-heading" />
                                  </styleClass></Label>
                               <CheckBox fx:id="checkboxIncludeSubFolder" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="37.0" prefWidth="248.0" text="Include sub-folders" />
+                              <CheckBox fx:id="checkboxFilterFileTypes" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="37.0" prefWidth="248.0" text="Filter file types" />
                               <VBox alignment="CENTER" onDragDropped="#handleDragDroppedFileUpload" onDragOver="#handleDragOverFileUpload" prefHeight="200.0" prefWidth="100.0" spacing="10.0" VBox.vgrow="ALWAYS">
                                  <children>
                                     <ImageView fitHeight="75.0" fitWidth="75.0" opacity="0.15" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
@@ -79,7 +80,7 @@
                      <children>
                         <VBox alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
                            <children>
-                              <HBox prefWidth="400.0">
+                              <HBox>
                                  <children>
                                     <Label fx:id="labelCurrentTitles" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" minWidth="-Infinity" text="Current Titles" HBox.hgrow="ALWAYS">
                                        <styleClass>
@@ -89,7 +90,7 @@
                                     <Button fx:id="buttonClearAll" mnemonicParsing="false" onAction="#clearAll" styleClass="button-secondary" text="Clear All" textAlignment="CENTER" HBox.hgrow="NEVER" />
                                  </children>
                               </HBox>
-                              <ListView fx:id="listViewCurrentTitles" prefHeight="547.0" prefWidth="419.0" VBox.vgrow="ALWAYS">
+                              <ListView fx:id="listViewCurrentTitles" VBox.vgrow="ALWAYS">
                                  <VBox.margin>
                                     <Insets bottom="15.0" />
                                  </VBox.margin>
@@ -108,12 +109,12 @@
                      <children>
                         <VBox alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
                            <children>
-                              <Label contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefWidth="400.0" text="Suggested Titles" textAlignment="CENTER" VBox.vgrow="ALWAYS">
+                              <Label contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="Suggested Titles" textAlignment="CENTER" VBox.vgrow="ALWAYS">
                                  <styleClass>
                                     <String fx:value="heading" />
                                     <String fx:value="section-heading" />
                                  </styleClass></Label>
-                              <ListView fx:id="listViewSuggestedTitles" prefHeight="515.0" prefWidth="227.0" VBox.vgrow="ALWAYS">
+                              <ListView fx:id="listViewSuggestedTitles" VBox.vgrow="ALWAYS">
                                  <VBox.margin>
                                     <Insets bottom="15.0" />
                                  </VBox.margin>

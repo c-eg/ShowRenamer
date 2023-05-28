@@ -17,26 +17,43 @@
 
 package uk.co.conoregan.showrenamer.controller;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.co.conoregan.showrenamer.config.preference.PreferenceService;
 import uk.co.conoregan.showrenamer.config.preference.ShowRenamerPreference;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashSet;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * The JavaFX controller for the settings.fxml file.
  */
 public class SettingsController extends NavigationController implements Initializable {
+    /**
+     * The logger.
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(SettingsController.class);
+
     /**
      * The preference service.
      */
@@ -54,6 +71,12 @@ public class SettingsController extends NavigationController implements Initiali
     private VBox vboxRenameFormat;
 
     /**
+     * VBox node containing the settings navigation button for allowed files types.
+     */
+    @FXML
+    private VBox vboxAllowedFileTypes;
+
+    /**
      * VBox node containing the settings navigation button for about.
      */
     @FXML
@@ -64,6 +87,12 @@ public class SettingsController extends NavigationController implements Initiali
      */
     @FXML
     private Button buttonSettingsNavRenameFormat;
+
+    /**
+     * Button for settings navigation to change to allowed files types section.
+     */
+    @FXML
+    private Button buttonSettingsNavFileTypeFilter;
 
     /**
      * Button for settings navigation to change to about section.
@@ -95,6 +124,18 @@ public class SettingsController extends NavigationController implements Initiali
     private TextField textFieldTvShowEpisodeRenameFormat;
 
     /**
+     * Text field for adding allowed file types.
+     */
+    @FXML
+    private TextField textFieldAddAllowedFileType;
+
+    /**
+     * HBox containing allowed file types.
+     */
+    @FXML
+    private HBox hboxAllowedFileTypes;
+
+    /**
      * Navigate to rename page.
      *
      * @param event the button event.
@@ -118,14 +159,19 @@ public class SettingsController extends NavigationController implements Initiali
         buttonActiveSettingsNav = (Button) event.getSource();
         buttonActiveSettingsNav.getStyleClass().add(CSS_CLASS_CARD_ACTIVE);
 
+        vboxRenameFormat.setVisible(false);
+        vboxAllowedFileTypes.setVisible(false);
+        vboxAbout.setVisible(false);
+
         if (buttonActiveSettingsNav.equals(buttonSettingsNavRenameFormat)) {
             vboxRenameFormat.toFront();
             vboxRenameFormat.setVisible(true);
-            vboxAbout.setVisible(false);
+        } else if (buttonActiveSettingsNav.equals(buttonSettingsNavFileTypeFilter)) {
+            vboxAllowedFileTypes.toFront();
+            vboxAllowedFileTypes.setVisible(true);
         } else if (buttonActiveSettingsNav.equals(buttonSettingsNavAbout)) {
             vboxAbout.toFront();
             vboxAbout.setVisible(true);
-            vboxRenameFormat.setVisible(false);
         }
     }
 
@@ -174,6 +220,38 @@ public class SettingsController extends NavigationController implements Initiali
     }
 
     /**
+     * Adds the file type to the allowed files types.
+     */
+    @FXML
+    private void addAllowedFileType() {
+        final String fileType = textFieldAddAllowedFileType.getText().trim().strip().toLowerCase();
+
+        if (fileType.isEmpty()) {
+            LOGGER.info(String.format("Cannot add file type: '%s', it is empty.", fileType));
+            return;
+        }
+
+        addAllowedFileType(fileType);
+        textFieldAddAllowedFileType.setText("");
+        Platform.runLater(() -> textFieldAddAllowedFileType.requestFocus());
+    }
+
+    /**
+     * Saves the allowed file types.
+     */
+    @FXML
+    private void saveAllowedFileTypes() {
+        final Set<String> allowedFileTypes = new HashSet<>();
+
+        for (final Node node : hboxAllowedFileTypes.getChildren()) {
+            final Label label = ((Label) node);
+            allowedFileTypes.add(label.getText());
+        }
+
+        PREFERENCE_SERVICE.setPreference(ShowRenamerPreference.ALLOWED_FILE_TYPES, String.join(",", allowedFileTypes));
+    }
+
+    /**
      * @inheritDoc
      */
     @Override
@@ -183,5 +261,40 @@ public class SettingsController extends NavigationController implements Initiali
         textFieldMovieRenameFormat.setText(PREFERENCE_SERVICE.getPreference(ShowRenamerPreference.RENAME_FORMAT_MOVIE));
         textFieldTvShowRenameFormat.setText(PREFERENCE_SERVICE.getPreference(ShowRenamerPreference.RENAME_FORMAT_TV_SHOW));
         textFieldTvShowEpisodeRenameFormat.setText(PREFERENCE_SERVICE.getPreference(ShowRenamerPreference.RENAME_FORMAT_TV_SHOW_EPISODE));
+
+        final List<String> allowedFileTypes =
+                Stream.of(PREFERENCE_SERVICE.getPreference(ShowRenamerPreference.ALLOWED_FILE_TYPES).split(",")).sorted().toList();
+        for (final String type : allowedFileTypes) {
+            addAllowedFileType(type);
+        }
+    }
+
+    /**
+     * Add file type to allowed.
+     *
+     * @param type the file type.
+     */
+    private void addAllowedFileType(@Nonnull final String type) {
+        final Set<String> existingTypes = hboxAllowedFileTypes.getChildren().stream().map(node ->
+                ((Label) node).getText()).collect(Collectors.toSet());
+
+        if (existingTypes.contains(type)) {
+            LOGGER.info(String.format("The file type: '%s' is already present.", type));
+            return;
+        }
+
+        final Button closeButton = new Button("x");
+        closeButton.setAlignment(Pos.TOP_CENTER);
+        closeButton.getStyleClass().add("button-close");
+
+        final Label label = new Label(type);
+        label.setGraphic(closeButton);
+        label.setAlignment(Pos.CENTER_LEFT);
+        label.setContentDisplay(ContentDisplay.RIGHT);
+        label.getStyleClass().add("file-type");
+
+        closeButton.setOnAction(event -> hboxAllowedFileTypes.getChildren().remove(label));
+
+        hboxAllowedFileTypes.getChildren().add(label);
     }
 }

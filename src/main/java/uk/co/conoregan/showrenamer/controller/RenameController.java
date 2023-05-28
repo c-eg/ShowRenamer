@@ -36,9 +36,11 @@ import javafx.stage.Window;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.co.conoregan.showrenamer.api.TMDBResultProvider;
+import uk.co.conoregan.showrenamer.config.preference.PreferenceService;
+import uk.co.conoregan.showrenamer.config.preference.ShowRenamerPreference;
 import uk.co.conoregan.showrenamer.config.property.PropertyService;
 import uk.co.conoregan.showrenamer.config.property.ShowRenamerProperty;
-import uk.co.conoregan.showrenamer.api.TMDBResultProvider;
 import uk.co.conoregan.showrenamer.suggestion.FileSuggestionProvider;
 
 import javax.annotation.Nonnull;
@@ -62,6 +64,11 @@ public class RenameController extends NavigationController implements Initializa
      * The Properties service.
      */
     private static final PropertyService PROPERTY_SERVICE = new PropertyService();
+
+    /**
+     * The preference service.
+     */
+    private static final PreferenceService PREFERENCE_SERVICE = new PreferenceService();
 
     /**
      * The directory chooser.
@@ -95,6 +102,12 @@ public class RenameController extends NavigationController implements Initializa
      */
     @FXML
     private CheckBox checkboxIncludeSubFolder;
+
+    /**
+     * Checkbox to filter file types.
+     */
+    @FXML
+    private CheckBox checkboxFilterFileTypes;
 
     /**
      * Button to get suggested file names.
@@ -192,9 +205,9 @@ public class RenameController extends NavigationController implements Initializa
                 fileRenameMapping.keySet()
                         .stream()
                         .map(file -> CompletableFuture.supplyAsync(() -> fileSuggestionProvider.getImprovedName(file))
-                        .thenApply(suggestion -> suggestion.orElse(null))
-                        .thenAccept(suggestion -> fileRenameMapping.replace(file, suggestion))
-                ).toArray(CompletableFuture[]::new)
+                                .thenApply(suggestion -> suggestion.orElse(null))
+                                .thenAccept(suggestion -> fileRenameMapping.replace(file, suggestion))
+                        ).toArray(CompletableFuture[]::new)
         ).thenAccept(unused -> updateUserInterface());
     }
 
@@ -246,23 +259,30 @@ public class RenameController extends NavigationController implements Initializa
      */
     @Override
     public void initialize(final URL url, final ResourceBundle resourceBundle) {
-        initializeConstructor();
+        fileSuggestionProvider = new FileSuggestionProvider(
+                new TMDBResultProvider(PROPERTY_SERVICE.getProperty(ShowRenamerProperty.TMDB_API_KEY)));
 
         // stops checkbox box resizing when clicking on and off other controls
         checkboxIncludeSubFolder.setFocusTraversable(false);
+        checkboxFilterFileTypes.setFocusTraversable(false);
+
+        // save selection value to preferences
+        checkboxIncludeSubFolder.selectedProperty().addListener((observable, oldValue, newValue) ->
+                PREFERENCE_SERVICE.setPreference(ShowRenamerPreference.CHECKBOX_CHECKED_INCLUDE_SUB_FOLDERS, String.valueOf(newValue)));
+        checkboxFilterFileTypes.selectedProperty().addListener((observable, oldValue, newValue) ->
+                PREFERENCE_SERVICE.setPreference(ShowRenamerPreference.CHECKBOX_CHECKED_FILTER_FILE_TYPES, String.valueOf(newValue)));
+
+        // set checkboxes to preference values
+        checkboxIncludeSubFolder.selectedProperty().set(
+                Boolean.parseBoolean(PREFERENCE_SERVICE.getPreference(ShowRenamerPreference.CHECKBOX_CHECKED_INCLUDE_SUB_FOLDERS)));
+        checkboxFilterFileTypes.selectedProperty().set(
+                Boolean.parseBoolean(PREFERENCE_SERVICE.getPreference(ShowRenamerPreference.CHECKBOX_CHECKED_FILTER_FILE_TYPES)));
 
         setListViewCellFactorySettings(listViewCurrentTitles);
         setListViewCellFactorySettings(listViewSuggestedTitles);
 
         listViewCurrentTitles.setFocusTraversable(false);
         listViewSuggestedTitles.setFocusTraversable(false);
-    }
-
-    /**
-     * This function is treated as constructor for non-javafx related things.
-     */
-    private void initializeConstructor() {
-       fileSuggestionProvider = new FileSuggestionProvider(new TMDBResultProvider(PROPERTY_SERVICE.getProperty(ShowRenamerProperty.TMDB_API_KEY)));
     }
 
     /**
@@ -279,8 +299,10 @@ public class RenameController extends NavigationController implements Initializa
      */
     private void updateButtonsUserInterface() {
         Platform.runLater(() -> {
-            buttonGetSuggestions.setDisable(fileRenameMapping.keySet().isEmpty() || !fileRenameMapping.values().stream().allMatch(Objects::isNull));
-            buttonSaveAll.setDisable(fileRenameMapping.values().isEmpty() || fileRenameMapping.values().stream().allMatch(Objects::isNull));
+            buttonGetSuggestions.setDisable(
+                    fileRenameMapping.keySet().isEmpty() || !fileRenameMapping.values().stream().allMatch(Objects::isNull));
+            buttonSaveAll.setDisable(
+                    fileRenameMapping.values().isEmpty() || fileRenameMapping.values().stream().allMatch(Objects::isNull));
         });
     }
 
@@ -300,7 +322,8 @@ public class RenameController extends NavigationController implements Initializa
     private void updateVboxUserInterface() {
         Platform.runLater(() -> {
             vboxCurrentTitles.setDisable(fileRenameMapping.keySet().isEmpty());
-            vboxSuggestedTitles.setDisable(fileRenameMapping.values().isEmpty() || fileRenameMapping.values().stream().allMatch(Objects::isNull));
+            vboxSuggestedTitles.setDisable(
+                    fileRenameMapping.values().isEmpty() || fileRenameMapping.values().stream().allMatch(Objects::isNull));
         });
     }
 
@@ -340,7 +363,9 @@ public class RenameController extends NavigationController implements Initializa
      * @param file file from selected folder in open file dialog
      */
     private void addFile(@Nonnull final File file) {
-        fileRenameMapping.put(file, null);
+        if (allowedToAddFile(file)) {
+            fileRenameMapping.put(file, null);
+        }
 
         if (file.isDirectory() && checkboxIncludeSubFolder.isSelected()) {
             final File[] dirFiles = file.listFiles();
@@ -351,6 +376,26 @@ public class RenameController extends NavigationController implements Initializa
 
             for (final File f : dirFiles) {
                 addFile(f);
+            }
+        }
+    }
+
+    /**
+     * Determines whether a file is allowed to be added.
+     *
+     * @param file the file.
+     * @return true if allowed, false if not.
+     */
+    private boolean allowedToAddFile(@Nonnull final File file) {
+        if (file.isDirectory()) {
+            return true;
+        } else {
+            if (!checkboxFilterFileTypes.isSelected()) {
+                return true;
+            } else {
+                final List<String> allowedTypes =
+                        List.of(PREFERENCE_SERVICE.getPreference(ShowRenamerPreference.ALLOWED_FILE_TYPES).split(","));
+                return allowedTypes.contains(FilenameUtils.getExtension(file.getName()));
             }
         }
     }

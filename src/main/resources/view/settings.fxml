@@ -43,16 +43,27 @@
             </HBox>
             <HBox alignment="CENTER" spacing="20.0" styleClass="section-container" VBox.vgrow="ALWAYS">
                <children>
-                  <VBox fx:id="vboxNavItems" alignment="TOP_CENTER" spacing="20.0" HBox.hgrow="NEVER">
+                  <VBox fx:id="vboxNavItems" alignment="TOP_CENTER" prefWidth="275.0" spacing="20.0" HBox.hgrow="NEVER">
                      <children>
                         <HBox alignment="CENTER_LEFT" onMouseClicked="#handleSettingsNavClick">
                            <children>
-                              <Button fx:id="buttonSettingsNavRenameFormat" alignment="TOP_LEFT" graphicTextGap="0.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleSettingsNavClick" text="Rename Format">
+                              <Button fx:id="buttonSettingsNavRenameFormat" alignment="TOP_LEFT" graphicTextGap="0.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleSettingsNavClick" text="Rename Format" HBox.hgrow="ALWAYS">
                                  <styleClass>
                                     <String fx:value="heading" />
                                     <String fx:value="button-settings-nav" />
                                     <String fx:value="card" />
                                     <String fx:value="card-active" />
+                                 </styleClass>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" onMouseClicked="#handleSettingsNavClick">
+                           <children>
+                              <Button fx:id="buttonSettingsNavFileTypeFilter" alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleSettingsNavClick" text="Allowed File Types" HBox.hgrow="ALWAYS">
+                                 <styleClass>
+                                    <String fx:value="heading" />
+                                    <String fx:value="button-settings-nav" />
+                                    <String fx:value="card" />
                                  </styleClass>
                               </Button>
                            </children>
@@ -118,6 +129,79 @@
                                     <String fx:value="section" />
                                     <String fx:value="card" />
                                  </styleClass>
+                              </VBox>
+                           </children>
+                        </VBox>
+                        <VBox fx:id="vboxAllowedFileTypes" spacing="20.0" visible="false">
+                           <children>
+                              <VBox alignment="TOP_CENTER">
+                                 <children>
+                                    <VBox alignment="TOP_CENTER">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                       <children>
+                                          <Label contentDisplay="CENTER" maxWidth="1.7976931348623157E308" styleClass="heading" text="Allowed File Types">
+                                             <VBox.margin>
+                                                <Insets bottom="10.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                          <Label contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="Select which file types should be allowed when adding files." />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                                 <styleClass>
+                                    <String fx:value="section" />
+                                    <String fx:value="card" />
+                                 </styleClass>
+                              </VBox>
+                              <VBox fx:id="vboxCurrentTitles111" alignment="TOP_CENTER">
+                                 <children>
+                                    <VBox alignment="TOP_CENTER">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                       <children>
+                                          <Label contentDisplay="CENTER" maxWidth="1.7976931348623157E308" styleClass="sub-heading" text="Allowed File Types">
+                                             <VBox.margin>
+                                                <Insets bottom="5.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                          <HBox fx:id="hboxAllowedFileTypes" spacing="10.0">
+                                             <VBox.margin>
+                                                <Insets bottom="30.0" />
+                                             </VBox.margin>
+                                          </HBox>
+                                          <Label contentDisplay="CENTER" maxWidth="1.7976931348623157E308" styleClass="sub-heading" text="Add">
+                                             <VBox.margin>
+                                                <Insets bottom="5.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                          <HBox spacing="20.0">
+                                             <children>
+                                                <TextField fx:id="textFieldAddAllowedFileType" HBox.hgrow="ALWAYS" />
+                                                <VBox alignment="CENTER">
+                                                   <children>
+                                                      <Button mnemonicParsing="false" onAction="#addAllowedFileType" styleClass="button-secondary" text="Add" />
+                                                   </children>
+                                                   <HBox.margin>
+                                                      <Insets />
+                                                   </HBox.margin>
+                                                </VBox>
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets bottom="15.0" />
+                                             </VBox.margin>
+                                          </HBox>
+                                       </children>
+                                       <styleClass>
+                                          <String fx:value="section" />
+                                          <String fx:value="button-padding" />
+                                          <String fx:value="card" />
+                                       </styleClass>
+                                    </VBox>
+                                    <Button mnemonicParsing="false" onAction="#saveAllowedFileTypes" styleClass="button-primary" text="Save" textAlignment="CENTER" />
+                                 </children>
                               </VBox>
                            </children>
                         </VBox>
