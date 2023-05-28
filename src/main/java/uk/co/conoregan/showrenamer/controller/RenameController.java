@@ -129,7 +129,7 @@ public class RenameController extends NavigationController implements Initializa
     @FXML
     private void navigateToSettingsPage(final ActionEvent event) throws IOException {
         final Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        changeScene("settings", stage);
+        changeScene(View.SETTINGS, stage);
     }
 
     /**

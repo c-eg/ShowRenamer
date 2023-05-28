@@ -31,30 +31,24 @@ import java.util.HashMap;
  */
 public class NavigationController {
     /**
-     * The path to the .fxml files.
-     */
-    private static final String VIEW_PATH = "/view/";
-
-    /**
      * The scene mapping cache.
      */
-    private static final HashMap<String, Scene> SCENE_MAP = new HashMap<>();
+    private static final HashMap<View, Scene> SCENE_MAP = new HashMap<>();
 
     /**
      * Changes the scene on the stage passed.
      *
-     * @param fxml the fxml file to load, e.g. "rename".
+     * @param view the view to load.
      * @param stage the stage to set the scene on.
-     * @throws IOException thrown if fxml file is not found.
      */
-    public static void changeScene(@Nonnull final String fxml, @Nonnull final Stage stage) throws IOException {
-        Scene scene = SCENE_MAP.get(fxml);
+    public static void changeScene(@Nonnull final View view, @Nonnull final Stage stage) throws IOException {
+        Scene scene = SCENE_MAP.get(view);
 
         // load if not in map
         if (scene == null) {
-            final Parent root = FXMLLoader.load(NavigationController.class.getResource(VIEW_PATH + fxml + ".fxml"));
+            final Parent root = FXMLLoader.load(NavigationController.class.getResource(view.getPath()));
             scene = new Scene(root);
-            SCENE_MAP.put(fxml, scene);
+            SCENE_MAP.put(view, scene);
         }
 
         // keep height and width from current scene.
