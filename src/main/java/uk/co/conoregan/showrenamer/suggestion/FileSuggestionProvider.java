@@ -26,7 +26,6 @@ import uk.co.conoregan.showrenamer.config.preference.ShowRenamerPreference;
 import uk.co.conoregan.showrenamer.util.ShowInfoMatcher;
 import uk.co.conoregan.showrenamer.util.StringUtils;
 
-import javax.annotation.Nonnull;
 import java.io.File;
 import java.util.List;
 import java.util.Optional;
@@ -55,7 +54,7 @@ public class FileSuggestionProvider {
      *
      * @param showResultProvider the show result provider to use.
      */
-    public FileSuggestionProvider(@Nonnull final ShowResultProvider showResultProvider) {
+    public FileSuggestionProvider(final ShowResultProvider showResultProvider) {
         this.showResultProvider = showResultProvider;
     }
 
@@ -65,8 +64,7 @@ public class FileSuggestionProvider {
      * @param file the file.
      * @return the file with a new name.
      */
-    @Nonnull
-    public Optional<File> getImprovedName(@Nonnull final File file) {
+    public Optional<File> getImprovedName(final File file) {
         final String fileName;
 
         if (file.isFile()) {

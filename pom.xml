@@ -102,14 +102,7 @@
             <classifier>mac</classifier>
         </dependency>
 
-        <!-- Google Find Bugs https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305 -->
-        <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>jsr305</artifactId>
-            <version>3.0.2</version>
-        </dependency>
-
-        <!-- The Movie Database API Wrapper https://github.com/holgerbrandl/themoviedbapi -->
+        <!-- https://search.maven.org/artifact/com.github.holgerbrandl/themoviedbapi -->
         <dependency>
             <groupId>com.github.holgerbrandl</groupId>
             <artifactId>themoviedbapi</artifactId>

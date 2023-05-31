@@ -17,8 +17,6 @@
 
 package uk.co.conoregan.showrenamer.config.property;
 
-import javax.annotation.Nonnull;
-
 /**
  * Show renamer properties enum.
  * If you add an entry in show-renamer.properties, you should add an entry to this enum.
@@ -39,7 +37,7 @@ public enum ShowRenamerProperty {
      *
      * @param name the name of the property.
      */
-    ShowRenamerProperty(@Nonnull final String name) {
+    ShowRenamerProperty(final String name) {
         this.name = name;
     }
 
@@ -48,7 +46,6 @@ public enum ShowRenamerProperty {
      *
      * @return the name.
      */
-    @Nonnull
     public String getName() {
         return this.name;
     }

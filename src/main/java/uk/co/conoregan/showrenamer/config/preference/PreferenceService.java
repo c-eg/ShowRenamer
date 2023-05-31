@@ -22,7 +22,6 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nonnull;
 import java.time.Duration;
 import java.util.prefs.Preferences;
 
@@ -60,8 +59,7 @@ public class PreferenceService {
      * @param preference the preference.
      * @return the preference, or default value if preference does not exist.
      */
-    @Nonnull
-    public String getPreference(@Nonnull final ShowRenamerPreference preference) {
+    public String getPreference(final ShowRenamerPreference preference) {
         return getPreference(preference.getName(), preference.getDefaultValue());
     }
 
@@ -72,8 +70,7 @@ public class PreferenceService {
      * @param defaultValue the default value.
      * @return the preference, or default value if preference does not exist.
      */
-    @Nonnull
-    public String getPreference(@Nonnull final String preference, @Nonnull final String defaultValue) {
+    public String getPreference(final String preference, final String defaultValue) {
         return PREFERENCE_CACHE.get(preference, key -> loadPreference(preference, defaultValue));
     }
 
@@ -83,7 +80,7 @@ public class PreferenceService {
      * @param preference the preference.
      * @param value the value.
      */
-    public void setPreference(@Nonnull final ShowRenamerPreference preference, @Nonnull final String value) {
+    public void setPreference(final ShowRenamerPreference preference, final String value) {
         setPreference(preference.getName(), value);
     }
 
@@ -93,7 +90,7 @@ public class PreferenceService {
      * @param preference the preference.
      * @param value the value.
      */
-    public void setPreference(@Nonnull final String preference, @Nonnull final String value) {
+    public void setPreference(final String preference, final String value) {
         USER_PREFERENCES.put(preference, value);
         PREFERENCE_CACHE.put(preference, value);
         LOGGER.info(String.format("Preference %s, set to: '%s'", preference, value));
@@ -104,7 +101,7 @@ public class PreferenceService {
      *
      * @param preference the preference.
      */
-    public void removePreference(@Nonnull final ShowRenamerPreference preference) {
+    public void removePreference(final ShowRenamerPreference preference) {
         removePreference(preference.getName());
     }
 
@@ -113,7 +110,7 @@ public class PreferenceService {
      *
      * @param preference the preference.
      */
-    public void removePreference(@Nonnull final String preference) {
+    public void removePreference(final String preference) {
         USER_PREFERENCES.remove(preference);
         PREFERENCE_CACHE.invalidate(preference);
         LOGGER.info(String.format("Preference %s was removed", preference));
@@ -126,8 +123,7 @@ public class PreferenceService {
      * @param defaultValue the default value.
      * @return the preference, or default value if preference does not exist.
      */
-    @Nonnull
-    private String loadPreference(@Nonnull final String preference, @Nonnull final String defaultValue) {
+    private String loadPreference(final String preference, final String defaultValue) {
         return USER_PREFERENCES.get(preference, defaultValue);
     }
 }

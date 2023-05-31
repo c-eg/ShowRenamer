@@ -20,7 +20,6 @@ package uk.co.conoregan.showrenamer.config.property;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Duration;
@@ -55,8 +54,7 @@ public class PropertyService {
      * @param property the property.
      * @return the value.
      */
-    @Nonnull
-    public String getProperty(@Nonnull final ShowRenamerProperty property) {
+    public String getProperty(final ShowRenamerProperty property) {
         return getProperty(property.getName());
     }
 
@@ -66,8 +64,7 @@ public class PropertyService {
      * @param property the property.
      * @return the value.
      */
-    @Nonnull
-    public String getProperty(@Nonnull final String property) {
+    public String getProperty(final String property) {
         return PROPERTY_CACHE.get(property, this::loadProperty);
     }
 
@@ -77,8 +74,7 @@ public class PropertyService {
      * @param property the property.
      * @return the value.
      */
-    @Nonnull
-    private String loadProperty(@Nonnull final String property) {
+    private String loadProperty(final String property) {
         final InputStream res = getClass().getResourceAsStream(PROPERTIES_PATH);
         final Properties properties = new Properties();
 

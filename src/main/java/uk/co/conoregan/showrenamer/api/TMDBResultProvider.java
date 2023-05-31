@@ -25,8 +25,6 @@ import info.movito.themoviedbapi.model.tv.TvSeries;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -49,14 +47,14 @@ public class TMDBResultProvider implements ShowResultProvider {
     /**
      * Should not use, only for testing.
      */
-    protected TMDBResultProvider(@Nonnull final TmdbApi tmdbApi) {
+    protected TMDBResultProvider(final TmdbApi tmdbApi) {
         this.tmdbApi = tmdbApi;
     }
 
     /**
      * Constructor.
      */
-    public TMDBResultProvider(@Nonnull final String apikey) {
+    public TMDBResultProvider(final String apikey) {
         tmdbApi = new TmdbApi(apikey);
     }
 
@@ -64,8 +62,7 @@ public class TMDBResultProvider implements ShowResultProvider {
      * {@inheritDoc}
      */
     @Override
-    @Nonnull
-    public Optional<ShowResult> getShowResult(@Nonnull final String title, @Nullable final Integer year, @Nullable final String language) {
+    public Optional<ShowResult> getShowResult(final String title, final Integer year, final String language) {
         final List<Multi> tmdbMultiResults = tmdbApi.getSearch().searchMulti(title, language, 1).getResults();
 
         if (tmdbMultiResults.isEmpty()) {
@@ -97,9 +94,8 @@ public class TMDBResultProvider implements ShowResultProvider {
      * {@inheritDoc}
      */
     @Override
-    @Nonnull
-    public Optional<TvEpisodeResult> getTvEpisodeResult(@Nonnull final String title, final int seasonNumber, final int episodeNumber,
-                                                        @Nullable final Integer year, @Nullable final String language) {
+    public Optional<TvEpisodeResult> getTvEpisodeResult(final String title, final int seasonNumber, final int episodeNumber,
+                                                        final Integer year, final String language) {
         final int tmdbYear = year == null ? 0 : year;
         final List<TvSeries> tmdbTvEpisodeResults = tmdbApi.getSearch().searchTv(title, tmdbYear, language, true, 1).getResults();
 
@@ -124,8 +120,7 @@ public class TMDBResultProvider implements ShowResultProvider {
      * @param date the date.
      * @return the locale date.
      */
-    @Nonnull
-    public static LocalDate parseDate(@Nonnull final String date) {
+    public static LocalDate parseDate(final String date) {
         return LocalDate.parse(date, DateTimeFormatter.ISO_DATE);
     }
 }
