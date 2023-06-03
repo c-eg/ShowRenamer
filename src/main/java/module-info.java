@@ -1,5 +1,4 @@
 module uk.co.conoregan.showrenamer {
-    requires com.github.benmanes.caffeine;
     requires info.movito.themoviedbapi;
     requires java.prefs;
     requires javafx.fxml;

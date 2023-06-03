@@ -17,12 +17,8 @@
 
 package uk.co.conoregan.showrenamer.config.property;
 
-import com.github.benmanes.caffeine.cache.Cache;
-import com.github.benmanes.caffeine.cache.Caffeine;
-
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.Duration;
 import java.util.Properties;
 
 /**
@@ -34,19 +30,6 @@ public class PropertyService {
      * The path to the properties file.
      */
     private static final String PROPERTIES_PATH = "/properties/show-renamer.properties";
-
-    /**
-     * Cache for properties.
-     */
-    private static final Cache<String, String> PROPERTY_CACHE;
-
-    static {
-        PROPERTY_CACHE = Caffeine.newBuilder()
-                .maximumSize(100)
-                .expireAfterWrite(Duration.ofMinutes(10))
-                .build();
-
-    }
 
     /**
      * Gets a property.
@@ -65,16 +48,6 @@ public class PropertyService {
      * @return the value.
      */
     public String getProperty(final String property) {
-        return PROPERTY_CACHE.get(property, this::loadProperty);
-    }
-
-    /**
-     * Loads a property from the properties file.
-     *
-     * @param property the property.
-     * @return the value.
-     */
-    private String loadProperty(final String property) {
         final InputStream res = getClass().getResourceAsStream(PROPERTIES_PATH);
         final Properties properties = new Properties();
 

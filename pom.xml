@@ -88,13 +88,6 @@
             <artifactId>themoviedbapi</artifactId>
             <version>1.15</version>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/com.github.ben-manes.caffeine/caffeine -->
-        <dependency>
-            <groupId>com.github.ben-manes.caffeine</groupId>
-            <artifactId>caffeine</artifactId>
-            <version>3.1.6</version>
-        </dependency>
     </dependencies>
 
     <build>
