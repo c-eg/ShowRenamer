@@ -2,10 +2,10 @@
 Renames movie and tv show file names to a much nicer format.
 
 ## Example
-|         | Before                                       | After                                       |
-|   ---   | -------------------------------------------- | ------------------------------------------- |
-| Movie   | some.random.movie.2010.1080p.blueray.x264    | Some Random Movie (2010)                    |
-| TV Show | some.random.tv.show.s01e01.1080p.bluray.x264 | Some Random TV Show - S01E01 - Episode Name |
+|         | Before                                             | After                                              |
+|   ---   | -------------------------------------------------- | -------------------------------------------------- |
+| Movie   | some.random.movie.2010.1080p.blueray.x264          | Some Random Movie (2010)                           |
+| TV Show | some.random.tv.show.2010.s01e01.1080p.bluray.x264  | Some Random TV Show (2010) - S01E01 - Episode Name |
 
 ## Showcase
 ![ShowRenamer GUI](https://i.imgur.com/OddrNDK.png)
