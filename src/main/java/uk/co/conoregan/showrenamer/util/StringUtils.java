@@ -16,8 +16,6 @@
  */
 package uk.co.conoregan.showrenamer.util;
 
-import javax.annotation.Nonnull;
-
 /**
  * Class containing String utility functions.
  */
@@ -31,9 +29,7 @@ public class StringUtils {
      * @param replacement the replacement string.
      * @return replaced string.
      */
-    @Nonnull
-    public static String replaceLastOccurrence(@Nonnull final String original, @Nonnull final String toReplace,
-                                               @Nonnull final String replacement) {
+    public static String replaceLastOccurrence(final String original, final String toReplace, final String replacement) {
         final int start = original.lastIndexOf(toReplace);
 
         if (start > -1) {

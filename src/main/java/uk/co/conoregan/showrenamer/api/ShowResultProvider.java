@@ -17,8 +17,6 @@
 
 package uk.co.conoregan.showrenamer.api;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -34,7 +32,7 @@ public interface ShowResultProvider {
      * @param language the language.
      * @return the results.
      */
-    Optional<ShowResult> getShowResult(@Nonnull final String title, @Nullable final Integer year, @Nullable final String language);
+    Optional<ShowResult> getShowResult(final String title, final Integer year, final String language);
 
     /**
      * Gets a tv show episode result.
@@ -46,8 +44,8 @@ public interface ShowResultProvider {
      * @param language the language.
      * @return the new suggested file name.
      */
-    Optional<TvEpisodeResult> getTvEpisodeResult(@Nonnull final String title, final int seasonNumber, final int episodeNumber,
-                                                 @Nullable final Integer year, @Nullable final String language);
+    Optional<TvEpisodeResult> getTvEpisodeResult(final String title, final int seasonNumber, final int episodeNumber,
+                                                 final Integer year, final String language);
 
     /**
      * Type of show.

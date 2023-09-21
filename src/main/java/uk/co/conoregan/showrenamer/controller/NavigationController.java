@@ -22,7 +22,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -41,7 +40,7 @@ public class NavigationController {
      * @param view the view to load.
      * @param stage the stage to set the scene on.
      */
-    public static void changeScene(@Nonnull final View view, @Nonnull final Stage stage) throws IOException {
+    public static void changeScene(final View view, final Stage stage) throws IOException {
         Scene scene = SCENE_MAP.get(view);
 
         // load if not in map

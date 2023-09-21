@@ -17,8 +17,6 @@
 
 package uk.co.conoregan.showrenamer.config.preference;
 
-import javax.annotation.Nonnull;
-
 /**
  * Wrapper class for the Preferences API, for Show Renamer preferences.
  */
@@ -69,7 +67,7 @@ public enum ShowRenamerPreference {
      * @param preference the preference key.
      * @param defaultValue the default value.
      */
-    ShowRenamerPreference(@Nonnull final String preference, @Nonnull final String defaultValue) {
+    ShowRenamerPreference(final String preference, final String defaultValue) {
         this.name = preference;
         this.defaultValue = defaultValue;
     }
@@ -79,7 +77,6 @@ public enum ShowRenamerPreference {
      *
      * @return the preference name.
      */
-    @Nonnull
     public String getName() {
         return name;
     }
@@ -89,7 +86,6 @@ public enum ShowRenamerPreference {
      *
      * @return the default value.
      */
-    @Nonnull
     public String getDefaultValue() {
         return defaultValue;
     }

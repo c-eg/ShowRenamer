@@ -17,8 +17,6 @@
 
 package uk.co.conoregan.showrenamer.controller;
 
-import javax.annotation.Nonnull;
-
 /**
  * Enum to represent a view for fxml.
  */
@@ -46,7 +44,7 @@ public enum View {
      *
      * @param fileName the file name.
      */
-    View(@Nonnull final String fileName) {
+    View(final String fileName) {
         this.path = VIEW_PATH + fileName + FXML_FILE_EXTENSION;
     }
 
