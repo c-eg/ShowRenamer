@@ -91,6 +91,128 @@
 
         <plugins>
             <plugin>
+                <groupId>org.moditect</groupId>
+                <artifactId>moditect-maven-plugin</artifactId>
+                <version>1.0.0.Final</version>
+                <executions>
+                    <execution>
+                        <id>create-runtime-image</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>create-runtime-image</goal>
+                        </goals>
+                        <configuration>
+                            <jarInclusionPolicy>APP_WITH_DEPENDENCIES</jarInclusionPolicy>
+                            <modulePath>
+                                <path>${project.build.directory}/${project.artifactId}-${project.version}.${project.packaging}</path>
+                                <path>${project.build.directory}/modules</path>
+                                <path>${project.build.directory}/lib</path>
+                            </modulePath>
+                            <modules>
+                                <module>uk.co.conoregan.showrenamer</module>
+                                <module>org.apache.commons.io</module>
+                                <module>org.apache.commons.lang3</module>
+                                <module>org.apache.commons.codec</module>
+                            </modules>
+                            <launcher>
+                                <name>ShowRenamer</name>
+                                <module>uk.co.conoregan.showrenamer/uk.co.conoregan.showrenamer.ShowRenamerApplication</module>
+                            </launcher>
+                            <outputDirectory>
+                                ${project.build.directory}/jlink-image
+                            </outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>add-module-infos</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>add-module-info</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/modules</outputDirectory>
+                            <modules>
+                                <module>
+                                    <artifact>
+                                        <groupId>commons-io</groupId>
+                                        <artifactId>commons-io</artifactId>
+                                        <version>2.12.0</version>
+                                    </artifact>
+                                    <moduleInfoSource>
+                                        module org.apache.commons.io {
+                                            exports org.apache.commons.io;
+                                            exports org.apache.commons.io.build;
+                                            exports org.apache.commons.io.charset;
+                                            exports org.apache.commons.io.comparator;
+                                            exports org.apache.commons.io.file;
+                                            exports org.apache.commons.io.file.attribute;
+                                            exports org.apache.commons.io.file.spi;
+                                            exports org.apache.commons.io.filefilter;
+                                            exports org.apache.commons.io.function;
+                                            exports org.apache.commons.io.input;
+                                            exports org.apache.commons.io.input.buffer;
+                                            exports org.apache.commons.io.monitor;
+                                            exports org.apache.commons.io.output;
+                                            exports org.apache.commons.io.serialization;
+                                        }
+                                    </moduleInfoSource>
+                                </module>
+                                <module>
+                                    <artifact>
+                                        <groupId>org.apache.commons</groupId>
+                                        <artifactId>commons-lang3</artifactId>
+                                        <version>3.12.0</version>
+                                    </artifact>
+                                    <moduleInfoSource>
+                                        module org.apache.commons.lang3 {
+                                            requires transitive java.desktop;
+
+                                            exports org.apache.commons.lang3;
+                                            exports org.apache.commons.lang3.arch;
+                                            exports org.apache.commons.lang3.builder;
+                                            exports org.apache.commons.lang3.compare;
+                                            exports org.apache.commons.lang3.concurrent;
+                                            exports org.apache.commons.lang3.concurrent.locks;
+                                            exports org.apache.commons.lang3.event;
+                                            exports org.apache.commons.lang3.exception;
+                                            exports org.apache.commons.lang3.function;
+                                            exports org.apache.commons.lang3.math;
+                                            exports org.apache.commons.lang3.mutable;
+                                            exports org.apache.commons.lang3.reflect;
+                                            exports org.apache.commons.lang3.stream;
+                                            exports org.apache.commons.lang3.text;
+                                            exports org.apache.commons.lang3.text.translate;
+                                            exports org.apache.commons.lang3.time;
+                                            exports org.apache.commons.lang3.tuple;
+                                        }
+                                    </moduleInfoSource>
+                                </module>
+                                <module>
+                                    <artifact>
+                                        <groupId>commons-codec</groupId>
+                                        <artifactId>commons-codec</artifactId>
+                                        <version>1.15</version>
+                                    </artifact>
+                                    <moduleInfoSource>
+                                        module org.apache.commons.codec {
+                                            exports org.apache.commons.codec;
+                                            exports org.apache.commons.codec.binary;
+                                            exports org.apache.commons.codec.cli;
+                                            exports org.apache.commons.codec.digest;
+                                            exports org.apache.commons.codec.language;
+                                            exports org.apache.commons.codec.language.bm;
+                                            exports org.apache.commons.codec.net;
+                                        }
+                                    </moduleInfoSource>
+                                </module>
+                            </modules>
+                            <overwriteExistingFiles>true</overwriteExistingFiles>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.1.0</version>
@@ -105,6 +227,28 @@
                     <target>${maven.compiler.java.version}</target>
                     <release>${maven.compiler.java.version}</release>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.6.0</version>
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                            <includeScope>compile</includeScope>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
