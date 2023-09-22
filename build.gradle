@@ -15,6 +15,15 @@ targetCompatibility = '17'
 
 repositories {
     mavenCentral()
+    mavenLocal()
+}
+
+java {
+    modularity.inferModulePath = false
+}
+
+tasks.named('compileJava') {
+    modularity.inferModulePath = false
 }
 
 application {
@@ -32,13 +41,32 @@ dependencies {
     implementation 'org.slf4j:slf4j-simple:2.0.7'
     implementation 'commons-io:commons-io:2.12.0'
     implementation 'com.github.holgerbrandl:themoviedbapi:1.15'
-    testImplementation platform('org.junit:junit-bom:5.9.1')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
     testImplementation 'org.mockito:mockito-core:5.3.1'
 }
 
+compileTestJava {
+    moduleOptions {
+        compileOnClasspath = true
+    }
+}
+
 test {
+    moduleOptions {
+        runOnClasspath = true
+    }
+
+    // enable JUnit 5 (Gradle 4.6+).
     useJUnitPlatform()
+
+    // always run tests, even when nothing changed.
+    dependsOn 'cleanTest'
+
+    // show test results.
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
 }
 
 jlink {
