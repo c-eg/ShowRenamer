@@ -250,9 +250,6 @@ public class SettingsController extends NavigationController implements Initiali
         PREFERENCE_SERVICE.setPreference(ShowRenamerPreference.ALLOWED_FILE_TYPES, String.join(",", allowedFileTypes));
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
         buttonActiveSettingsNav = buttonSettingsNavRenameFormat;

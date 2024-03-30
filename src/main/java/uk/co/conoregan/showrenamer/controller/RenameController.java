@@ -253,9 +253,6 @@ public class RenameController extends NavigationController implements Initializa
         clearAll();
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public void initialize(final URL url, final ResourceBundle resourceBundle) {
         fileSuggestionProvider = new FileSuggestionProvider(

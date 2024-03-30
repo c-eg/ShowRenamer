@@ -47,7 +47,7 @@ public class ShowInfoMatcher {
 
     /**
      * Matches a show year from a file name.
-     * The year must be in the range: 1900 <= year <= 2199.
+     * The year must be in the range: 1900 &le; year &le; 2199.
      *
      * @param fileName the file name.
      * @return optional year.

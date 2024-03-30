@@ -55,9 +55,6 @@ public class ShowRenamerApplication extends Application {
         launch(args);
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public void start(final Stage primaryStage) throws Exception {
         primaryStage.setMinWidth(WIDTH);
@@ -67,7 +64,7 @@ public class ShowRenamerApplication extends Application {
         final FXMLLoader fxmlLoader = new FXMLLoader(ShowRenamerApplication.class.getResource("/view/rename.fxml"));
         final Scene scene = new Scene(fxmlLoader.load());
         primaryStage.setScene(scene);
-
+//
         final InputStream appIconStream = ShowRenamerApplication.class.getResourceAsStream("/images/show-renamer-icon.png");
         if (appIconStream != null) {
             final Image appIcon = new Image(appIconStream);
