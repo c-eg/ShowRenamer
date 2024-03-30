@@ -64,7 +64,7 @@ public class ShowRenamerApplication extends Application {
         final FXMLLoader fxmlLoader = new FXMLLoader(ShowRenamerApplication.class.getResource("/view/rename.fxml"));
         final Scene scene = new Scene(fxmlLoader.load());
         primaryStage.setScene(scene);
-//
+
         final InputStream appIconStream = ShowRenamerApplication.class.getResourceAsStream("/images/show-renamer-icon.png");
         if (appIconStream != null) {
             final Image appIcon = new Image(appIconStream);
