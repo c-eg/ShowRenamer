@@ -15,6 +15,9 @@
 
 lib
 
+build
+.gradle
+
 # Generated files
 .idea/**/contentModel.xml
 

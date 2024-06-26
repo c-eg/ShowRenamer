@@ -117,7 +117,7 @@ public class ValidationTest {
 
     @Test
     public void testIsIntegerVarargsValidNotValidNull() {
-        final boolean isValid = Validation.isIntegerVarargsValid(null);
+        final boolean isValid = Validation.isIntegerVarargsValid(null, null);
         Assertions.assertFalse(isValid);
     }
 

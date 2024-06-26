@@ -1,0 +1,81 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.javamodularity.moduleplugin' version '1.8.15'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
+    id 'org.beryx.jlink' version '3.0.1'
+}
+
+dependencies {
+    // logging
+    implementation 'org.slf4j:slf4j-api:2.0.12'
+    implementation 'org.slf4j:slf4j-simple:2.0.12'
+
+    // testing
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
+    testImplementation 'org.mockito:mockito-core:5.11.0'
+
+    // util
+    implementation 'commons-io:commons-io:2.15.1'
+    implementation 'uk.co.conoregan:themoviedbapi:2.1.0'
+}
+
+group 'uk.co.conoregan'
+version '1.0.0'
+description = 'ShowRenamer'
+
+sourceCompatibility = '21'
+targetCompatibility = '21'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+java {
+    modularity.inferModulePath = false
+}
+
+tasks.named('compileJava') {
+    modularity.inferModulePath = false
+}
+
+application {
+    mainModule = 'uk.co.conoregan.showrenamer'
+    mainClass = 'uk.co.conoregan.showrenamer.ShowRenamerApplication'
+}
+
+javafx {
+    version = "22"
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
+}
+
+compileTestJava {
+    moduleOptions {
+        compileOnClasspath = true
+    }
+}
+
+test {
+    moduleOptions {
+        runOnClasspath = true
+    }
+
+    // enable JUnit 5 (Gradle 4.6+).
+    useJUnitPlatform()
+
+    // always run tests, even when nothing changed.
+    dependsOn 'cleanTest'
+}
+
+jlink {
+    options = ['--strip-debug', '--no-header-files', '--no-man-pages']
+    launcher {
+        name = 'Show Renamer'
+    }
+    forceMerge('slf4j')
+    jpackage {
+        installerOptions = ['--win-per-user-install', '--win-dir-chooser', '--win-menu', '--verbose']
+    }
+}

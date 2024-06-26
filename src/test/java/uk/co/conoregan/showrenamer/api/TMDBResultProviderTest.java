@@ -16,24 +16,31 @@
  */
 package uk.co.conoregan.showrenamer.api;
 
-import info.movito.themoviedbapi.TmdbApi;
-import info.movito.themoviedbapi.TmdbSearch;
-import info.movito.themoviedbapi.TmdbTvEpisodes;
-import info.movito.themoviedbapi.TvResultsPage;
-import info.movito.themoviedbapi.model.MovieDb;
-import info.movito.themoviedbapi.model.Multi;
-import info.movito.themoviedbapi.model.tv.TvEpisode;
-import info.movito.themoviedbapi.model.tv.TvSeries;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.*;
+import info.movito.themoviedbapi.TmdbApi;
+import info.movito.themoviedbapi.TmdbSearch;
+import info.movito.themoviedbapi.TmdbTvEpisodes;
+import info.movito.themoviedbapi.model.core.TvSeries;
+import info.movito.themoviedbapi.model.core.TvSeriesResultsPage;
+import info.movito.themoviedbapi.model.core.multi.Multi;
+import info.movito.themoviedbapi.model.core.multi.MultiMovie;
+import info.movito.themoviedbapi.model.core.multi.MultiResultsPage;
+import info.movito.themoviedbapi.model.core.multi.MultiTvSeries;
+import info.movito.themoviedbapi.model.tv.episode.TvEpisodeDb;
+import info.movito.themoviedbapi.tools.TmdbException;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -60,12 +67,12 @@ public class TMDBResultProviderTest {
      * Tests {@link TMDBResultProvider#getShowResult(String, Integer, String)} when no results are found.
      */
     @Test
-    public void testGetShowResultNoResult() {
+    public void testGetShowResultNoResult() throws TmdbException {
         final TmdbSearch tmdbSearch = mock(TmdbSearch.class);
         when(TMDB_API.getSearch()).thenReturn(tmdbSearch);
 
-        final TmdbSearch.MultiListResultsPage multiListResultsPage = mock(TmdbSearch.MultiListResultsPage.class);
-        when(tmdbSearch.searchMulti(anyString(), any(), anyInt())).thenReturn(multiListResultsPage);
+        final MultiResultsPage multiListResultsPage = mock(MultiResultsPage.class);
+        when(tmdbSearch.searchMulti(anyString(), anyBoolean(), any(), anyInt())).thenReturn(multiListResultsPage);
 
         final Optional<ShowResultProvider.ShowResult> suggestion = SHOW_RESULT_PROVIDER.getShowResult("title", null, null);
         Assertions.assertTrue(suggestion.isEmpty());
@@ -75,17 +82,17 @@ public class TMDBResultProviderTest {
      * Tests {@link TMDBResultProvider#getShowResult(String, Integer, String)} when a movie result is returned.
      */
     @Test
-    public void testGetShowResultMovie() {
+    public void testGetShowResultMovie() throws TmdbException {
         final TmdbSearch tmdbSearch = mock(TmdbSearch.class);
         when(TMDB_API.getSearch()).thenReturn(tmdbSearch);
 
-        final TmdbSearch.MultiListResultsPage multiListResultsPage = mock(TmdbSearch.MultiListResultsPage.class);
-        when(tmdbSearch.searchMulti(anyString(), any(), eq(1))).thenReturn(multiListResultsPage);
+        final MultiResultsPage multiListResultsPage = mock(MultiResultsPage.class);
+        when(tmdbSearch.searchMulti(anyString(), anyBoolean(), any(), eq(1))).thenReturn(multiListResultsPage);
 
         final List<Multi> results = new ArrayList<>();
         when(multiListResultsPage.getResults()).thenReturn(results);
 
-        final MovieDb result = mock(MovieDb.class);
+        final MultiMovie result = mock(MultiMovie.class);
         results.add(result);
         final String date = "2010-02-25";
         final LocalDate localeDate = TMDBResultProvider.parseDate(date);
@@ -103,17 +110,17 @@ public class TMDBResultProviderTest {
      * Tests {@link TMDBResultProvider#getShowResult(String, Integer, String)} when a tv series result is returned.
      */
     @Test
-    public void testGetShowResultTvSeries() {
+    public void testGetShowResultTvSeries() throws TmdbException {
         final TmdbSearch tmdbSearch = mock(TmdbSearch.class);
         when(TMDB_API.getSearch()).thenReturn(tmdbSearch);
 
-        final TmdbSearch.MultiListResultsPage multiListResultsPage = mock(TmdbSearch.MultiListResultsPage.class);
-        when(tmdbSearch.searchMulti(anyString(), any(), eq(1))).thenReturn(multiListResultsPage);
+        final MultiResultsPage multiListResultsPage = mock(MultiResultsPage.class);
+        when(tmdbSearch.searchMulti(anyString(), anyBoolean(), any(), eq(1))).thenReturn(multiListResultsPage);
 
         final List<Multi> results = new ArrayList<>();
         when(multiListResultsPage.getResults()).thenReturn(results);
 
-        final TvSeries result = mock(TvSeries.class);
+        final MultiTvSeries result = mock(MultiTvSeries.class);
         results.add(result);
         final String date = "2010-02-25";
         final LocalDate localeDate = TMDBResultProvider.parseDate(date);
@@ -131,12 +138,12 @@ public class TMDBResultProviderTest {
      * Tests {@link TMDBResultProvider#getTvEpisodeResult(String, int, int, Integer, String)} when no results are found.
      */
     @Test
-    public void testGetTvEpisodeResultNoResult() {
+    public void testGetTvEpisodeResultNoResult() throws TmdbException {
         final TmdbSearch tmdbSearch = mock(TmdbSearch.class);
         when(TMDB_API.getSearch()).thenReturn(tmdbSearch);
 
-        final TvResultsPage tvResultsPage = mock(TvResultsPage.class);
-        when(tmdbSearch.searchTv(anyString(), any(), any(), anyBoolean(), anyInt())).thenReturn(tvResultsPage);
+        final TvSeriesResultsPage tvResultsPage = mock(TvSeriesResultsPage.class);
+        when(tmdbSearch.searchTv(anyString(), any(), anyBoolean(), any(), anyInt(), anyInt())).thenReturn(tvResultsPage);
 
         final Optional<ShowResultProvider.TvEpisodeResult> suggestion = SHOW_RESULT_PROVIDER.getTvEpisodeResult("Tv series title", 1, 1, null, null);
         Assertions.assertTrue(suggestion.isEmpty());
@@ -146,12 +153,12 @@ public class TMDBResultProviderTest {
      * Tests {@link TMDBResultProvider#getTvEpisodeResult(String, int, int, Integer, String)}.
      */
     @Test
-    public void testGetTvEpisodeResult() {
+    public void testGetTvEpisodeResult() throws TmdbException {
         final TmdbSearch tmdbSearch = mock(TmdbSearch.class);
         when(TMDB_API.getSearch()).thenReturn(tmdbSearch);
 
-        final TvResultsPage tvResultsPage = mock(TvResultsPage.class);
-        when(tmdbSearch.searchTv(anyString(), any(), any(), anyBoolean(), anyInt())).thenReturn(tvResultsPage);
+        final TvSeriesResultsPage tvResultsPage = mock(TvSeriesResultsPage.class);
+        when(tmdbSearch.searchTv(anyString(), any(), anyBoolean(), any(), anyInt(), anyInt())).thenReturn(tvResultsPage);
 
         // tv show
         final List<TvSeries> results = new ArrayList<>();
@@ -168,8 +175,8 @@ public class TMDBResultProviderTest {
         final TmdbTvEpisodes tmdbTvEpisodes = mock(TmdbTvEpisodes.class);
         when(TMDB_API.getTvEpisodes()).thenReturn(tmdbTvEpisodes);
 
-        final TvEpisode tvEpisode = mock(TvEpisode.class);
-        when(tmdbTvEpisodes.getEpisode(anyInt(), anyInt(), anyInt(), any())).thenReturn(tvEpisode);
+        final TvEpisodeDb tvEpisode = mock(TvEpisodeDb.class);
+        when(tmdbTvEpisodes.getDetails(anyInt(), anyInt(), anyInt(), any())).thenReturn(tvEpisode);
         when(tvEpisode.getName()).thenReturn("Episode Name");
 
         final Optional<ShowResultProvider.TvEpisodeResult> suggestion =

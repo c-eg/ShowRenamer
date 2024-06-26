@@ -17,13 +17,8 @@
 
 package uk.co.conoregan.showrenamer.config.property;
 
-import com.github.benmanes.caffeine.cache.Cache;
-import com.github.benmanes.caffeine.cache.Caffeine;
-
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.Duration;
 import java.util.Properties;
 
 /**
@@ -37,26 +32,12 @@ public class PropertyService {
     private static final String PROPERTIES_PATH = "/properties/show-renamer.properties";
 
     /**
-     * Cache for properties.
-     */
-    private static final Cache<String, String> PROPERTY_CACHE;
-
-    static {
-        PROPERTY_CACHE = Caffeine.newBuilder()
-                .maximumSize(100)
-                .expireAfterWrite(Duration.ofMinutes(10))
-                .build();
-
-    }
-
-    /**
      * Gets a property.
      *
      * @param property the property.
      * @return the value.
      */
-    @Nonnull
-    public String getProperty(@Nonnull final ShowRenamerProperty property) {
+    public String getProperty(final ShowRenamerProperty property) {
         return getProperty(property.getName());
     }
 
@@ -66,19 +47,7 @@ public class PropertyService {
      * @param property the property.
      * @return the value.
      */
-    @Nonnull
-    public String getProperty(@Nonnull final String property) {
-        return PROPERTY_CACHE.get(property, this::loadProperty);
-    }
-
-    /**
-     * Loads a property from the properties file.
-     *
-     * @param property the property.
-     * @return the value.
-     */
-    @Nonnull
-    private String loadProperty(@Nonnull final String property) {
+    public String getProperty(final String property) {
         final InputStream res = getClass().getResourceAsStream(PROPERTIES_PATH);
         final Properties properties = new Properties();
 

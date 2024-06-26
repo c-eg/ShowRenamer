@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class Validation {
     /**
-     * Checks if a string is valid: not null & not blank.
+     * Checks if a string is valid: not null and not blank.
      *
      * @param string the string to check.
      * @return true if valid, false if not.
@@ -34,7 +34,7 @@ public class Validation {
     }
 
     /**
-     * Checks if all strings are valid: not null & not blank.
+     * Checks if all strings are valid: not null and not blank.
      *
      * @param strings the strings to check.
      * @return true if all valid, false if not.
@@ -54,7 +54,7 @@ public class Validation {
     }
 
     /**
-     * Checks if a list of strings are valid: not null & not empty.
+     * Checks if a list of strings are valid: not null and not empty.
      *
      * @param strings the strings to check.
      * @return true if valid, false if not.
@@ -74,7 +74,7 @@ public class Validation {
     }
 
     /**
-     * Checks if an integer is valid: not null & greater than 0.
+     * Checks if an integer is valid: not null and greater than 0.
      *
      * @param integer the integer to check.
      * @return true if valid, false if not.
@@ -84,7 +84,7 @@ public class Validation {
     }
 
     /**
-     * Checks if all integers are valid: not null & greater than 0.
+     * Checks if all integers are valid: not null and greater than 0.
      *
      * @param integers the integers to check.
      * @return true if valid, false if not.
@@ -104,7 +104,7 @@ public class Validation {
     }
 
     /**
-     * Checks if a list of integers are valid: not null & not empty.
+     * Checks if a list of integers are valid: not null and not empty.
      *
      * @param integers the integers to check.
      * @return true if valid, false if not.
@@ -124,7 +124,7 @@ public class Validation {
     }
 
     /**
-     * Checks if a list of generic objects are valid: not null & not empty.
+     * Checks if a list of generic objects are valid: not null and not empty.
      *
      * @param genericObjects the generic objects to check.
      * @return true if valid, false if not.

@@ -17,20 +17,20 @@
 
 package uk.co.conoregan.showrenamer.api;
 
-import info.movito.themoviedbapi.TmdbApi;
-import info.movito.themoviedbapi.model.MovieDb;
-import info.movito.themoviedbapi.model.Multi;
-import info.movito.themoviedbapi.model.tv.TvEpisode;
-import info.movito.themoviedbapi.model.tv.TvSeries;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+
+import info.movito.themoviedbapi.TmdbApi;
+import info.movito.themoviedbapi.model.core.TvSeries;
+import info.movito.themoviedbapi.model.core.multi.Multi;
+import info.movito.themoviedbapi.model.core.multi.MultiMovie;
+import info.movito.themoviedbapi.model.core.multi.MultiTvSeries;
+import info.movito.themoviedbapi.model.tv.episode.TvEpisodeDb;
+import info.movito.themoviedbapi.tools.TmdbException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The Movie Database api show provider.
@@ -49,24 +49,27 @@ public class TMDBResultProvider implements ShowResultProvider {
     /**
      * Should not use, only for testing.
      */
-    protected TMDBResultProvider(@Nonnull final TmdbApi tmdbApi) {
+    protected TMDBResultProvider(final TmdbApi tmdbApi) {
         this.tmdbApi = tmdbApi;
     }
 
     /**
      * Constructor.
      */
-    public TMDBResultProvider(@Nonnull final String apikey) {
+    public TMDBResultProvider(final String apikey) {
         tmdbApi = new TmdbApi(apikey);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    @Nonnull
-    public Optional<ShowResult> getShowResult(@Nonnull final String title, @Nullable final Integer year, @Nullable final String language) {
-        final List<Multi> tmdbMultiResults = tmdbApi.getSearch().searchMulti(title, language, 1).getResults();
+    public Optional<ShowResult> getShowResult(final String title, final Integer year, final String language) {
+        final List<Multi> tmdbMultiResults;
+        try {
+            tmdbMultiResults = tmdbApi.getSearch().searchMulti(title, true, language, 1).getResults();
+        }
+        catch (TmdbException e) {
+            LOGGER.error("Error occurred while searching for show result. title: {}, year: {}, language: {}", title, year, language, e);
+            return Optional.empty();
+        }
 
         if (tmdbMultiResults.isEmpty()) {
             return Optional.empty();
@@ -77,13 +80,13 @@ public class TMDBResultProvider implements ShowResultProvider {
 
         switch (tmdbMultiResult.getMediaType()) {
             case MOVIE -> {
-                final MovieDb movieDb = ((MovieDb) tmdbMultiResult);
+                final MultiMovie movieDb = ((MultiMovie) tmdbMultiResult);
                 final String movieDbTitle = movieDb.getTitle();
                 final LocalDate movieReleaseDate = parseDate(movieDb.getReleaseDate());
                 showResult = new ShowResult(movieDbTitle, movieReleaseDate, ShowType.MOVIE);
             }
             case TV_SERIES -> {
-                final TvSeries tvSeries = ((TvSeries) tmdbMultiResult);
+                final MultiTvSeries tvSeries = ((MultiTvSeries) tmdbMultiResult);
                 final String tvSeriesName = tvSeries.getName();
                 final LocalDate tvSeriesReleaseDate = parseDate(tvSeries.getFirstAirDate());
                 showResult = new ShowResult(tvSeriesName, tvSeriesReleaseDate, ShowType.TV);
@@ -93,22 +96,33 @@ public class TMDBResultProvider implements ShowResultProvider {
         return Optional.ofNullable(showResult);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    @Nonnull
-    public Optional<TvEpisodeResult> getTvEpisodeResult(@Nonnull final String title, final int seasonNumber, final int episodeNumber,
-                                                        @Nullable final Integer year, @Nullable final String language) {
+    public Optional<TvEpisodeResult> getTvEpisodeResult(final String title, final int seasonNumber, final int episodeNumber,
+                                                        final Integer year, final String language) {
         final int tmdbYear = year == null ? 0 : year;
-        final List<TvSeries> tmdbTvEpisodeResults = tmdbApi.getSearch().searchTv(title, tmdbYear, language, true, 1).getResults();
+        final List<TvSeries> tmdbTvEpisodeResults;
+        try {
+            tmdbTvEpisodeResults = tmdbApi.getSearch().searchTv(title, null, true, language, 1, tmdbYear).getResults();
+        }
+        catch (TmdbException e) {
+            LOGGER.error("Error occurred while searching for show result. title: {}, year: {}, language: {}", title, year, language, e);
+            return Optional.empty();
+        }
 
         if (tmdbTvEpisodeResults.isEmpty()) {
             return Optional.empty();
         }
 
         final TvSeries tvSeries = tmdbTvEpisodeResults.get(0);
-        final TvEpisode episode = tmdbApi.getTvEpisodes().getEpisode(tvSeries.getId(), seasonNumber, episodeNumber, language);
+        final TvEpisodeDb episode;
+        try {
+            episode = tmdbApi.getTvEpisodes().getDetails(tvSeries.getId(), seasonNumber, episodeNumber, language);
+        }
+        catch (TmdbException e) {
+            LOGGER.error("Error occurred while searching for show result. tvSeriesId: {}, seasonNumber: {}, episodeNumber: {}, " +
+                "language: {}", title, seasonNumber, episodeNumber, language, e);
+            return Optional.empty();
+        }
 
         final String seriesName = tvSeries.getName();
         final LocalDate date = parseDate(tvSeries.getFirstAirDate());
@@ -124,8 +138,7 @@ public class TMDBResultProvider implements ShowResultProvider {
      * @param date the date.
      * @return the locale date.
      */
-    @Nonnull
-    public static LocalDate parseDate(@Nonnull final String date) {
+    public static LocalDate parseDate(final String date) {
         return LocalDate.parse(date, DateTimeFormatter.ISO_DATE);
     }
 }

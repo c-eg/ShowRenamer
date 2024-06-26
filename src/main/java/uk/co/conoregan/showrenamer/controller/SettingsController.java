@@ -35,7 +35,6 @@ import org.slf4j.LoggerFactory;
 import uk.co.conoregan.showrenamer.config.preference.PreferenceService;
 import uk.co.conoregan.showrenamer.config.preference.ShowRenamerPreference;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashSet;
@@ -205,7 +204,7 @@ public class SettingsController extends NavigationController implements Initiali
      * @param renameFormat the rename format to reset.
      * @param textField the text field to change back to default.
      */
-    private void resetFormat(@Nonnull final ShowRenamerPreference renameFormat, @Nonnull final TextField textField) {
+    private void resetFormat(final ShowRenamerPreference renameFormat, final TextField textField) {
         textField.setText(renameFormat.getDefaultValue());
     }
 
@@ -251,9 +250,6 @@ public class SettingsController extends NavigationController implements Initiali
         PREFERENCE_SERVICE.setPreference(ShowRenamerPreference.ALLOWED_FILE_TYPES, String.join(",", allowedFileTypes));
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
         buttonActiveSettingsNav = buttonSettingsNavRenameFormat;
@@ -274,7 +270,7 @@ public class SettingsController extends NavigationController implements Initiali
      *
      * @param type the file type.
      */
-    private void addAllowedFileType(@Nonnull final String type) {
+    private void addAllowedFileType(final String type) {
         final Set<String> existingTypes = hboxAllowedFileTypes.getChildren().stream().map(node ->
                 ((Label) node).getText()).collect(Collectors.toSet());
 

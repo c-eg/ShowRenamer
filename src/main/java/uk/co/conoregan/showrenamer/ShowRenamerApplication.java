@@ -19,12 +19,13 @@ package uk.co.conoregan.showrenamer;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.InputStream;
 
 /**
  * The starting point of the ShowRenamer application.
@@ -54,21 +55,21 @@ public class ShowRenamerApplication extends Application {
         launch(args);
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public void start(final Stage primaryStage) throws Exception {
         primaryStage.setMinWidth(WIDTH);
         primaryStage.setMinHeight(HEIGHT);
         primaryStage.setTitle("Show Renamer");
 
-        final Parent root = FXMLLoader.load(ShowRenamerApplication.class.getResource("/view/rename.fxml"));
-        final Scene scene = new Scene(root);
+        final FXMLLoader fxmlLoader = new FXMLLoader(ShowRenamerApplication.class.getResource("/view/rename.fxml"));
+        final Scene scene = new Scene(fxmlLoader.load());
         primaryStage.setScene(scene);
 
-        final Image appIcon = new Image(ShowRenamerApplication.class.getResourceAsStream("/images/show-renamer-icon.png"));
-        primaryStage.getIcons().add(appIcon);
+        final InputStream appIconStream = ShowRenamerApplication.class.getResourceAsStream("/images/show-renamer-icon.png");
+        if (appIconStream != null) {
+            final Image appIcon = new Image(appIconStream);
+            primaryStage.getIcons().add(appIcon);
+        }
 
         primaryStage.show();
         LOGGER.info("Show Renamer successfully started.");

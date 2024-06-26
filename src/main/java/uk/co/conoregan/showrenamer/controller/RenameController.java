@@ -43,7 +43,6 @@ import uk.co.conoregan.showrenamer.config.property.PropertyService;
 import uk.co.conoregan.showrenamer.config.property.ShowRenamerProperty;
 import uk.co.conoregan.showrenamer.suggestion.FileSuggestionProvider;
 
-import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -254,9 +253,6 @@ public class RenameController extends NavigationController implements Initializa
         clearAll();
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public void initialize(final URL url, final ResourceBundle resourceBundle) {
         fileSuggestionProvider = new FileSuggestionProvider(
@@ -332,7 +328,7 @@ public class RenameController extends NavigationController implements Initializa
      *
      * @param listView the listview.
      */
-    private void setListViewCellFactorySettings(@Nonnull final ListView<File> listView) {
+    private void setListViewCellFactorySettings(final ListView<File> listView) {
         listView.setCellFactory(param -> new ListCell<>() {
             @Override
             protected void updateItem(File item, boolean empty) {
@@ -362,7 +358,7 @@ public class RenameController extends NavigationController implements Initializa
      *
      * @param file file from selected folder in open file dialog
      */
-    private void addFile(@Nonnull final File file) {
+    private void addFile(final File file) {
         if (allowedToAddFile(file)) {
             fileRenameMapping.put(file, null);
         }
@@ -386,7 +382,7 @@ public class RenameController extends NavigationController implements Initializa
      * @param file the file.
      * @return true if allowed, false if not.
      */
-    private boolean allowedToAddFile(@Nonnull final File file) {
+    private boolean allowedToAddFile(final File file) {
         if (file.isDirectory()) {
             return true;
         } else {
@@ -406,7 +402,7 @@ public class RenameController extends NavigationController implements Initializa
      * @param file the file.
      * @return the depth.
      */
-    private int getDepth(@Nonnull final File file) {
+    private int getDepth(final File file) {
         final String fileSeparator = String.valueOf(File.separatorChar);
         return file.getAbsolutePath().split(Pattern.quote(fileSeparator)).length;
     }
