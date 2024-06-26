@@ -22,7 +22,7 @@ Renames movie and tv show file names to a much nicer format.
 
 ## Local Development
 ### Prerequisites
-- JDK 17 (Amazon Corretto)
+- JDK 21 (Amazon Corretto)
 
 ### Setup
 1. Create an account for [themoviedb.org](https://www.themoviedb.org/), and get an API key (currently version 3)
@@ -30,7 +30,7 @@ Renames movie and tv show file names to a much nicer format.
 3. Run using `mvn clean install javafx:run`
 
 ### Helpful Tools
-- [SceneBuilder](https://gluonhq.com/products/scene-builder/) is a fanstastic tool to create user interfaces for JavaFX
+- [SceneBuilder](https://gluonhq.com/products/scene-builder/) is a fantastic tool to create user interfaces for JavaFX
 
 ## License
 GNU General Public License v3.0
