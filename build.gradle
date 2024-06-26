@@ -18,7 +18,7 @@ dependencies {
 
     // util
     implementation 'commons-io:commons-io:2.15.1'
-    implementation 'uk.co.conoregan:themoviedbapi:2.0.2'
+    implementation 'uk.co.conoregan:themoviedbapi:2.1.0'
 }
 
 group 'uk.co.conoregan'
