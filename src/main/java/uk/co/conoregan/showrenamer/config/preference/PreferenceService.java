@@ -76,7 +76,7 @@ public class PreferenceService {
      */
     public void setPreference(final String preference, final String value) {
         USER_PREFERENCES.put(preference, value);
-        LOGGER.info(String.format("Preference %s, set to: '%s'", preference, value));
+        LOGGER.info("Preference {}, set to: '{}'", preference, value);
     }
 
     /**
@@ -95,6 +95,6 @@ public class PreferenceService {
      */
     public void removePreference(final String preference) {
         USER_PREFERENCES.remove(preference);
-        LOGGER.info(String.format("Preference %s was removed", preference));
+        LOGGER.info("Preference {} was removed", preference);
     }
 }

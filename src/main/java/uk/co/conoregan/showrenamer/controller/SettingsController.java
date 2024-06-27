@@ -228,7 +228,7 @@ public class SettingsController extends NavigationController implements Initiali
         final String fileType = textFieldAddAllowedFileType.getText().trim().strip().toLowerCase();
 
         if (fileType.isEmpty()) {
-            LOGGER.info(String.format("Cannot add file type: '%s', it is empty.", fileType));
+            LOGGER.info("Cannot add file type: '{}', it is empty.", fileType);
             return;
         }
 
@@ -247,7 +247,7 @@ public class SettingsController extends NavigationController implements Initiali
             ((Label) node).getText()).collect(Collectors.toSet());
 
         if (existingTypes.contains(type)) {
-            LOGGER.info(String.format("The file type: '%s' is already present.", type));
+            LOGGER.info("The file type: '{}' is already present.", type);
             return;
         }
 

@@ -80,7 +80,7 @@ public class FileSuggestionProvider {
         final List<Integer> matchedEpisodes = ShowInfoMatcher.matchEpisodes(fileName);
 
         if (matchedTitle.isEmpty()) {
-            LOGGER.info(String.format("No title match found for file name: %s", file.getName()));
+            LOGGER.info("No title match found for file name: {}", file.getName());
             return Optional.empty();
         }
 
@@ -93,8 +93,8 @@ public class FileSuggestionProvider {
                             matchedTitle.get(), matchedSeason.get(), matchedEpisodes.getFirst(), matchedYear.orElse(null), null);
 
             if (showResult.isEmpty()) {
-                LOGGER.info(String.format("No result found for title: %s, season: %d, episode: %d",
-                        matchedTitle.get(), matchedSeason.get(), matchedEpisodes.getFirst()));
+                LOGGER.info("No result found for title: {}, season: {}, episode: {}",
+                    matchedTitle.get(), matchedSeason.get(), matchedEpisodes.getFirst());
                 return Optional.empty();
             }
 
@@ -111,7 +111,7 @@ public class FileSuggestionProvider {
                     showResultProvider.getShowResult(matchedTitle.get(), matchedYear.orElse(null), null);
 
             if (showResult.isEmpty()) {
-                LOGGER.info(String.format("No result found for title: %s, year: %d", matchedTitle.get(), matchedYear.orElse(null)));
+                LOGGER.info("No result found for title: {}, year: {}", matchedTitle.get(), matchedYear.orElse(null));
                 return Optional.empty();
             }
 

@@ -243,16 +243,16 @@ public class RenameController extends NavigationController implements Initializa
                     final String newName = destinationFile.getName();
 
                     if (destinationFile.exists()) {
-                        LOGGER.warn(String.format("Cannot rename: %s, the file already exists.", sourceFile.getName()));
+                        LOGGER.warn("Cannot rename: {}, the file already exists.", sourceFile.getName());
                         return;
                     }
 
                     final boolean successfulRename = sourceFile.renameTo(destinationFile);
                     if (successfulRename) {
-                        LOGGER.info(String.format("Successfully renamed: %s --> %s", originalName, newName));
+                        LOGGER.info("Successfully renamed: {} --> {}", originalName, newName);
                     }
                     else {
-                        LOGGER.error(String.format("Cannot rename: %s, an unexpected error occurred.", sourceFile.getName()));
+                        LOGGER.error("Cannot rename: {}, an unexpected error occurred.", sourceFile.getName());
                     }
                 });
 
