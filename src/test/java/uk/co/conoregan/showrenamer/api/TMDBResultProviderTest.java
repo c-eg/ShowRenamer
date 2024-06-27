@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with ShowRenamer.  If not, see <https://www.gnu.org/licenses/>.
  */
+
 package uk.co.conoregan.showrenamer.api;
 
 import java.time.LocalDate;
@@ -145,7 +146,8 @@ public class TMDBResultProviderTest {
         final TvSeriesResultsPage tvResultsPage = mock(TvSeriesResultsPage.class);
         when(tmdbSearch.searchTv(anyString(), any(), anyBoolean(), any(), anyInt(), anyInt())).thenReturn(tvResultsPage);
 
-        final Optional<ShowResultProvider.TvEpisodeResult> suggestion = SHOW_RESULT_PROVIDER.getTvEpisodeResult("Tv series title", 1, 1, null, null);
+        final Optional<ShowResultProvider.TvEpisodeResult> suggestion =
+            SHOW_RESULT_PROVIDER.getTvEpisodeResult("Tv series title", 1, 1, null, null);
         Assertions.assertTrue(suggestion.isEmpty());
     }
 

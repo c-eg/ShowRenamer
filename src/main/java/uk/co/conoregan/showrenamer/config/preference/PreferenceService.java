@@ -17,10 +17,10 @@
 
 package uk.co.conoregan.showrenamer.config.preference;
 
+import java.util.prefs.Preferences;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.prefs.Preferences;
 
 /**
  * Wrapper class for the Preferences API, for Show Renamer preferences.
@@ -76,7 +76,7 @@ public class PreferenceService {
      */
     public void setPreference(final String preference, final String value) {
         USER_PREFERENCES.put(preference, value);
-        LOGGER.info(String.format("Preference %s, set to: '%s'", preference, value));
+        LOGGER.info("Preference {}, set to: '{}'", preference, value);
     }
 
     /**
@@ -95,6 +95,6 @@ public class PreferenceService {
      */
     public void removePreference(final String preference) {
         USER_PREFERENCES.remove(preference);
-        LOGGER.info(String.format("Preference %s was removed", preference));
+        LOGGER.info("Preference {} was removed", preference);
     }
 }

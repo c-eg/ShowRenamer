@@ -22,7 +22,9 @@ import java.util.List;
 /**
  * Class for validation.
  */
-public class Validation {
+public final class Validation {
+    private Validation() {}
+
     /**
      * Checks if a string is valid: not null and not blank.
      *

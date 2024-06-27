@@ -14,12 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with ShowRenamer.  If not, see <https://www.gnu.org/licenses/>.
  */
+
 package uk.co.conoregan.showrenamer.util;
 
 /**
  * Class containing String utility functions.
  */
-public class StringUtils {
+public final class StringUtils {
+    private StringUtils() {}
+
     /**
      * Replace last occurrence of toReplace in original, using the replacement.
      * If toReplace is not found in the original string, it will return the original string.

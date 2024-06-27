@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'application'
+    id 'checkstyle'
     id 'org.javamodularity.moduleplugin' version '1.8.15'
     id 'org.openjfx.javafxplugin' version '0.1.0'
     id 'org.beryx.jlink' version '3.0.1'
@@ -35,6 +36,11 @@ repositories {
 
 java {
     modularity.inferModulePath = false
+}
+
+checkstyle {
+    toolVersion '10.17.0'
+    configFile file("config/checkstyle/checkstyle.xml")
 }
 
 tasks.named('compileJava') {

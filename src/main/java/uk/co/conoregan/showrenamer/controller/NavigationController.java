@@ -17,22 +17,23 @@
 
 package uk.co.conoregan.showrenamer.controller;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.util.HashMap;
-
 /**
  * The navigation controller, to be extended by JavaFX controllers to navigate to other scenes (pages).
  */
-public class NavigationController {
+public abstract class NavigationController {
     /**
      * The scene mapping cache.
      */
-    private static final HashMap<View, Scene> SCENE_MAP = new HashMap<>();
+    private static final Map<View, Scene> SCENE_MAP = new HashMap<>();
 
     /**
      * Changes the scene on the stage passed.

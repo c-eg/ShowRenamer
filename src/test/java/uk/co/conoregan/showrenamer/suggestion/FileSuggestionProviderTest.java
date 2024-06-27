@@ -17,15 +17,17 @@
 
 package uk.co.conoregan.showrenamer.suggestion;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import uk.co.conoregan.showrenamer.api.ShowResultProvider;
-
 import java.io.File;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import uk.co.conoregan.showrenamer.api.ShowResultProvider;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 

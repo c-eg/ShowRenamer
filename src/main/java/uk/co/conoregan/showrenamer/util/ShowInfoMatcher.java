@@ -26,7 +26,9 @@ import java.util.regex.Pattern;
 /**
  * Class to match show information from the file name passed.
  */
-public class ShowInfoMatcher {
+public final class ShowInfoMatcher {
+    private ShowInfoMatcher() {}
+
     /**
      * Matches a show title from a file name.
      *
@@ -34,7 +36,8 @@ public class ShowInfoMatcher {
      * @return optional title.
      */
     public static Optional<String> matchTitle(final String fileName) {
-        final String regex = "(.*?)(\\W| - )(directors(.?)cut|480p|720p|1080p|dvdrip|xvid|cd[0-9]|bluray|dvdscr|brrip|divx|S[0-9]{1,3}E[0-9]{1,3}|Season[\\s,0-9]{1,4}|[{(\\[]?[0-9]{4}).*";
+        final String regex = "(.*?)(\\W| - )(directors(.?)cut|480p|720p|1080p|dvdrip|xvid|cd[0-9]|bluray|dvdscr|brrip|divx|S[0-9]{1,3}" +
+            "E[0-9]{1,3}|Season[\\s,0-9]{1,4}|[{(\\[]?[0-9]{4}).*";
         final Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
         final Matcher matcher = pattern.matcher(fileName);
 
