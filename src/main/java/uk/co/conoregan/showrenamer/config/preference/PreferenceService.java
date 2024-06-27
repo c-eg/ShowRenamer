@@ -17,10 +17,10 @@
 
 package uk.co.conoregan.showrenamer.config.preference;
 
+import java.util.prefs.Preferences;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.prefs.Preferences;
 
 /**
  * Wrapper class for the Preferences API, for Show Renamer preferences.

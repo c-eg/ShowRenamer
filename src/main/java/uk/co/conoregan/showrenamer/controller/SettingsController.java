@@ -17,6 +17,15 @@
 
 package uk.co.conoregan.showrenamer.controller;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.HashSet;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -34,15 +43,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.co.conoregan.showrenamer.config.preference.PreferenceService;
 import uk.co.conoregan.showrenamer.config.preference.ShowRenamerPreference;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.HashSet;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * The JavaFX controller for the settings.fxml file.
@@ -105,7 +105,7 @@ public class SettingsController extends NavigationController implements Initiali
     private Button buttonActiveSettingsNav;
 
     /**
-     * Text field for movie rename format
+     * Text field for movie rename format.
      */
     @FXML
     private TextField textFieldMovieRenameFormat;
@@ -165,10 +165,12 @@ public class SettingsController extends NavigationController implements Initiali
         if (buttonActiveSettingsNav.equals(buttonSettingsNavRenameFormat)) {
             vboxRenameFormat.toFront();
             vboxRenameFormat.setVisible(true);
-        } else if (buttonActiveSettingsNav.equals(buttonSettingsNavFileTypeFilter)) {
+        }
+        else if (buttonActiveSettingsNav.equals(buttonSettingsNavFileTypeFilter)) {
             vboxAllowedFileTypes.toFront();
             vboxAllowedFileTypes.setVisible(true);
-        } else if (buttonActiveSettingsNav.equals(buttonSettingsNavAbout)) {
+        }
+        else if (buttonActiveSettingsNav.equals(buttonSettingsNavAbout)) {
             vboxAbout.toFront();
             vboxAbout.setVisible(true);
         }
@@ -236,6 +238,35 @@ public class SettingsController extends NavigationController implements Initiali
     }
 
     /**
+     * Add file type to allowed.
+     *
+     * @param type the file type.
+     */
+    private void addAllowedFileType(final String type) {
+        final Set<String> existingTypes = hboxAllowedFileTypes.getChildren().stream().map(node ->
+            ((Label) node).getText()).collect(Collectors.toSet());
+
+        if (existingTypes.contains(type)) {
+            LOGGER.info(String.format("The file type: '%s' is already present.", type));
+            return;
+        }
+
+        final Button closeButton = new Button("x");
+        closeButton.setAlignment(Pos.TOP_CENTER);
+        closeButton.getStyleClass().add("button-close");
+
+        final Label label = new Label(type);
+        label.setGraphic(closeButton);
+        label.setAlignment(Pos.CENTER_LEFT);
+        label.setContentDisplay(ContentDisplay.RIGHT);
+        label.getStyleClass().add("file-type");
+
+        closeButton.setOnAction(event -> hboxAllowedFileTypes.getChildren().remove(label));
+
+        hboxAllowedFileTypes.getChildren().add(label);
+    }
+
+    /**
      * Saves the allowed file types.
      */
     @FXML
@@ -263,34 +294,5 @@ public class SettingsController extends NavigationController implements Initiali
         for (final String type : allowedFileTypes) {
             addAllowedFileType(type);
         }
-    }
-
-    /**
-     * Add file type to allowed.
-     *
-     * @param type the file type.
-     */
-    private void addAllowedFileType(final String type) {
-        final Set<String> existingTypes = hboxAllowedFileTypes.getChildren().stream().map(node ->
-                ((Label) node).getText()).collect(Collectors.toSet());
-
-        if (existingTypes.contains(type)) {
-            LOGGER.info(String.format("The file type: '%s' is already present.", type));
-            return;
-        }
-
-        final Button closeButton = new Button("x");
-        closeButton.setAlignment(Pos.TOP_CENTER);
-        closeButton.getStyleClass().add("button-close");
-
-        final Label label = new Label(type);
-        label.setGraphic(closeButton);
-        label.setAlignment(Pos.CENTER_LEFT);
-        label.setContentDisplay(ContentDisplay.RIGHT);
-        label.getStyleClass().add("file-type");
-
-        closeButton.setOnAction(event -> hboxAllowedFileTypes.getChildren().remove(label));
-
-        hboxAllowedFileTypes.getChildren().add(label);
     }
 }

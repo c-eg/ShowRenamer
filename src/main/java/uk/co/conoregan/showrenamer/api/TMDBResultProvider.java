@@ -61,6 +61,7 @@ public class TMDBResultProvider implements ShowResultProvider {
     }
 
     @Override
+    @SuppressWarnings("checkstyle:MissingSwitchDefault")
     public Optional<ShowResult> getShowResult(final String title, final Integer year, final String language) {
         final List<Multi> tmdbMultiResults;
         try {
@@ -75,7 +76,7 @@ public class TMDBResultProvider implements ShowResultProvider {
             return Optional.empty();
         }
 
-        final Multi tmdbMultiResult = tmdbMultiResults.get(0);
+        final Multi tmdbMultiResult = tmdbMultiResults.getFirst();
         ShowResult showResult = null;
 
         switch (tmdbMultiResult.getMediaType()) {
@@ -113,7 +114,7 @@ public class TMDBResultProvider implements ShowResultProvider {
             return Optional.empty();
         }
 
-        final TvSeries tvSeries = tmdbTvEpisodeResults.get(0);
+        final TvSeries tvSeries = tmdbTvEpisodeResults.getFirst();
         final TvEpisodeDb episode;
         try {
             episode = tmdbApi.getTvEpisodes().getDetails(tvSeries.getId(), seasonNumber, episodeNumber, language);

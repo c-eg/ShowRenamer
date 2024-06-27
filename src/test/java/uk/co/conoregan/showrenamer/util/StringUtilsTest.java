@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with ShowRenamer.  If not, see <https://www.gnu.org/licenses/>.
  */
+
 package uk.co.conoregan.showrenamer.util;
 
 import org.junit.jupiter.api.Assertions;

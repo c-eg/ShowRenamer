@@ -17,12 +17,12 @@
 
 package uk.co.conoregan.showrenamer.util;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assertions;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link ShowInfoMatcher}.
@@ -36,13 +36,13 @@ public class ShowInfoMatcherTest {
         Assertions.assertEquals("some random movie", title.get());
     }
 
-//    @Test
-//    public void testMatchTitleContainingYear() {
-//        final String testCase = "some.random.movie.2012.2010.1080p.bluray.x264";
-//        final Optional<String> title = ShowInfoMatcher.matchTitle(testCase);
-//        Assertions.assertTrue(title.isPresent());
-//        Assertions.assertEquals("some random movie 2012", title.get());
-//    }
+    //@Test
+    //public void testMatchTitleContainingYear() {
+    //    final String testCase = "some.random.movie.2012.2010.1080p.bluray.x264";
+    //    final Optional<String> title = ShowInfoMatcher.matchTitle(testCase);
+    //    Assertions.assertTrue(title.isPresent());
+    //    Assertions.assertEquals("some random movie 2012", title.get());
+    //}
 
     @Test
     public void testMatchTitleOnlyYear() {

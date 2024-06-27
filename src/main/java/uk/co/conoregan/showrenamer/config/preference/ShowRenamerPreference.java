@@ -57,7 +57,7 @@ public enum ShowRenamerPreference {
     private final String name;
 
     /**
-     * Preference default value;
+     * Preference default value.
      */
     private final String defaultValue;
 

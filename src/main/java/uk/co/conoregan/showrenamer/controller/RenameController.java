@@ -17,6 +17,17 @@
 
 package uk.co.conoregan.showrenamer.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+import java.util.ResourceBundle;
+import java.util.TreeMap;
+import java.util.concurrent.CompletableFuture;
+import java.util.regex.Pattern;
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -42,13 +53,6 @@ import uk.co.conoregan.showrenamer.config.preference.ShowRenamerPreference;
 import uk.co.conoregan.showrenamer.config.property.PropertyService;
 import uk.co.conoregan.showrenamer.config.property.ShowRenamerProperty;
 import uk.co.conoregan.showrenamer.suggestion.FileSuggestionProvider;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.regex.Pattern;
 
 /**
  * The JavaFX controller for the rename.fxml file.
@@ -155,7 +159,8 @@ public class RenameController extends NavigationController implements Initializa
 
         if (dragboard.hasFiles()) {
             event.acceptTransferModes(TransferMode.LINK);
-        } else {
+        }
+        else {
             event.consume();
         }
 
@@ -245,7 +250,8 @@ public class RenameController extends NavigationController implements Initializa
                     final boolean successfulRename = sourceFile.renameTo(destinationFile);
                     if (successfulRename) {
                         LOGGER.info(String.format("Successfully renamed: %s --> %s", originalName, newName));
-                    } else {
+                    }
+                    else {
                         LOGGER.error(String.format("Cannot rename: %s, an unexpected error occurred.", sourceFile.getName()));
                     }
                 });
@@ -337,7 +343,8 @@ public class RenameController extends NavigationController implements Initializa
                 if (empty || item == null) {
                     setGraphic(null);
                     setText(null);
-                } else {
+                }
+                else {
                     // prevent horizontal scroll bar
                     setMinWidth(param.getWidth() - 20);
                     setMaxWidth(param.getWidth() - 20);
@@ -345,7 +352,8 @@ public class RenameController extends NavigationController implements Initializa
 
                     if (item.isDirectory()) {
                         setText(item.getName());
-                    } else {
+                    }
+                    else {
                         setText(FilenameUtils.removeExtension(item.getName()));
                     }
                 }
@@ -385,14 +393,15 @@ public class RenameController extends NavigationController implements Initializa
     private boolean allowedToAddFile(final File file) {
         if (file.isDirectory()) {
             return true;
-        } else {
-            if (!checkboxFilterFileTypes.isSelected()) {
-                return true;
-            } else {
-                final List<String> allowedTypes =
-                        List.of(PREFERENCE_SERVICE.getPreference(ShowRenamerPreference.ALLOWED_FILE_TYPES).split(","));
-                return allowedTypes.contains(FilenameUtils.getExtension(file.getName()));
-            }
+        }
+
+        if (!checkboxFilterFileTypes.isSelected()) {
+            return true;
+        }
+        else {
+            final List<String> allowedTypes =
+                    List.of(PREFERENCE_SERVICE.getPreference(ShowRenamerPreference.ALLOWED_FILE_TYPES).split(","));
+            return allowedTypes.contains(FilenameUtils.getExtension(file.getName()));
         }
     }
 

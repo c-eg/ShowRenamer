@@ -53,7 +53,8 @@ public class PropertyService {
 
         try {
             properties.load(res);
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             // file does not exist
             throw new RuntimeException(e);
         }

@@ -17,6 +17,10 @@
 
 package uk.co.conoregan.showrenamer.suggestion;
 
+import java.io.File;
+import java.util.List;
+import java.util.Optional;
+
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,10 +29,6 @@ import uk.co.conoregan.showrenamer.config.preference.PreferenceService;
 import uk.co.conoregan.showrenamer.config.preference.ShowRenamerPreference;
 import uk.co.conoregan.showrenamer.util.ShowInfoMatcher;
 import uk.co.conoregan.showrenamer.util.StringUtils;
-
-import java.io.File;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * Class to generate an improved file.
@@ -69,7 +69,8 @@ public class FileSuggestionProvider {
 
         if (file.isFile()) {
             fileName = FilenameUtils.removeExtension(file.getName());
-        } else {
+        }
+        else {
             fileName = file.getName();
         }
 
@@ -89,11 +90,11 @@ public class FileSuggestionProvider {
         if (matchedSeason.isPresent() && !matchedEpisodes.isEmpty()) {
             final Optional<ShowResultProvider.TvEpisodeResult> showResult =
                     showResultProvider.getTvEpisodeResult(
-                            matchedTitle.get(), matchedSeason.get(), matchedEpisodes.get(0), matchedYear.orElse(null), null);
+                            matchedTitle.get(), matchedSeason.get(), matchedEpisodes.getFirst(), matchedYear.orElse(null), null);
 
             if (showResult.isEmpty()) {
                 LOGGER.info(String.format("No result found for title: %s, season: %d, episode: %d",
-                        matchedTitle.get(), matchedSeason.get(), matchedEpisodes.get(0)));
+                        matchedTitle.get(), matchedSeason.get(), matchedEpisodes.getFirst()));
                 return Optional.empty();
             }
 
