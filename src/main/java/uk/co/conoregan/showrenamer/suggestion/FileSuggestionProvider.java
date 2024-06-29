@@ -124,6 +124,8 @@ public class FileSuggestionProvider {
                     .replace("{year}", String.valueOf(showResult.get().date().getYear()));
         }
 
+        newFileName = StringUtils.removeForbiddenChars(newFileName);
+
         return Optional.of(new File(StringUtils.replaceLastOccurrence(file.getAbsolutePath(), fileName, newFileName)));
     }
 }

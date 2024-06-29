@@ -41,4 +41,24 @@ public final class StringUtils {
 
         return original;
     }
+
+    /**
+     * Removes forbidden chars from the text.
+     * A forbidden char in this context is a char that is not allowed to be used within a filename.
+     *
+     * @param text the text to remove forbidden chars from.
+     * @return the text with forbidden chars removed.
+     */
+    public static String removeForbiddenChars(final String text) {
+        return text
+            .replace("<", "")
+            .replace(">", "")
+            .replace(":", "")
+            .replace("\"", "")
+            .replace("/", "")
+            .replace("\\", "")
+            .replace("|", "")
+            .replace("?", "")
+            .replace("*", "");
+    }
 }
