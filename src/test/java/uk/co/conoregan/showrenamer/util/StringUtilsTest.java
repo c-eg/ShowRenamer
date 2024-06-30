@@ -45,4 +45,30 @@ public class StringUtilsTest {
 
         Assertions.assertEquals("TestTest", result);
     }
+
+    @Test
+    public void testRemoveForbiddenCharsWindows() {
+        String testString = "test <>:\"/\\|?*";
+
+        Assertions.assertTrue(StringUtils.removeForbiddenCharsWindows(testString).contains("test"));
+
+        Assertions.assertFalse(StringUtils.removeForbiddenCharsWindows(testString).contains("<"));
+        Assertions.assertFalse(StringUtils.removeForbiddenCharsWindows(testString).contains(">"));
+        Assertions.assertFalse(StringUtils.removeForbiddenCharsWindows(testString).contains(":"));
+        Assertions.assertFalse(StringUtils.removeForbiddenCharsWindows(testString).contains("\""));
+        Assertions.assertFalse(StringUtils.removeForbiddenCharsWindows(testString).contains("/"));
+        Assertions.assertFalse(StringUtils.removeForbiddenCharsWindows(testString).contains("\\"));
+        Assertions.assertFalse(StringUtils.removeForbiddenCharsWindows(testString).contains("|"));
+        Assertions.assertFalse(StringUtils.removeForbiddenCharsWindows(testString).contains("?"));
+        Assertions.assertFalse(StringUtils.removeForbiddenCharsWindows(testString).contains("*"));
+    }
+
+    @Test
+    public void testRemoveForbiddenCharsUnix() {
+        String testString = "test /";
+
+        Assertions.assertTrue(StringUtils.removeForbiddenCharsWindows(testString).contains("test"));
+
+        Assertions.assertFalse(StringUtils.removeForbiddenCharsWindows(testString).contains("/"));
+    }
 }
