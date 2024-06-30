@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.co.conoregan.showrenamer.api.ShowResultProvider;
@@ -122,6 +123,13 @@ public class FileSuggestionProvider {
             newFileName = renameFormat
                     .replace("{title}", showResult.get().title())
                     .replace("{year}", String.valueOf(showResult.get().date().getYear()));
+        }
+
+        if (SystemUtils.IS_OS_WINDOWS) {
+            newFileName = StringUtils.removeForbiddenCharsWindows(newFileName);
+        }
+        else if (SystemUtils.IS_OS_UNIX) {
+            newFileName = StringUtils.removeForbiddenCharsUnix(newFileName);
         }
 
         return Optional.of(new File(StringUtils.replaceLastOccurrence(file.getAbsolutePath(), fileName, newFileName)));

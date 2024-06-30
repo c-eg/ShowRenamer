@@ -41,4 +41,26 @@ public final class StringUtils {
 
         return original;
     }
+
+    /**
+     * Removes forbidden chars from the text. For Windows based Operating Systems.
+     * A forbidden char in this context is a char that is not allowed to be used within a filename.
+     *
+     * @param text the text to remove forbidden chars from.
+     * @return the text with forbidden chars removed.
+     */
+    public static String removeForbiddenCharsWindows(final String text) {
+        return text.replaceAll("[<>:\"/\\\\|?*]", "");
+    }
+
+    /**
+     * Removes forbidden chars from the text. For Unix based Operating Systems.
+     * A forbidden char in this context is a char that is not allowed to be used within a filename.
+     *
+     * @param text the text to remove forbidden chars from.
+     * @return the text with forbidden chars removed.
+     */
+    public static String removeForbiddenCharsUnix(final String text) {
+        return text.replaceAll("/", "");
+    }
 }
