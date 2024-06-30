@@ -78,11 +78,25 @@ test {
 
 jlink {
     options = ['--strip-debug', '--no-header-files', '--no-man-pages']
+
     launcher {
         name = 'Show Renamer'
     }
+
     forceMerge('slf4j')
+
     jpackage {
-        installerOptions = ['--win-per-user-install', '--win-dir-chooser', '--win-menu', '--verbose']
+        def currentOs = org.gradle.internal.os.OperatingSystem.current()
+        def imgType = currentOs.windows ? 'ico' : currentOs.macOsX ? 'icns' : 'png'
+        icon = "src/main/resources/images/show-renamer-icon.$imgType"
+
+        installerOptions += [
+            '--vendor', 'Conor Egan',
+            '--app-version', version
+        ]
+
+        if (currentOs.windows) {
+            installerOptions += ['--win-per-user-install', '--win-dir-chooser', '--win-menu', '--verbose']
+        }
     }
 }
