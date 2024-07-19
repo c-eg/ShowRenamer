@@ -24,7 +24,7 @@ dependencies {
 }
 
 group 'uk.co.conoregan'
-version '2.0.0'
+version '2.0.1'
 description = 'ShowRenamer'
 
 sourceCompatibility = '21'
