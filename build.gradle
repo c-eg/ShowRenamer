@@ -18,7 +18,7 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:5.14.2'
 
     // util
-    implementation 'commons-io:commons-io:2.17.0'
+    implementation 'commons-io:commons-io:2.18.0'
     implementation 'org.apache.commons:commons-lang3:3.17.0'
     implementation 'uk.co.conoregan:themoviedbapi:2.3.0'
 }
