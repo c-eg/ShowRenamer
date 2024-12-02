@@ -20,7 +20,7 @@ dependencies {
     // util
     implementation 'commons-io:commons-io:2.17.0'
     implementation 'org.apache.commons:commons-lang3:3.17.0'
-    implementation 'uk.co.conoregan:themoviedbapi:2.1.2'
+    implementation 'uk.co.conoregan:themoviedbapi:2.3.0'
 }
 
 group 'uk.co.conoregan'
