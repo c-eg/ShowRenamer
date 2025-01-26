@@ -1,5 +1,4 @@
 plugins {
-    id 'java'
     id 'application'
     id 'checkstyle'
     id 'org.javamodularity.moduleplugin' version '1.8.15'
@@ -31,7 +30,6 @@ sourceCompatibility = '21'
 targetCompatibility = '21'
 
 repositories {
-    mavenLocal()
     mavenCentral()
 }
 
@@ -54,7 +52,7 @@ application {
 }
 
 javafx {
-    version = "22"
+    version = "23.0.2"
     modules = [ 'javafx.controls', 'javafx.fxml' ]
 }
 
