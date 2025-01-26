@@ -22,14 +22,10 @@ package uk.co.conoregan.showrenamer.config.property;
  * If you add an entry in show-renamer.properties, you should add an entry to this enum.
  */
 public enum ShowRenamerProperty {
-    /**
-     * The movie database api key, version 3.
-     */
+    /** The movie database api key, version 3. */
     TMDB_API_KEY("tmdb.api.key.v3");
 
-    /**
-     * Property name.
-     */
+    /** Property name. */
     private final String name;
 
     /**

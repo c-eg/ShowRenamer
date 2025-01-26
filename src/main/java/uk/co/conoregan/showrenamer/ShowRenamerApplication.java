@@ -31,20 +31,17 @@ import org.slf4j.LoggerFactory;
  * The starting point of the ShowRenamer application.
  */
 public class ShowRenamerApplication extends Application {
-    /**
-     * The logger.
-     */
+    /** The logger. */
     private static final Logger LOGGER = LoggerFactory.getLogger(ShowRenamerApplication.class);
 
-    /**
-     * The screen width.
-     */
-    private static final int WIDTH = 1280;
+    /** The screen width. */
+    private static final int DEFAULT_WIDTH = 1280;
 
-    /**
-     * The screen height.
-     */
-    private static final int HEIGHT = 720;
+    /** The screen height. */
+    private static final int DEFAULT_HEIGHT = 720;
+
+    /** The application title. */
+    private static final String APPLICATION_TITLE = "Show Renamer";
 
     /**
      * Main application function. Starts the JavaFX Application.
@@ -57,19 +54,19 @@ public class ShowRenamerApplication extends Application {
 
     @Override
     public void start(final Stage primaryStage) throws Exception {
-        primaryStage.setMinWidth(WIDTH);
-        primaryStage.setMinHeight(HEIGHT);
-        primaryStage.setTitle("Show Renamer");
-
-        final FXMLLoader fxmlLoader = new FXMLLoader(ShowRenamerApplication.class.getResource("/view/rename.fxml"));
-        final Scene scene = new Scene(fxmlLoader.load());
-        primaryStage.setScene(scene);
+        primaryStage.setMinWidth(DEFAULT_WIDTH);
+        primaryStage.setMinHeight(DEFAULT_HEIGHT);
+        primaryStage.setTitle(APPLICATION_TITLE);
 
         final InputStream appIconStream = ShowRenamerApplication.class.getResourceAsStream("/images/show-renamer-icon.png");
         if (appIconStream != null) {
             final Image appIcon = new Image(appIconStream);
             primaryStage.getIcons().add(appIcon);
         }
+
+        final FXMLLoader fxmlLoader = new FXMLLoader(ShowRenamerApplication.class.getResource("/view/rename.fxml"));
+        final Scene scene = new Scene(fxmlLoader.load());
+        primaryStage.setScene(scene);
 
         primaryStage.show();
         LOGGER.info("Show Renamer successfully started.");
