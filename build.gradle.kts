@@ -8,13 +8,15 @@ plugins {
 
 dependencies {
     // logging
-    implementation("org.slf4j:slf4j-api:2.0.16")
-    implementation("org.slf4j:slf4j-simple:2.0.16")
+    implementation(platform("org.slf4j:slf4j-bom:2.0.16"))
+    implementation("org.slf4j:slf4j-api")
+    implementation("org.slf4j:slf4j-simple")
 
     // testing
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.3")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.11.3")
-    testImplementation("org.mockito:mockito-core:5.14.2")
+    testImplementation(platform("org.junit:junit-bom:5.11.4"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation(platform("org.mockito:mockito-bom:5.14.2"))
+    testImplementation("org.mockito:mockito-core")
 
     // util
     implementation("commons-io:commons-io:2.18.0")
