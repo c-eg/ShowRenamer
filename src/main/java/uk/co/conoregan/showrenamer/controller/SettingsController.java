@@ -48,89 +48,59 @@ import uk.co.conoregan.showrenamer.config.preference.ShowRenamerPreference;
  * The JavaFX controller for the settings.fxml file.
  */
 public class SettingsController extends NavigationController implements Initializable {
-    /**
-     * The logger.
-     */
+    /** The logger. */
     private static final Logger LOGGER = LoggerFactory.getLogger(SettingsController.class);
 
-    /**
-     * The preference service.
-     */
+    /** The preference service. */
     private static final PreferenceService PREFERENCE_SERVICE = new PreferenceService();
 
-    /**
-     * The class to mark the card as active.
-     */
+    /** The class to mark the card as active. */
     private static final String CSS_CLASS_CARD_ACTIVE = "card-active";
 
-    /**
-     * VBox node containing the settings navigation button for rename format.
-     */
+    /** VBox node containing the settings navigation button for rename format. */
     @FXML
     private VBox vboxRenameFormat;
 
-    /**
-     * VBox node containing the settings navigation button for allowed files types.
-     */
+    /** VBox node containing the settings navigation button for allowed files types. */
     @FXML
     private VBox vboxAllowedFileTypes;
 
-    /**
-     * VBox node containing the settings navigation button for about.
-     */
+    /** VBox node containing the settings navigation button for about. */
     @FXML
     private VBox vboxAbout;
 
-    /**
-     * Button for settings navigation to change to rename format section.
-     */
+    /** Button for settings navigation to change to rename format section. */
     @FXML
     private Button buttonSettingsNavRenameFormat;
 
-    /**
-     * Button for settings navigation to change to allowed files types section.
-     */
+    /** Button for settings navigation to change to allowed files types section. */
     @FXML
     private Button buttonSettingsNavFileTypeFilter;
 
-    /**
-     * Button for settings navigation to change to about section.
-     */
+    /** Button for settings navigation to change to about section. */
     @FXML
     private Button buttonSettingsNavAbout;
 
-    /**
-     * The settings navigation button currently active.
-     */
+    /** The settings navigation button currently active. */
     private Button buttonActiveSettingsNav;
 
-    /**
-     * Text field for movie rename format.
-     */
+    /** Text field for movie rename format. */
     @FXML
     private TextField textFieldMovieRenameFormat;
 
-    /**
-     * Text field for tv show rename format.
-     */
+    /** Text field for tv show rename format. */
     @FXML
     private TextField textFieldTvShowRenameFormat;
 
-    /**
-     * Text field for tv show episode rename format.
-     */
+    /** Text field for tv show episode rename format. */
     @FXML
     private TextField textFieldTvShowEpisodeRenameFormat;
 
-    /**
-     * Text field for adding allowed file types.
-     */
+    /** Text field for adding allowed file types. */
     @FXML
     private TextField textFieldAddAllowedFileType;
 
-    /**
-     * HBox containing allowed file types.
-     */
+    /** HBox containing allowed file types. */
     @FXML
     private HBox hboxAllowedFileTypes;
 

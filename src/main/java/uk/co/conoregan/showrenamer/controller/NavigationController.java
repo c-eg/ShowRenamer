@@ -30,9 +30,7 @@ import javafx.stage.Stage;
  * The navigation controller, to be extended by JavaFX controllers to navigate to other scenes (pages).
  */
 public abstract class NavigationController {
-    /**
-     * The scene mapping cache.
-     */
+    /** The scene mapping cache. */
     private static final Map<View, Scene> SCENE_MAP = new HashMap<>();
 
     /**

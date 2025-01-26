@@ -58,81 +58,53 @@ import uk.co.conoregan.showrenamer.suggestion.FileSuggestionProvider;
  * The JavaFX controller for the rename.fxml file.
  */
 public class RenameController extends NavigationController implements Initializable {
-    /**
-     * The logger.
-     */
+    /** The logger. */
     private static final Logger LOGGER = LoggerFactory.getLogger(RenameController.class);
 
-    /**
-     * The Properties service.
-     */
+    /** The Properties service. */
     private static final PropertyService PROPERTY_SERVICE = new PropertyService();
 
-    /**
-     * The preference service.
-     */
+    /** The preference service. */
     private static final PreferenceService PREFERENCE_SERVICE = new PreferenceService();
 
-    /**
-     * The directory chooser.
-     */
+    /** The directory chooser. */
     private static final DirectoryChooser DIRECTORY_CHOOSER = new DirectoryChooser();
 
-    /**
-     * File mapping. Current name --> Suggested name.
-     */
+    /** File mapping. Current name --> Suggested name. */
     private final TreeMap<File, File> fileRenameMapping = new TreeMap<>(Comparator.comparing(File::getName));
 
-    /**
-     * The file renamer.
-     */
+    /** The file renamer. */
     private FileSuggestionProvider fileSuggestionProvider;
 
-    /**
-     * List view to show original file names.
-     */
+    /** List view to show original file names. */
     @FXML
     private ListView<File> listViewCurrentTitles;
 
-    /**
-     * List view to suggested file names.
-     */
+    /** List view to suggested file names. */
     @FXML
     private ListView<File> listViewSuggestedTitles;
 
-    /**
-     * Checkbox to include sub-folders.
-     */
+    /** Checkbox to include sub-folders. */
     @FXML
     private CheckBox checkboxIncludeSubFolder;
 
-    /**
-     * Checkbox to filter file types.
-     */
+    /** Checkbox to filter file types. */
     @FXML
     private CheckBox checkboxFilterFileTypes;
 
-    /**
-     * Button to get suggested file names.
-     */
+    /** Button to get suggested file names. */
     @FXML
     private Button buttonGetSuggestions;
 
-    /**
-     * Button to save suggested file names.
-     */
+    /** Button to save suggested file names. */
     @FXML
     private Button buttonSaveAll;
 
-    /**
-     * VBox parent node for current titles section.
-     */
+    /** VBox parent node for current titles section. */
     @FXML
     private VBox vboxCurrentTitles;
 
-    /**
-     * VBox parent node for suggested titles section.
-     */
+    /** VBox parent node for suggested titles section. */
     @FXML
     private VBox vboxSuggestedTitles;
 

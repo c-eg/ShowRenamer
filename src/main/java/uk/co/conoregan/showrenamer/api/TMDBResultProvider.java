@@ -36,25 +36,21 @@ import org.slf4j.LoggerFactory;
  * The Movie Database api show provider.
  */
 public class TMDBResultProvider implements ShowResultProvider {
-    /**
-     * The logger.
-     */
+    /** The logger. */
     private static final Logger LOGGER = LoggerFactory.getLogger(TMDBResultProvider.class);
 
-    /**
-     * The movie database api wrapper object.
-     */
+    /** The movie database api wrapper object. */
     private final TmdbApi tmdbApi;
 
-    /**
-     * Should not use, only for testing.
-     */
+    /** Should not use, only for testing. */
     protected TMDBResultProvider(final TmdbApi tmdbApi) {
         this.tmdbApi = tmdbApi;
     }
 
     /**
      * Constructor.
+     *
+     * @param apikey the TMDB api key.
      */
     public TMDBResultProvider(final String apikey) {
         tmdbApi = new TmdbApi(apikey);

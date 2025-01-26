@@ -35,19 +35,13 @@ import uk.co.conoregan.showrenamer.util.StringUtils;
  * Class to generate an improved file.
  */
 public class FileSuggestionProvider {
-    /**
-     * The logger.
-     */
+    /** The logger. */
     private static final Logger LOGGER = LoggerFactory.getLogger(FileSuggestionProvider.class);
 
-    /**
-     * The preference service.
-     */
+    /** The preference service. */
     private static final PreferenceService PREFERENCE_SERVICE = new PreferenceService();
 
-    /**
-     * The show results provider.
-     */
+    /** The show results provider. */
     private final ShowResultProvider showResultProvider;
 
     /**

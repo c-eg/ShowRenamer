@@ -26,9 +26,7 @@ import java.util.Properties;
  * This class should be used for settings that should not be modified while the application is running.
  */
 public class PropertyService {
-    /**
-     * The path to the properties file.
-     */
+    /** The path to the properties file. */
     private static final String PROPERTIES_PATH = "/properties/show-renamer.properties";
 
     /**

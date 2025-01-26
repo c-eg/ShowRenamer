@@ -27,14 +27,10 @@ import org.slf4j.LoggerFactory;
  * This class should be used for settings that can be modified while the application is running.
  */
 public class PreferenceService {
-    /**
-     * The logger.
-     */
+    /** The logger. */
     private static final Logger LOGGER = LoggerFactory.getLogger(PreferenceService.class);
 
-    /**
-     * The user preferences.
-     */
+    /** The user preferences. */
     private static final Preferences USER_PREFERENCES = Preferences.userNodeForPackage(PreferenceService.class);
 
     /**

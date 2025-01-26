@@ -24,19 +24,13 @@ public enum View {
     RENAME("rename"),
     SETTINGS("settings");
 
-    /**
-     * The path to the .fxml files.
-     */
+    /** The path to the .fxml files. */
     private static final String VIEW_PATH = "/view/";
 
-    /**
-     * The fxml file extension.
-     */
+    /** The fxml file extension. */
     private static final String FXML_FILE_EXTENSION = ".fxml";
 
-    /**
-     * The path for to load the fxml file from.
-     */
+    /** The path for to load the fxml file from. */
     final String path;
 
     /**
