@@ -21,7 +21,7 @@ dependencies {
     // util
     implementation("commons-io:commons-io:2.18.0")
     implementation("org.apache.commons:commons-lang3:3.17.0")
-    implementation("uk.co.conoregan:themoviedbapi:2.3.0")
+    implementation("uk.co.conoregan:themoviedbapi:2.3.1")
 }
 
 group = "uk.co.conoregan"
